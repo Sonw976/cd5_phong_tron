@@ -1,0 +1,11 @@
+/*
+ * Style entry point for Chủ đề 5.
+ * The legacy inline stylesheet is intentionally retained during this first
+ * migration so the visual result remains unchanged. Move rules here in
+ * follow-up edits; rules in this file can safely override legacy rules.
+ */
+
+:root {
+  --topic5-gold: #d4af37;
+  --topic5-background: #0a0a0f;
+}

@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CHỦ ĐỀ 5 – Nhân Vật Tiêu Biểu | Phòng Truyền Thống Số ĐHSP Hà Nội</title>
+<link rel="stylesheet" href="./styles/chu-de-5.css"/>
+<style>
+@font-face{font-family:RobotoLocal;src:url('./fonts/Roboto-Variable.ttf') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;color:#fff}
+canvas{display:block}
+
+/* ── LOADING ── */
+#loading{position:fixed;inset:0;z-index:9999;background:#0a0a0f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .8s}
+#loading h2{font-size:clamp(1rem,2.5vw,1.6rem);color:#d4af37;letter-spacing:.08em;text-align:center;padding:0 1rem}
+.lbar{width:min(360px,80vw);height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.lbar-fill{height:100%;width:0;background:linear-gradient(90deg,#d4af37,#f0d060);border-radius:3px;transition:width .4s ease}
+#loading p{font-size:.78rem;color:rgba(255,255,255,.35);letter-spacing:.12em}
+
+/* ── INTRO ── */
+#intro{position:fixed;inset:0;z-index:900;background:rgba(5,5,10,.95);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:2rem;opacity:0;pointer-events:none;transition:opacity .5s}
+#intro.show{opacity:1;pointer-events:all}
+#intro .badge{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:#d4af37;border:1px solid rgba(212,175,55,.35);padding:5px 16px;border-radius:2px}
+#intro h1{font-size:clamp(1.3rem,4vw,2.5rem);text-align:center;line-height:1.3;max-width:640px}
+#intro h1 span{color:#d4af37}
+#intro .sub{font-size:.85rem;color:rgba(255,255,255,.5);text-align:center;max-width:480px;line-height:1.8}
+.ctrl-row{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.ci{display:flex;align-items:center;gap:7px;font-size:.78rem;color:rgba(255,255,255,.55)}
+.k{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:26px;padding:0 7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-bottom:2px solid rgba(255,255,255,.3);border-radius:4px;font-size:.72rem;font-weight:700;color:#fff}
+#start-btn{margin-top:10px;padding:13px 44px;background:linear-gradient(135deg,#d4af37,#a8861a);border:none;border-radius:3px;font-size:.88rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#111;cursor:pointer;box-shadow:0 0 36px rgba(212,175,55,.3);transition:all .2s}
+#start-btn:hover{transform:translateY(-2px);box-shadow:0 4px 50px rgba(212,175,55,.5)}
+
+/* ── HUD ── */
+#hud{position:fixed;inset:0;z-index:100;pointer-events:none;display:none}
+#hud.on{display:block}
+#xhair{position:absolute;top:50%;left:50%;width:18px;height:18px;transform:translate(-50%,-50%)}
+#xhair::before,#xhair::after{content:'';position:absolute;background:rgba(255,255,255,.75);transition:background .15s}
+#xhair::before{top:8px;left:0;width:18px;height:2px}
+#xhair::after{top:0;left:8px;width:2px;height:18px}
+#xhair.hot::before,#xhair.hot::after{background:#f0d060}
+#aim-hint{position:absolute;top:calc(50% + 20px);left:50%;transform:translateX(-50%);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#f0d060;text-shadow:0 0 8px #000;white-space:nowrap;opacity:0;transition:opacity .15s}
+#aim-hint.show{opacity:1}
+#topbar{position:absolute;top:0;left:0;right:0;padding:12px 22px;background:linear-gradient(#000a,transparent);display:flex;justify-content:space-between;align-items:center}
+#topbar .title{font-size:.85rem;color:#d4af37;letter-spacing:.06em}
+#topbar .zone{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+#botbar{position:absolute;bottom:0;left:0;right:0;padding:14px 22px;background:linear-gradient(transparent,#000a);display:flex;justify-content:space-between;align-items:center}
+.hctrl{display:flex;gap:16px;font-size:.7rem;color:rgba(255,255,255,.4)}
+.hctrl b{color:rgba(255,255,255,.75)}
+#menuBtn{pointer-events:all;padding:5px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:3px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s}
+#menuBtn:hover{background:rgba(255,255,255,.1);color:#fff}
+#minimap{position:absolute;bottom:54px;right:18px;pointer-events:all;width:120px;background:rgba(8,8,14,.85);border:1px solid rgba(212,175,55,.2);border-radius:4px;padding:7px}
+#minimap h4{font-size:.58rem;color:#d4af37;text-align:center;letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px}
+#mmcv{display:block;border-radius:2px}
+
+/* ── MODAL ── */
+#modal-wrap{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:1rem}
+#modal-wrap.open{display:flex}
+#modal{--modal-accent:#b58b42;--modal-accent-soft:#eee5d7;--modal-deep:#3a2514;--modal-surface:#fbf8f1;position:relative;background:var(--modal-surface);border:1px solid color-mix(in srgb,var(--modal-accent) 52%,transparent);border-radius:18px;width:min(980px,96vw);height:min(650px,88vh);box-shadow:0 24px 80px #0009;overflow:hidden;animation:mIn .28s ease;color:#201b17}
+#modal[data-theme="party"]{--modal-accent:#a77a36;--modal-accent-soft:#eee1cf;--modal-deep:#5d211e;--modal-surface:#fbf6ef}
+#modal[data-theme="youth"]{--modal-accent:#3f8fa3;--modal-accent-soft:#dcebed;--modal-deep:#153f4d;--modal-surface:#f5fafb}
+#modal[data-theme="principal"]{--modal-accent:#b58b42;--modal-accent-soft:#eee5d7;--modal-deep:#4a2c1b;--modal-surface:#fbf8f1}
+@keyframes mIn{from{transform:translateY(14px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.profile-layout{display:grid;grid-template-columns:280px minmax(0,1fr);height:100%}
+#mhead{padding:34px 26px;background:linear-gradient(155deg,var(--modal-deep),color-mix(in srgb,var(--modal-deep) 76%,#000));display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;color:#fff}
+#mavatar{width:190px;aspect-ratio:3/4;border-radius:16px;background:linear-gradient(145deg,color-mix(in srgb,var(--modal-accent-soft) 80%,#fff),var(--modal-accent-soft));border:2px solid color-mix(in srgb,var(--modal-accent) 65%,#fff);display:flex;align-items:center;justify-content:center;font-size:4rem;overflow:hidden;box-shadow:0 14px 34px #0005;flex-shrink:0}
+#mphoto{width:100%;height:100%;object-fit:contain;object-position:center;background:#f4f0e8;display:none}
+#mavatar-fallback{line-height:1}
+#mheadtxt{width:100%}
+#mrole{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--modal-accent) 60%,#fff);margin-bottom:9px;font-weight:800}
+#mname{font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-size:clamp(1.25rem,2.5vw,1.72rem);font-weight:700;color:#fff;line-height:1.25;margin-bottom:9px}
+#mperiod{display:inline-block;font-size:.78rem;color:#fff;background:#ffffff17;border:1px solid #ffffff2b;border-radius:999px;padding:6px 12px}
+#mclose{position:absolute;top:13px;right:15px;z-index:4;width:34px;height:34px;border-radius:50%;border:1px solid color-mix(in srgb,var(--modal-accent) 40%,#fff);background:color-mix(in srgb,var(--modal-surface) 88%,transparent);color:var(--modal-deep);font-size:1.15rem;cursor:pointer;transition:transform .2s,background .2s}
+#mclose:hover{transform:rotate(5deg) scale(1.06);background:#fff}
+#mdetail{min-width:0;display:flex;flex-direction:column;background:var(--modal-surface)}
+#mtabs{display:flex;gap:8px;padding:22px 58px 13px 22px;background:var(--modal-accent-soft);border-bottom:1px solid color-mix(in srgb,var(--modal-accent) 25%,transparent)}
+.tb{flex:1;min-height:48px;padding:9px 10px;background:#ffffffb8;border:1px solid transparent;border-radius:999px;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:color-mix(in srgb,var(--modal-deep) 72%,#555);cursor:pointer;transition:all .2s;font-family:inherit;font-weight:800}
+.tb:hover{border-color:color-mix(in srgb,var(--modal-accent) 45%,transparent);background:#fff}
+.tb.on{color:#fff;background:var(--modal-deep);box-shadow:0 6px 16px color-mix(in srgb,var(--modal-deep) 26%,transparent)}
+#mbody{overflow-y:auto;flex:1;scrollbar-color:var(--modal-accent) transparent}
+.tp{display:none;padding:28px 30px 34px}
+.tp.on{display:block}
+.section-title{font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-size:1.55rem;color:var(--modal-deep);margin-bottom:20px}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:18px}
+.bitem{padding:13px 15px;background:#fff;border:1px solid color-mix(in srgb,var(--modal-accent) 18%,transparent);border-radius:12px}
+.bitem label{display:block;font-size:.61rem;letter-spacing:.11em;text-transform:uppercase;color:var(--modal-accent);margin-bottom:5px;font-weight:800}
+.bitem p{font-size:.88rem;color:#302b27;line-height:1.55}
+.bitem.full{grid-column:1/-1}
+.contribution-grid{display:grid;gap:14px}
+.asec{background:#fff;border:1px solid color-mix(in srgb,var(--modal-accent) 22%,transparent);border-radius:14px;padding:17px 18px}
+.asec h3{font-size:.69rem;letter-spacing:.12em;text-transform:uppercase;color:var(--modal-deep);margin-bottom:10px}
+.alist{list-style:none}
+.alist li{padding:7px 0 7px 14px;border-left:3px solid var(--modal-accent);margin-bottom:7px;font-size:.88rem;color:#3b3530;line-height:1.6}
+.memory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.memory-card{min-height:130px;padding:18px;background:#fff;border:1px dashed color-mix(in srgb,var(--modal-accent) 60%,transparent);border-radius:15px;display:flex;flex-direction:column;justify-content:center}
+.memory-card blockquote{font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-style:italic;font-size:.94rem;color:#37302a;line-height:1.65;margin-bottom:10px}
+.memory-card img{display:block;width:100%;height:auto;max-height:420px;object-fit:contain;background:#f4f0e8;border-radius:10px;margin-bottom:10px}
+.memory-card video{display:block;width:100%;max-height:230px;object-fit:cover;border-radius:10px;margin-bottom:10px}
+.memory-card audio{width:100%}
+.memory-title{font-size:.83rem;color:var(--modal-deep);font-weight:800;margin-bottom:7px}
+.memory-source{font-size:.7rem;color:var(--modal-accent);line-height:1.45;margin-top:auto}
+.empty-note{padding:20px;border-radius:12px;background:var(--modal-accent-soft);color:var(--modal-deep);line-height:1.6}
+@media(max-width:720px){#modal{height:min(780px,94vh)}.profile-layout{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}#mhead{padding:18px 54px 16px 18px;display:grid;grid-template-columns:82px 1fr;text-align:left;gap:14px}#mavatar{width:82px;aspect-ratio:3/4;border-radius:10px;grid-row:1/3}#mheadtxt{align-self:center}#mtabs{padding:12px;gap:5px}.tb{font-size:.58rem;min-height:42px}.tp{padding:20px}.memory-grid{grid-template-columns:1fr}}
+@media(max-width:440px){.bgrid{grid-template-columns:1fr}.bitem.full{grid-column:auto}#mname{font-size:1.1rem;white-space:normal;overflow-wrap:anywhere}}
+
+/* Thẻ hồ sơ hoàn thiện: bề mặt ấm, hình chữ nhật và đường nét trang trọng. */
+#modal{--mockup-blue:var(--modal-accent);--mockup-blue-soft:var(--modal-accent-soft);--mockup-border:var(--modal-accent);--mockup-text:#30261d;width:min(1040px,97vw);height:min(630px,92vh);border:2px solid color-mix(in srgb,var(--modal-accent) 62%,#fff);border-radius:8px;background:linear-gradient(145deg,#fbf7ef 0%,#f3e8d7 58%,#ead9bf 100%);color:var(--mockup-text);box-shadow:0 28px 88px #160d076e,0 0 0 1px #fff8 inset}
+.modal-brand{position:absolute;top:15px;left:24px;height:52px;display:flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;background:#fffaf0e8;border:1px solid #c9aa7c;border-radius:5px;z-index:3;box-shadow:0 4px 13px #68482118}
+.modal-brand img{width:38px;height:38px;object-fit:contain}
+.modal-brand strong{font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-size:1.08rem;letter-spacing:.08em;color:#4b321f}
+#modal-page-label{position:absolute;top:28px;left:190px;right:76px;text-align:center;font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-size:1.08rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--modal-deep);z-index:2}
+.profile-layout{grid-template-columns:304px minmax(0,1fr);gap:28px;height:100%;padding:86px 30px 30px}
+#mhead{padding:16px;background:#fffaf2c9;border:2px solid color-mix(in srgb,var(--modal-accent) 67%,#fff);border-radius:6px;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;text-align:center;color:#30261d;box-shadow:0 10px 25px #72502a1b}
+#mavatar{width:100%;max-width:270px;height:auto;aspect-ratio:10/9;border-radius:4px;border:3px solid color-mix(in srgb,var(--modal-accent) 66%,#f5ead8);background:#f5ecdf;box-shadow:0 8px 19px #4e342222;font-size:4.2rem}
+#mheadtxt{margin:0;padding:12px 8px 11px;background:#fff;border:1px solid #dfc9a8;border-radius:4px;width:100%;box-shadow:0 3px 9px #6a4b2720}
+#mrole{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--modal-deep);margin-bottom:6px;font-weight:800}
+#mname{font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-size:1.08rem;font-weight:800;color:#302116;line-height:1.18;margin-bottom:7px;white-space:nowrap;letter-spacing:-.012em}
+#mperiod{display:block;padding:6px 7px;border:1px solid color-mix(in srgb,var(--modal-accent) 38%,#fff);border-radius:3px;background:var(--modal-accent-soft);color:#4c3827;font-size:.74rem;font-style:normal;font-weight:700}
+#mclose{top:16px;right:19px;border:1px solid #c9aa7c;border-radius:4px;background:#fffaf0e8;color:var(--modal-deep);box-shadow:none}
+#mclose:hover{background:#fff;color:#6c421f}
+#mdetail{position:relative;display:block;background:transparent;min-height:0}
+#mtabs{height:100%;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:38px 52px;background:#fffaf07d;border:1px solid #ddc6a3;border-radius:6px;box-shadow:0 10px 25px #72502a14 inset}
+.tb{flex:0 0 auto;min-height:67px;display:grid;grid-template-columns:52px 1fr;align-items:center;padding:7px 20px 7px 8px;background:#fff;border:1px solid #d7c09f;border-radius:6px;color:#33271e;font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-size:1.12rem;letter-spacing:.015em;text-transform:none;font-weight:800;box-shadow:0 5px 14px #76522c17;text-align:center}
+.tb:hover,.tb.on{background:var(--modal-accent-soft);color:var(--modal-deep);border-color:var(--modal-accent);transform:translateX(4px);box-shadow:0 8px 18px #62431f25}
+.tab-icon{width:44px;height:44px;border:2px solid var(--modal-accent);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--modal-deep);background:#fffaf2;font-size:1.3rem;font-weight:600}
+#mbody{display:none;height:100%;overflow-y:auto;background:#fffdf9;border:1px solid #d7c09f;border-radius:6px;box-shadow:6px 8px 20px #4d321b26;scrollbar-color:var(--modal-accent) #f1e5d3}
+#modal.detail-open #mtabs{display:none}
+#modal.detail-open #mbody{display:block}
+#mback{display:none;position:absolute;top:12px;left:14px;z-index:3;border:1px solid color-mix(in srgb,var(--modal-accent) 65%,#fff);border-radius:4px;background:var(--modal-accent-soft);color:var(--modal-deep);padding:8px 13px;font:700 .74rem RobotoLocal,"Arial Unicode MS",Arial,sans-serif;cursor:pointer}
+#modal.detail-open #mback{display:block}
+.tp{padding:46px 28px 30px}
+.section-title{text-align:center;text-transform:uppercase;font-family:RobotoLocal,"Arial Unicode MS",Arial,sans-serif;font-size:1.75rem;font-weight:800;letter-spacing:.06em;color:var(--modal-deep);margin:0 0 22px}
+.bgrid{gap:12px}
+.bitem{padding:12px 14px;background:#fbf5ea;border:1px solid #dfc9a8;border-radius:5px}
+.bitem label{color:var(--modal-deep)}
+.bitem p{color:#332b24}
+.contribution-grid{display:grid;gap:11px}
+.asec{min-height:76px;padding:12px 14px;background:#f3e6d3;border:1px solid color-mix(in srgb,var(--modal-accent) 60%,#fff);border-radius:5px;display:grid;grid-template-columns:116px 1fr;align-items:center;gap:14px}
+.asec h3{height:100%;min-height:52px;margin:0;padding:9px;background:#fffdf9;border:1px solid #dfc9a8;border-radius:4px;color:var(--modal-deep);display:flex;align-items:center;justify-content:center;text-align:center;font-size:.72rem;line-height:1.4}
+.alist li{border-left:3px solid var(--modal-accent);padding:5px 0 5px 11px;margin:0;color:#332b24}
+.memory-grid{gap:16px;padding:4px}
+.memory-card{min-height:150px;padding:17px;background:#fffdf9;border:1px solid #d7c09f;border-radius:5px;box-shadow:4px 5px 13px #55381e1c;color:#332b24}
+.memory-card blockquote{color:#332b24}
+.memory-title,.memory-source{color:var(--modal-deep)}
+.empty-note{background:#f3e6d3;color:#332b24;border:1px solid #dfc9a8;border-radius:5px}
+.expandable-copy{position:relative;min-width:0}
+.expandable-copy .expandable-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.expandable-copy.expanded .expandable-text{display:block;max-height:138px;overflow-y:auto;padding-right:8px;scrollbar-width:thin;scrollbar-color:var(--modal-accent) #f1e5d3}
+.expand-toggle{display:inline-block;margin-top:6px;padding:0;border:0;background:transparent;color:var(--modal-deep);font:700 .75rem RobotoLocal,"Arial Unicode MS",Arial,sans-serif;cursor:pointer}
+.expand-toggle:hover{text-decoration:underline;color:#6b421f}
+.expandable-copy.expanded .expand-toggle{position:sticky;bottom:0;background:#fffdf9;padding:3px 5px 2px 0}
+.intro-info-wrap{position:fixed;inset:0;z-index:2200;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.76);backdrop-filter:blur(8px)}
+.intro-info-wrap.open{display:flex}
+.intro-info-modal{position:relative;width:min(900px,96vw);max-height:min(760px,92vh);display:flex;flex-direction:column;overflow:hidden;border:2px solid #c6a25c;border-radius:10px;background:linear-gradient(180deg,#fffefd,#edf4fb);box-shadow:0 28px 90px #000a;color:#17283a}
+.intro-info-head{padding:30px 72px 20px;text-align:center;border-bottom:1px solid #c6a25c;font:900 clamp(1.25rem,3vw,2rem)/1.2 RobotoLocal,Arial,sans-serif;color:#141793;text-transform:uppercase}
+.intro-info-body{overflow:auto;padding:26px clamp(22px,5vw,58px) 38px;font:500 clamp(.96rem,1.5vw,1.12rem)/1.78 RobotoLocal,Arial,sans-serif;text-align:justify}
+.intro-info-body p{margin:0 0 1.15em}
+.intro-info-body p:last-child{margin-bottom:0;color:#141793;font-weight:800;font-style:italic}
+.intro-info-close{position:absolute;right:16px;top:14px;z-index:2;width:38px;height:38px;border:1px solid #c6a25c;border-radius:50%;background:#fff;color:#141793;font-size:1.15rem;cursor:pointer}
+@media(max-width:720px){#modal{height:min(840px,96vh)}.modal-brand{left:12px;top:10px;height:44px}.modal-brand img{width:31px;height:31px}.modal-brand strong{font-size:.88rem}#modal-page-label{top:22px;left:137px;right:52px;text-align:left;font-size:.7rem;letter-spacing:.06em}.profile-layout{grid-template-columns:1fr;grid-template-rows:184px minmax(0,1fr);gap:12px;padding:65px 12px 12px}#mhead{padding:10px 42px 10px 10px;display:grid;grid-template-columns:128px 1fr;text-align:left;border-radius:5px;gap:12px}#mavatar{width:128px;height:auto;aspect-ratio:10/9;grid-row:1/3}#mheadtxt{margin:0;padding:9px}#mname{font-size:.92rem}#mtabs{padding:20px 8%;gap:12px}.tb{min-height:54px;font-size:.94rem}.tab-icon{width:40px;height:40px;font-size:1.1rem}#mbody{border-radius:5px}.tp{padding:44px 14px 22px}.section-title{font-size:1.3rem}.memory-grid{grid-template-columns:1fr;gap:12px}.asec{grid-template-columns:94px 1fr}}
+@media(max-width:340px){#mhead{grid-template-columns:92px minmax(0,1fr);gap:8px;padding-right:10px}#mavatar{width:88px;height:132px}#mheadtxt{min-width:0;padding:6px 2px}#mname{font-size:.78rem;line-height:1.08;white-space:normal;overflow-wrap:anywhere}}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <h2>Phòng Truyền Thống Số<br>Đoàn TNCS Hồ Chí Minh – ĐHSP Hà Nội</h2>
+  <div class="lbar"><div class="lbar-fill" id="lbar"></div></div>
+  <p id="lmsg">Đang khởi tạo...</p>
+</div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="badge">CHỦ ĐỀ 5 · NHÂN VẬT TIÊU BIỂU</div>
+  <h1>Từ Đoàn Viên Đến Nhà Giáo –<br><span>Người Truyền Lửa</span></h1>
+  <p class="sub">Khám phá không gian trưng bày số 3D, gặp gỡ những nhân vật viết nên trang sử Trường ĐHSP Hà Nội.</p>
+  <div class="ctrl-row">
+    <div class="ci"><span class="k">W</span><span class="k">A</span><span class="k">S</span><span class="k">D</span>Di chuyển</div>
+    <div class="ci"><span class="k" style="min-width:72px">Kéo chuột</span>Xoay góc nhìn</div>
+    <div class="ci"><span class="k">Bấm</span>Tương tác</div>
+    <div class="ci"><span class="k">Esc</span>Menu</div>
+  </div>
+  <button id="start-btn">✦ BƯỚC VÀO KHÔNG GIAN ✦</button>
+</div>
+
+<!-- HUD -->
+<div id="hud">
+  <div id="xhair"></div>
+  <div id="aim-hint"></div>
+  <div id="topbar">
+    <div class="title">CHỦ ĐỀ 5 · TỪ ĐOÀN VIÊN ĐẾN NHÀ GIÁO</div>
+    <div class="zone" id="zone-lbl"></div>
+  </div>
+  <div id="botbar">
+    <div class="hctrl">
+      <span><b>WASD</b> Di chuyển</span>
+      <span><b>Kéo chuột</b> Xoay góc nhìn</span>
+      <span><b>Bấm</b> Tương tác</span>
+    </div>
+    <button id="menuBtn">☰ Menu</button>
+  </div>
+  <div id="minimap">
+    <h4>Sơ đồ</h4>
+    <canvas id="mmcv" width="106" height="190"></canvas>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-wrap">
+  <div id="modal" data-theme="principal">
+    <div class="modal-brand"><img src="./image/hnue-emblem-cutout.png" alt="Logo HNUE"/><strong>HNUE</strong></div>
+    <div id="modal-page-label">Hồ sơ nhân vật</div>
+    <button id="mclose" aria-label="Đóng hồ sơ">✕</button>
+    <div class="profile-layout">
+      <aside id="mhead">
+        <div id="mavatar">
+          <img id="mphoto" alt=""/>
+          <span id="mavatar-fallback">👤</span>
+        </div>
+        <div id="mheadtxt">
+          <div id="mname"></div>
+          <div id="mrole"></div>
+          <div id="mperiod"></div>
+        </div>
+      </aside>
+      <section id="mdetail">
+        <button id="mback">← Quay lại</button>
+        <div id="mtabs" role="tablist" aria-label="Nội dung hồ sơ">
+          <button class="tb" data-t="bio" role="tab"><span class="tab-icon">♙</span><span>Tiểu sử</span></button>
+          <button class="tb" data-t="ach" role="tab"><span class="tab-icon">☆</span><span>Đóng góp</span></button>
+          <button class="tb" data-t="qte" role="tab"><span class="tab-icon">◷</span><span>Hồi ức</span></button>
+        </div>
+        <div id="mbody">
+          <div class="tp on" id="tp-bio" role="tabpanel"></div>
+          <div class="tp" id="tp-ach" role="tabpanel"></div>
+          <div class="tp" id="tp-qte" role="tabpanel"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="intro-info-wrap" id="intro-info-wrap" role="dialog" aria-modal="true" aria-labelledby="intro-info-title">
+  <article class="intro-info-modal">
+    <button class="intro-info-close" id="intro-info-close" aria-label="Đóng lời giới thiệu">✕</button>
+    <h2 class="intro-info-head" id="intro-info-title">Lời giới thiệu Chủ đề 5</h2>
+    <div class="intro-info-body" id="intro-info-body"></div>
+  </article>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+  }
+}
+</script>
+<script src="./scripts/collision/collision-world.js"></script>
+<script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { TTFLoader } from "three/addons/loaders/TTFLoader.js";
+import { Font } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+import { GLTF_ASSETS } from "./scripts/config/assets.js";
+import { PROFILE_DATA, DEMO_PROFILE_DATA } from "./scripts/data/profiles.js";
+import { PROFILE_FULL_CONTENT } from "./scripts/data/profile-full-content.js";
+import { OBJECT_FACTORIES } from "./scripts/objects/object-factories.js";
+import { createEmbossedLogo } from "./scripts/objects/embossed-logo.js";
+import { createEntranceGlassGallery } from "./scripts/objects/entrance-glass-gallery.js";
+
+// Ảnh trưng bày chuẩn hóa nằm cùng thư mục hồ sơ. Giữ sources.portrait để
+// kiểm kê ảnh gốc, còn image luôn trỏ tới tấm thiết kế hoàn chỉnh 2000×1800.
+const STANDARDIZED_PRINCIPAL_FILES={
+  'HT-01':'Lê Văn Thiêm.png','HT-02':'Đặng Thai Mai.png','HT-03':'Phạm Huy Thông.png',
+  'HT-04':'GS.TS.NGND Ngu.png','HT-05':'Nguyễn Cảnh Toàn.png',
+  'HT-06':'GS.TS.NGND Dương Trọng Bái.png','HT-07':'PGS.TS.NGND. Phạm Quý Tư.png',
+  'HT-08':'GS.TS.NGND. Vũ Tuấn.png','HT-09':'PGS.TS.NGƯT Nghiêm Đình Vỳ.png',
+  'HT-10':'GS.TS.NGƯT Đinh Quang Báo.png','HT-11':'GS.TS.NGƯT Nguyễn Viết Thịnh.png',
+  'HT-12':'GS.TS.NGƯT Nguyễn Văn Minh.png','HT-13':'PGS.TS. Nguyễn Đức Sơn.png'
+};
+const STANDARDIZED_NAME_EXCEPTIONS={
+  'DT-15':'Dương Huy Bằng','DT-16':'Nguyễn Tân An',
+  'DU-01':'Trần Văn Giàu(Đảng Ủy)','DU-17':'Nguyễn Văn Minh(Đảng Ủy)','DU-18':'Nguyễn Văn Hiền(Đảng Ủy)'
+};
+function standardizedDisplayName(person){
+  if(STANDARDIZED_PRINCIPAL_FILES[person.code])return STANDARDIZED_PRINCIPAL_FILES[person.code];
+  var base=STANDARDIZED_NAME_EXCEPTIONS[person.code]||String(person.name).replace(
+    /^(?:(?:GS|PGS|TSKH|ThS|TS|NGND|NGƯT|Đồng chí|Nhà giáo)\.?\s*)+/u,''
+  );
+  return base+'.png';
+}
+PROFILE_DATA.forEach(function(person){
+  var source=String(person.sources&&person.sources.portrait||'').replace(/^\.\//,'');
+  var slash=source.lastIndexOf('/');
+  if(slash<0)return;
+  person.image='./'+source.slice(0,slash+1)+'Ảnh đã chuẩn hóa - '+standardizedDisplayName(person);
+});
+
+// CollisionWorld2D vẫn là script độc lập và chỉ đọc THREE khi init chạy.
+window.THREE = THREE;
+// ═══════════════════════════════════════════
+//  CẤU HÌNH TÀI NGUYÊN 3D (ASSETS CONFIG)
+// ═══════════════════════════════════════════
+var gltfLoader = new GLTFLoader();
+
+// ═══════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════
+// Fallback retained for offline recovery. The canonical editable dataset is
+// scripts/data/profiles.js, loaded after this legacy scene implementation.
+var LEGACY_DATA=[
+  {id:"ht01",rk:"ht",role:"Hiệu trưởng",emoji:"🏛️",name:"GS. Nguyễn Khánh Toàn",period:"1956 – 1966",pc:"truoc1975",
+   bio:{dob:"1905",que:"Nghệ An",dv:"1930",td:"GS Triết học – Ngôn ngữ học",cv:"Hiệu trưởng đầu tiên ĐHSP Hà Nội"},
+   doan:"Đặt nền móng xây dựng phong trào Đoàn, khuyến khích sinh viên nghiên cứu khoa học.",
+   truong:"Người sáng lập trường, xây dựng chương trình đào tạo giáo viên đầu tiên toàn quốc.",
+   quote:"\"Đào tạo người thầy là đào tạo người gieo hạt giống của tương lai.\""},
+  {id:"ht02",rk:"ht",role:"Hiệu trưởng",emoji:"🏛️",name:"GS.TS. Nguyễn Lân",period:"1966 – 1976",pc:"1975_2000",
+   bio:{dob:"1906",que:"Hưng Yên",dv:"1945",td:"GS, Nhà giáo Nhân dân",cv:"Hiệu trưởng 1966–1976; Viện sĩ thông tấn Viện Hàn lâm Nga"},
+   doan:"Đẩy mạnh phong trào thanh niên tình nguyện thời chiến, tổ chức đội sinh viên xung kích.",
+   truong:"Xây dựng bộ từ điển Việt ngữ kinh điển, định hình ngành Ngôn ngữ học Việt Nam.",
+   quote:"\"Học là học để biết, để làm, để làm người, để sống cùng người khác.\""},
+  {id:"ht03",rk:"ht",role:"Hiệu trưởng",emoji:"🏛️",name:"GS.TSKH. Nguyễn Văn Hiệu",period:"1976 – 1988",pc:"1975_2000",
+   bio:{dob:"1938",que:"Hà Đông",dv:"1960",td:"GS Vật lý lý thuyết",cv:"Hiệu trưởng 1976–1988; Viện trưởng Viện Vật lý"},
+   doan:"Khởi xướng phong trào \"Sinh viên nghiên cứu khoa học\" trong toàn trường.",
+   truong:"Đưa ĐHSP Hà Nội trở thành trung tâm nghiên cứu khoa học giáo dục hàng đầu.",
+   quote:"\"Khoa học phải phục vụ đời sống, phục vụ con người.\""},
+  {id:"ht04",rk:"ht",role:"Hiệu trưởng",emoji:"🏛️",name:"GS.TS. Nguyễn Văn Minh",period:"2014 – nay",pc:"sau2000",
+   bio:{dob:"1964",que:"Nghệ An",dv:"1990",td:"GS Giáo dục học",cv:"Hiệu trưởng 2014 – nay"},
+   doan:"Chủ trì hội thảo Đoàn–Hội cấp Bộ, hỗ trợ sinh viên học tập toàn diện.",
+   truong:"Dẫn dắt nhà trường chuyển đổi số giáo dục, chương trình đào tạo giáo viên chuẩn quốc tế.",
+   quote:"\"Người thầy hạnh phúc sẽ tạo ra những học trò hạnh phúc.\""},
+  {id:"du01",rk:"du",role:"Bí thư Đảng ủy",emoji:"⭐",name:"PGS. Lê Trí Viễn",period:"1975 – 1985",pc:"1975_2000",
+   bio:{dob:"1924",que:"Quảng Nam",dv:"1946",td:"PGS Văn học Việt Nam",cv:"Bí thư Đảng ủy 1975–1985; Nhà giáo Nhân dân"},
+   doan:"Định hướng tư tưởng chính trị cho phong trào Đoàn sinh viên sau giải phóng.",
+   truong:"Đào tạo nhiều thế hệ giáo viên văn học, xây dựng chương trình Văn học Việt Nam.",
+   quote:"\"Văn học là tiếng lòng của dân tộc; người thầy là người giữ lửa cho tiếng lòng đó.\""},
+  {id:"du02",rk:"du",role:"Bí thư Đảng ủy",emoji:"⭐",name:"PGS.TS. Trần Thị Tâm Đan",period:"2000 – 2010",pc:"sau2000",
+   bio:{dob:"1952",que:"Hà Nội",dv:"1977",td:"PGS Tâm lý học Giáo dục",cv:"Bí thư Đảng ủy 2000–2010; nguyên Bộ trưởng GD"},
+   doan:"Thúc đẩy phong trào sinh viên tình nguyện, khen thưởng cán bộ Đoàn tiêu biểu.",
+   truong:"Vai trò trung tâm cải cách giáo dục phổ thông 2000–2010.",
+   quote:"\"Giáo dục không chỉ là truyền kiến thức mà là thắp sáng những ngọn lửa.\""},
+  {id:"bt01",rk:"bt",role:"Bí thư Đoàn trường",emoji:"🔴",name:"Đặng Quốc Bảo",period:"1960 – 1964",pc:"truoc1975",
+   bio:{dob:"1936",que:"Hà Nội",dv:"1958",td:"Cử nhân Toán – Lý",cv:"Bí thư Đoàn 1960–1964; Thứ trưởng Bộ GD&ĐT"},
+   doan:"Dẫn dắt phong trào Đoàn thời xây dựng CNXH, tổ chức chiến dịch học tập và lao động.",
+   truong:"Đặt nền tảng tổ chức cho Đoàn trường ĐHSP, sau trở thành lãnh đạo ngành giáo dục.",
+   quote:"\"Tuổi trẻ là mùa xuân của xã hội.\""},
+  {id:"bt02",rk:"bt",role:"Bí thư Đoàn trường",emoji:"🔴",name:"Vũ Oanh",period:"1964 – 1968",pc:"truoc1975",
+   bio:{dob:"1924",que:"Nam Định",dv:"1947",td:"Cử nhân Chính trị",cv:"Bí thư Đoàn 1964–1968; Ủy viên Bộ Chính trị"},
+   doan:"Lãnh đạo phong trào \"Thanh niên ba sẵn sàng\", huy động sinh viên tham gia kháng chiến.",
+   truong:"Cựu sinh viên – cán bộ Đoàn tiêu biểu, sau trở thành lãnh đạo cấp cao của Đảng và Nhà nước.",
+   quote:"\"Ba sẵn sàng không chỉ là khẩu hiệu, đó là lời thề của một thế hệ.\""},
+  {id:"bt03",rk:"bt",role:"Bí thư Đoàn trường",emoji:"🔴",name:"Nguyễn Thị Hương Giang",period:"2008 – 2012",pc:"sau2000",
+   bio:{dob:"1986",que:"Hà Nội",dv:"2007",td:"ThS Quản lý Giáo dục",cv:"Bí thư Đoàn 2008–2012; Phó CT Hội SV Việt Nam"},
+   doan:"Tổ chức thành công Đại hội Đoàn trường lần XXVII; xây dựng mô hình \"Sinh viên 5 tốt\".",
+   truong:"Nâng cao chất lượng đào tạo cán bộ Đoàn, phát triển CLB học thuật toàn trường.",
+   quote:"\"Đoàn viên hôm nay chính là những người thầy tương lai của đất nước.\""},
+  {id:"bt04",rk:"bt",role:"Bí thư Đoàn trường",emoji:"🔴",name:"Trần Hoàng Anh",period:"2016 – 2020",pc:"sau2000",
+   bio:{dob:"1991",que:"Thanh Hóa",dv:"2013",td:"ThS Toán học",cv:"Bí thư Đoàn 2016–2020"},
+   doan:"Triển khai chuyển đổi số quản lý Đoàn; ra mắt cổng thông tin đoàn viên trực tuyến.",
+   truong:"Đẩy mạnh hợp tác quốc tế, đưa sinh viên ĐHSP tham gia chương trình trao đổi học thuật.",
+   quote:"\"Công nghệ là cánh tay nối dài của người thầy thời đại mới.\""},
+  {id:"gmt01",rk:"gmt",role:"Gương mặt trẻ tiêu biểu",emoji:"🌟",name:"ThS. Đinh Cao Sơn",period:"2010",pc:"sau2000",
+   bio:{dob:"1988",que:"Hà Nội",dv:"2009",td:"ThS Vật lý lý thuyết",cv:"GV Khoa Vật lý – Đoàn viên tiêu biểu"},
+   doan:"Gương mặt trẻ Thủ đô tiêu biểu 2010; BCH Đoàn trường 3 nhiệm kỳ.",
+   truong:"Xây dựng phòng thực hành Vật lý hiện đại, hướng dẫn hàng trăm sinh viên NCKH.",
+   quote:"\"Người thầy giỏi là người biết học từ học trò của mình.\""},
+  {id:"gmt02",rk:"gmt",role:"Gương mặt trẻ tiêu biểu",emoji:"🌟",name:"PGS.TS. Phan Thị Ngọc Huyền",period:"2015",pc:"sau2000",
+   bio:{dob:"1985",que:"Thừa Thiên Huế",dv:"2008",td:"PGS Ngôn ngữ học",cv:"GV Khoa Ngữ Văn"},
+   doan:"Gương mặt trẻ Việt Nam tiêu biểu 2015; Bí thư Chi đoàn Khoa 5 năm liên tiếp.",
+   truong:"3 công trình ngôn ngữ học ứng dụng được quốc tế công nhận.",
+   quote:"\"Ngôn ngữ là ngôi nhà của tư tưởng – dạy ngôn ngữ là mở cửa những ngôi nhà ấy.\""},
+  {id:"gmt03",rk:"gmt",role:"Gương mặt trẻ tiêu biểu",emoji:"🌟",name:"TS. Lã Minh Trường",period:"2018",pc:"sau2000",
+   bio:{dob:"1990",que:"Hải Dương",dv:"2012",td:"TS Khoa học Giáo dục",cv:"GV Khoa Giáo dục học"},
+   doan:"Gương mặt trẻ Thủ đô tiêu biểu 2018; Chủ nhiệm CLB NCKH Giáo dục.",
+   truong:"Xây dựng mô hình Flipped Classroom đầu tiên tại ĐHSP Hà Nội.",
+   quote:"\"Đổi mới giảng dạy không phải vì thay đổi, mà là vì học sinh.\""},
+  {id:"gmt04",rk:"gmt",role:"Giáo sư",emoji:"🧠",name:"GS. Đặng Thái Mai",period:"2024 – nay",pc:"sau2000",
+   bio:{dob:"1958",que:"Hà Nội",dv:"1984",td:"GS. Tâm lý học – Giáo dục học",cv:"Giảng viên, Nhà khoa học, người định hướng đổi mới giáo dục"},
+   doan:"Tập trung thúc đẩy đổi mới giáo dục, đào tạo đội ngũ giáo viên và nghiên cứu sinh chuyên sâu.",
+   truong:"Góp phần xây dựng môi trường học tập hiện đại, kết nối nghiên cứu khoa học với thực tiễn giảng dạy và đào tạo.",
+   quote:"\"Giáo dục không chỉ cho học sinh kiến thức, mà còn giúp họ trưởng thành, sáng tạo và có trách nhiệm với cộng đồng.\""},
+  {id:"gt01",rk:"gt",role:"Giải thưởng – Danh hiệu",emoji:"🏆",name:"Huân chương Hồ Chí Minh",period:"1985",pc:"1975_2000",
+   bio:{dob:"—",que:"—",dv:"—",td:"Danh hiệu tập thể cao quý nhất",cv:"Trao tặng cho ĐHSP Hà Nội năm 1985"},
+   doan:"Ghi nhận đóng góp xuất sắc của tập thể, trong đó có vai trò quan trọng của tổ chức Đoàn.",
+   truong:"Khẳng định ĐHSP Hà Nội là trung tâm đào tạo sư phạm hàng đầu đất nước.",
+   quote:"\"Danh hiệu này là vinh dự của cả một thế hệ thầy cô và sinh viên.\""},
+  {id:"gt02",rk:"gt",role:"Giải thưởng – Danh hiệu",emoji:"🏆",name:"Danh hiệu Anh hùng Lao động",period:"2000",pc:"sau2000",
+   bio:{dob:"—",que:"—",dv:"—",td:"Danh hiệu Nhà nước",cv:"Trao tặng năm 2000 vì thành tích đào tạo xuất sắc"},
+   doan:"Ghi nhận thành tích Đoàn sinh viên vượt khó, sáng tạo trong thập niên 1990.",
+   truong:"Minh chứng cho chặng đường vượt khó của nhà trường qua thời kỳ đổi mới.",
+   quote:"\"Danh hiệu Anh hùng là lời khẳng định: chúng tôi đã đứng vững và tiến lên.\""},
+];
+var DATA = PROFILE_DATA.length ? PROFILE_DATA : LEGACY_DATA;
+
+var ZONES=[
+  {minZ:22,maxZ:68,label:"Sảnh Bí thư Đoàn trường"},
+  {minZ:-6,maxZ:22,label:"Hành lang Hiệu trưởng"},
+  {minZ:-24,maxZ:-6,label:"Sảnh Bí thư Đảng ủy"},
+];
+function getZone(z){for(var i=0;i<ZONES.length;i++){var z_=ZONES[i];if(z>=z_.minZ&&z<=z_.maxZ)return z_.label;}return "";}
+
+// ═══════════════════════════════════════════
+//  GLOBALS
+// ═══════════════════════════════════════════
+var scene,camera,renderer,raycaster,collisionWorld;
+var interactables=[];
+var playing=false;
+
+var WALL_THICKNESS=0.22;
+var PLAYER_RADIUS=0.38;
+var COLLISION_DEBUG=new URLSearchParams(window.location.search).has('collisionDebug');
+
+var camYaw=0,camPitch=0;
+var isDrag=false,dragX=0,dragY=0,mdTime=0,mdX=0,mdY=0;
+var mF=false,mB=false,mL=false,mR=false;
+var velX=0,velZ=0;
+var prevT=0;
+var mmCtx;
+
+var INTRODUCTION_PARAGRAPHS=[
+  'Trải qua 75 năm xây dựng và phát triển (1951–2026), Trường Đại học Sư phạm Hà Nội đã viết nên những trang sử đầy tự hào, khẳng định vị thế của một trong những cái nôi đào tạo, bồi dưỡng các thế hệ nhà giáo cho đất nước. Trên hành trình vẻ vang ấy, mỗi bước trưởng thành của Nhà trường đều được vun đắp bằng tâm huyết và sự cống hiến bền bỉ của biết bao thế hệ cán bộ, giảng viên. Góp phần làm nên những thành tựu đáng tự hào ấy là các thế hệ Hiệu trưởng, Bí thư Đảng ủy và Bí thư Đoàn trường – những người đã dành trọn tâm huyết, trí tuệ và trách nhiệm, chung sức chèo lái con thuyền sư phạm vượt qua những thăng trầm của lịch sử, vững vàng tiến bước và vươn tới những tầm cao mới.',
+  'Trong không gian số 5 của Phòng Truyền thống số, những chân dung, dấu ấn cống hiến và hồi ức về các thế hệ thầy cô được trân trọng lưu giữ, như những mảnh ghép làm nên bức tranh lịch sử của mái trường sư phạm thân yêu. Đằng sau mỗi tấm chân dung là một cuộc đời tận tụy, đằng sau mỗi chặng đường cống hiến là những câu chuyện, những ký ức và biết bao tâm huyết gửi lại cho các thế hệ mai sau. Đây không chỉ là nơi tìm về những con người đã góp phần làm nên lịch sử, mà còn là không gian của lòng biết ơn và niềm tự hào, nơi những giá trị của quá khứ được trân trọng, gìn giữ và tiếp nối bởi các thế hệ hôm nay.',
+  'Trân trọng kính mời quý vị và các bạn tương tác trên màn hình để khám phá Không gian số 5, tìm hiểu về chân dung, tiểu sử, những đóng góp và hồi ức quý báu của các thế hệ lãnh đạo Nhà trường qua từng thời kỳ.'
+];
+
+// ═══════════════════════════════════════════
+//  PROGRESS
+// ═══════════════════════════════════════════
+function prog(pct,msg){
+  document.getElementById('lbar').style.width=pct+'%';
+  if(msg)document.getElementById('lmsg').textContent=msg;
+}
+
+// ═══════════════════════════════════════════
+//  CANVAS TEXTURE HELPERS
+// ═══════════════════════════════════════════
+function mkTex(fn,w,h){
+  var c=document.createElement('canvas');
+  c.width=w||512;c.height=h||512;
+  fn(c.getContext('2d'),c.width,c.height);
+  var t=new THREE.CanvasTexture(c);
+  t.anisotropy=renderer?renderer.capabilities.getMaxAnisotropy():4;
+  return t;
+}
+
+function createSoftWalkwayTexture() {
+  var c = document.createElement("canvas");
+  c.width = 512; c.height = 512;
+  var ctx = c.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, 512, 512);
+  for (var i = 0; i < 420; i++) {
+    var alpha = Math.random() * 0.065 + 0.018;
+    ctx.fillStyle = Math.random() > 0.5 ? "rgba(255,255,255," + alpha + ")" : "rgba(31,41,55," + alpha + ")";
+    ctx.fillRect(Math.random() * 512, Math.random() * 512, Math.random() * 3 + 1, Math.random() * 3 + 1);
+  }
+  var texture = new THREE.CanvasTexture(c);
+  texture.colorSpace=THREE.SRGBColorSpace;
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(7, 7);
+  if (renderer) texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return texture;
+}
+
+function museumCarpetTex(repeatX,repeatY){
+  var texture=mkTex(function(ctx,W,H){
+    ctx.fillStyle='#141793';ctx.fillRect(0,0,W,H);
+
+    // Quả trám chìm và sợi dệt nhẹ để thảm có chiều sâu nhưng không gây rối mắt.
+    ctx.strokeStyle='rgba(68,72,184,.24)';ctx.lineWidth=2;
+    var step=64;
+    for(var y=-step;y<H+step;y+=step){
+      for(var x=-step;x<W+step;x+=step){
+        ctx.beginPath();
+        ctx.moveTo(x,y+step/2);ctx.lineTo(x+step/2,y);
+        ctx.lineTo(x+step,y+step/2);ctx.lineTo(x+step/2,y+step);
+        ctx.closePath();ctx.stroke();
+      }
+    }
+    ctx.strokeStyle='rgba(255,255,255,.025)';ctx.lineWidth=1;
+    for(var i=0;i<W;i+=8){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,H);ctx.stroke();}
+    for(var j=0;j<H;j+=8){ctx.beginPath();ctx.moveTo(0,j);ctx.lineTo(W,j);ctx.stroke();}
+  },256,256);
+  texture.colorSpace=THREE.SRGBColorSpace;
+  texture.wrapS=texture.wrapT=THREE.RepeatWrapping;
+  texture.repeat.set(repeatX,repeatY);
+  texture.anisotropy=renderer?renderer.capabilities.getMaxAnisotropy():1;
+  return texture;
+}
+
+function createBaseboardTiles(length, position, rotationY) {
+  var group = new THREE.Group();
+  group.position.set(position[0], position[1], position[2]);
+  group.rotation.y = rotationY;
+  scene.add(group);
+
+  var tileMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f8, roughness: .55, metalness: .01 });
+  var groutMat = new THREE.MeshStandardMaterial({ color: 0xcad5df, roughness: .82 });
+  var capMat = new THREE.MeshStandardMaterial({ color: 0xd3b36d, roughness: .3, metalness: .5 });
+
+  var back = new THREE.Mesh(new THREE.BoxGeometry(length, .58, .08), groutMat);
+  back.position.set(0, .29, 0);
+  group.add(back);
+
+  var tileCount = Math.max(4, Math.floor(length / 1.15));
+  var tileW = length / tileCount;
+  for (var i = 0; i < tileCount; i++) {
+    var tile = new THREE.Mesh(new THREE.BoxGeometry(tileW - .035, .43, .055), tileMat);
+    tile.position.set(-length / 2 + tileW * (i + .5), .29, .055);
+    group.add(tile);
+  }
+
+  var cap = new THREE.Mesh(new THREE.BoxGeometry(length, .055, .12), capMat);
+  cap.position.set(0, .61, .07);
+  group.add(cap);
+  return group;
+}
+
+function createDropCeiling(w, d, cx, cy, cz) {
+  var group = new THREE.Group();
+  group.position.set(cx, cy, cz);
+  scene.add(group);
+
+  var rimMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.92 });
+  var coreMat = new THREE.MeshStandardMaterial({ color: 0xe4eaf0, roughness: 0.92 });
+  var rimW = Math.min(2.35, w / 4, d / 4);
+
+  if (w > rimW * 2 && d > rimW * 2) {
+    var innerW = w - rimW * 2;
+    var innerD = d - rimW * 2;
+    [
+      [w, .4, rimW, 0, 0, -d / 2 + rimW / 2],
+      [w, .4, rimW, 0, 0, d / 2 - rimW / 2],
+      [rimW, .4, innerD, -w / 2 + rimW / 2, 0, 0],
+      [rimW, .4, innerD, w / 2 - rimW / 2, 0, 0]
+    ].forEach(function(v) {
+      var m = new THREE.Mesh(new THREE.BoxGeometry(v[0], v[1], v[2]), rimMat);
+      m.position.set(v[3], v[4], v[5]);
+      group.add(m);
+    });
+    var core = new THREE.Mesh(new THREE.BoxGeometry(innerW, .12, innerD), coreMat);
+    core.position.y = .4;
+    group.add(core);
+
+  }
+
+  // Đèn hai vòng lấy từ hệ trần Chủ đề 4. Tất cả cụm đều có hình đèn,
+  // nhưng chỉ một số cụm phát sáng thật để giữ hiệu năng ổn định.
+  var ringMat = new THREE.MeshBasicMaterial({
+    color:0xffc85a,
+    toneMapped:false
+  });
+  var lampSpotMat = new THREE.MeshBasicMaterial({
+    color:0xffedbd,
+    transparent:true,
+    opacity:.9,
+    side:THREE.DoubleSide,
+    toneMapped:false
+  });
+
+  function addCeilingLamp(x,z,largeRadius,hasRealLight){
+    var smallRadius=largeRadius*.75;
+    var lamp=new THREE.Group();
+    lamp.position.set(x,-.02,z);
+    group.add(lamp);
+
+    var ringLarge=new THREE.Mesh(
+      new THREE.TorusGeometry(largeRadius,.052,14,64),
+      ringMat
+    );
+    ringLarge.rotation.x=Math.PI/2;
+    ringLarge.position.set(-largeRadius*.45,-.57,0);
+    lamp.add(ringLarge);
+
+    var ringSmall=new THREE.Mesh(
+      new THREE.TorusGeometry(smallRadius,.052,14,64),
+      ringMat
+    );
+    ringSmall.rotation.x=Math.PI/2;
+    ringSmall.position.set(largeRadius*.42,-.66,0);
+    lamp.add(ringSmall);
+
+    var lightSpot=new THREE.Mesh(
+      new THREE.CircleGeometry(Math.max(.16,smallRadius*.2),28),
+      lampSpotMat
+    );
+    lightSpot.rotation.x=Math.PI/2;
+    lightSpot.position.set(0,-.59,0);
+    lamp.add(lightSpot);
+
+    if(hasRealLight){
+      var isLobby=w>20;
+      var lampGlow=new THREE.PointLight(
+        0xffe4b2,
+        isLobby?58:45,
+        isLobby?24:18,
+        1.6
+      );
+      lampGlow.position.set(0,-1.02,0);
+      lampGlow.userData.keepRealLight=true;
+      lamp.add(lampGlow);
+    }
+  }
+
+  if(w<=16&&d>=28){
+    [-12,-4,4,12].forEach(function(z,index){
+      addCeilingLamp(0,z,.72,index%2===0);
+    });
+  }else{
+    var lobbyLampOffset=w>32?10:8;
+    [-lobbyLampOffset,0,lobbyLampOffset].forEach(function(x,index){
+      addCeilingLamp(x,0,.9,index===1);
+    });
+  }
+  return group;
+}
+
+function walnutDoorTex(){
+  return mkTex(function(ctx,W,H){
+    ctx.fillStyle='#5e3a22';ctx.fillRect(0,0,W,H);
+    var g=ctx.createLinearGradient(0,0,W,0);
+    g.addColorStop(0,'#6b4429');g.addColorStop(.5,'#7a5133');g.addColorStop(1,'#5e3a22');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    for(var s=0;s<26;s++){
+      var gx=Math.random()*W;
+      ctx.strokeStyle='rgba(30,15,6,'+(Math.random()*.22+.07)+')';
+      ctx.lineWidth=Math.random()*1.8+.5;
+      ctx.beginPath();ctx.moveTo(gx,0);
+      ctx.bezierCurveTo(gx+(Math.random()*14-7),H*.33,gx+(Math.random()*14-7),H*.66,gx+(Math.random()*10-5),H);
+      ctx.stroke();
+    }
+    var pads=[[.14,.08,.42],[.14,.54,.88]];
+    pads.forEach(function(pd){
+      var px=W*pd[0],py=H*pd[1],ph=H*pd[2]-H*pd[1];
+      ctx.strokeStyle='rgba(20,10,4,.55)';ctx.lineWidth=5;
+      ctx.strokeRect(px,py,W*(1-2*pd[0]),ph);
+      ctx.strokeStyle='rgba(230,190,140,.35)';ctx.lineWidth=2;
+      ctx.strokeRect(px+5,py+5,W*(1-2*pd[0])-10,ph-10);
+    });
+    ctx.fillStyle='rgba(0,0,0,.12)';ctx.fillRect(0,0,W*.04,H);
+    ctx.fillStyle='rgba(255,255,255,.06)';ctx.fillRect(W-W*.04,0,W*.04,H);
+  },256,512);
+}
+
+function portraitTex(p,ar,ag,ab){
+  var ac='rgb('+ar+','+ag+','+ab+')';
+  return mkTex(function(ctx,W,H){
+    ctx.fillStyle='#18181f';ctx.fillRect(0,0,W,H);
+    var g=ctx.createLinearGradient(0,0,W,0);
+    g.addColorStop(0,ac);g.addColorStop(1,'rgba('+ar+','+ag+','+ab+',.55)');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H*.1);
+    ctx.fillStyle='#fff';ctx.font='700 18px RobotoLocal, Arial Unicode MS, Arial, sans-serif';ctx.textAlign='center';
+    ctx.fillText(p.role,W/2,H*.064);
+    ctx.fillStyle='rgba(255,255,255,.04)';ctx.fillRect(32,H*.14,W-64,H*.5);
+    ctx.strokeStyle='rgba('+ar+','+ag+','+ab+',.35)';ctx.lineWidth=1;
+    ctx.strokeRect(32,H*.14,W-64,H*.5);
+    ctx.font='56px RobotoLocal, Arial Unicode MS, Arial, sans-serif';ctx.fillStyle='rgba(255,255,255,.08)';
+    ctx.fillText(p.emoji,W/2,H*.42);
+    ctx.fillStyle='#fff';ctx.font='700 26px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    var nm=String(p.name||'').normalize('NFC');
+    ctx.fillText(nm,W/2,H*.76);
+    ctx.fillStyle=ac;ctx.font='22px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    ctx.fillText(p.period,W/2,H*.835);
+    ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='italic 16px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    ctx.fillText('✦ Nhấn để xem chi tiết ✦',W/2,H*.94);
+  },512,720);
+}
+
+function loadPortraitIntoMaterial(person,material,targetAspect){
+  var imageUrl=person.image||person.photo||person.portrait||person.imageUrl||'';
+  if(!imageUrl)return;
+  new THREE.TextureLoader().load(encodeURI(imageUrl),function(sourceTexture){
+    var image=sourceTexture.image||{};
+    var sourceWidth=image.naturalWidth||image.width||3;
+    var sourceHeight=image.naturalHeight||image.height||4;
+    targetAspect=targetAspect||3/4;
+    var canvas=document.createElement('canvas');
+    canvas.width=768;
+    canvas.height=Math.round(canvas.width/targetAspect);
+    var ctx=canvas.getContext('2d');
+    ctx.fillStyle='#f4f0e8';ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.imageSmoothingEnabled=true;
+    ctx.imageSmoothingQuality='high';
+
+    // Chọn cách khớp riêng theo tỉ lệ từng ảnh. Ảnh ngang/rộng được phủ kín
+    // theo chiều cao (chỉ bớt nền ở hai cạnh); ảnh dọc giữ trọn bằng contain.
+    // Vì không bao giờ crop theo chiều dọc nên chỏm đầu và phần chân dung
+    // phía dưới luôn còn nguyên. Có thể đặt person.wallFit='contain'|'cover'
+    // nếu một hồ sơ đặc biệt cần hiệu chỉnh thủ công sau khi chụp kiểm tra.
+    var sourceAspect=sourceWidth/sourceHeight;
+    var fitMode=person.wallFit||(sourceAspect>=targetAspect?'cover':'contain');
+    var fitScale=fitMode==='cover'
+      ?Math.max(canvas.width/sourceWidth,canvas.height/sourceHeight)
+      :Math.min(canvas.width/sourceWidth,canvas.height/sourceHeight);
+    var drawWidth=sourceWidth*fitScale;
+    var drawHeight=sourceHeight*fitScale;
+    var drawX=(canvas.width-drawWidth)/2;
+    var drawY=(canvas.height-drawHeight)/2;
+    ctx.save();
+    ctx.beginPath();ctx.rect(0,0,canvas.width,canvas.height);ctx.clip();
+    ctx.drawImage(image,drawX,drawY,drawWidth,drawHeight);
+    ctx.restore();
+    var fittedTexture=new THREE.CanvasTexture(canvas);
+    fittedTexture.colorSpace=THREE.SRGBColorSpace;
+    fittedTexture.anisotropy=renderer?renderer.capabilities.getMaxAnisotropy():1;
+    if(material.map)material.map.dispose();
+    material.map=fittedTexture;
+    material.needsUpdate=true;
+    sourceTexture.dispose();
+  },undefined,function(error){
+    console.warn('Không tải được ảnh hồ sơ 3D:',imageUrl,error);
+  });
+}
+
+function flatProfileLabelTex(person){
+  return mkTex(function(ctx,W,H){
+    ctx.fillStyle='#151898';ctx.fillRect(0,0,W,H);
+    var shade=ctx.createLinearGradient(0,0,0,H);
+    shade.addColorStop(0,'rgba(255,255,255,.08)');
+    shade.addColorStop(1,'rgba(10,4,92,.22)');
+    ctx.fillStyle=shade;ctx.fillRect(0,0,W,H);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle='#fff4df';
+    var displayName=(person.name||'ĐANG XÁC MINH...').normalize('NFC').toUpperCase();
+    var nameSize=displayName.length>29?24:(displayName.length>22?27:30);
+    ctx.font='700 '+nameSize+'px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    ctx.fillText(displayName,W/2,H*.31,W-26);
+    ctx.fillStyle='rgba(255,244,223,.92)';
+    ctx.font='600 19px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    ctx.fillText((person.role||'').toUpperCase(),W/2,H*.61,W-24);
+    ctx.font='600 18px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    ctx.fillText(person.period||'',W/2,H*.84,W-24);
+  },512,144);
+}
+
+function wallTitleTex(title, subtitle, color){
+  return mkTex(function(ctx,W,H){
+    ctx.clearRect(0,0,W,H);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle=color;ctx.font='700 54px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    ctx.fillText(title,W/2,subtitle?57:H/2);
+    if(subtitle){
+      ctx.fillStyle='rgba(35,35,35,.68)';ctx.font='600 24px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+      ctx.fillText(subtitle,W/2,108);
+    }
+  },1024,144);
+}
+
+function buildAreaTitles3D(){
+  var loader=new TTFLoader();
+  loader.load('./fonts/Roboto-Variable.ttf',function(fontJson){
+    var font=new Font(fontJson);
+    var material=new THREE.MeshStandardMaterial({
+      color:0xd3b36d,
+      metalness:.64,
+      roughness:.3,
+      emissive:0x2e210b,
+      emissiveIntensity:.12
+    });
+    var entranceTitleMaterial=new THREE.MeshStandardMaterial({
+      color:0x141793,
+      metalness:.18,
+      roughness:.42,
+      emissive:0x06072f,
+      emissiveIntensity:.08
+    });
+
+    function addTitle(text,position,rotationY,size,alignEnd,customMaterial,alignCenter){
+      var geometry=new TextGeometry(text,{
+        font:font,
+        size:size,
+        depth:.055,
+        curveSegments:7,
+        bevelEnabled:true,
+        bevelThickness:.008,
+        bevelSize:.006,
+        bevelSegments:2
+      });
+      geometry.computeBoundingBox();
+      var box=geometry.boundingBox;
+      var width=box.max.x-box.min.x;
+      var centerY=(box.min.y+box.max.y)/2;
+      geometry.translate(alignCenter?-width/2:(alignEnd?-width:0),-centerY,0);
+      var mesh=new THREE.Mesh(geometry,customMaterial||material);
+      mesh.position.set(position[0],position[1],position[2]);
+      mesh.rotation.y=rotationY;
+      mesh.renderOrder=7;
+      scene.add(mesh);
+      return mesh;
+    }
+
+    [-1,1].forEach(function(side){
+      var x=side<0?-6.69:6.69;
+      var rotation=side<0?Math.PI/2:-Math.PI/2;
+      var alignEnd=side>0;
+      addTitle('BÍ THƯ ĐOÀN TRƯỜNG QUA CÁC THỜI KÌ',[side<0?-15.69:15.69,7.9,64.1],rotation,.43,alignEnd);
+      addTitle('HIỆU TRƯỞNG NHÀ TRƯỜNG QUA CÁC THỜI KÌ',[x,7.9,18.9],rotation,.43,alignEnd);
+    });
+    addTitle('BÍ THƯ ĐẢNG ỦY NHÀ TRƯỜNG QUA CÁC THỜI KÌ',[-5.65,7.9,-22.69],0,.48,false);
+    addTitle('TỪ ĐOÀN VIÊN ĐẾN NHÀ GIÁO',[0,7.82,66.68],Math.PI,.52,false,entranceTitleMaterial,true);
+    addTitle('NGƯỜI TRUYỀN LỬA',[0,7.05,66.68],Math.PI,.5,false,entranceTitleMaterial,true);
+  },undefined,function(error){
+    console.error('Không tải được font Roboto cho tiêu đề 3D:',error);
+  });
+}
+
+function wrapCanvasParagraph(ctx,text,maxWidth){
+  var words=String(text).trim().split(/\s+/);
+  var lines=[];
+  var line='';
+  words.forEach(function(word){
+    var candidate=line?line+' '+word:word;
+    if(line&&ctx.measureText(candidate).width>maxWidth){lines.push(line);line=word;}
+    else line=candidate;
+  });
+  if(line)lines.push(line);
+  return lines;
+}
+
+function introductionBoardTex(title,paragraphs){
+  return mkTex(function(ctx,W,H){
+    var gradient=ctx.createLinearGradient(0,0,0,H);
+    gradient.addColorStop(0,'#fffefd');gradient.addColorStop(1,'#eaf3fb');
+    ctx.fillStyle=gradient;ctx.fillRect(0,0,W,H);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle='#141793';ctx.font='900 66px RobotoLocal, Arial, sans-serif';
+    ctx.fillText(title,W/2,82,W-150);
+    ctx.strokeStyle='rgba(181,138,50,.86)';ctx.lineWidth=4;
+    ctx.beginPath();ctx.moveTo(150,155);ctx.lineTo(W-150,155);ctx.stroke();
+
+    var maxWidth=W-190;
+    var top=205;
+    var bottom=H-74;
+    var fontSize=42;
+    var layouts=[];
+    var totalHeight=Infinity;
+    while(fontSize>=25){
+      ctx.font='600 '+fontSize+'px RobotoLocal, Arial, sans-serif';
+      var lineHeight=fontSize*1.46;
+      layouts=paragraphs.map(function(paragraph){return wrapCanvasParagraph(ctx,paragraph,maxWidth);});
+      totalHeight=layouts.reduce(function(sum,lines,index){
+        return sum+lines.length*lineHeight+(index<layouts.length-1?lineHeight*.72:0);
+      },0);
+      if(totalHeight<=bottom-top)break;
+      fontSize-=1;
+    }
+    var lineHeight=fontSize*1.46;
+    var y=top+Math.max(0,(bottom-top-totalHeight)/2);
+    ctx.textAlign='left';ctx.textBaseline='top';
+    layouts.forEach(function(lines,paragraphIndex){
+      var isInvitation=paragraphs[paragraphIndex]===INTRODUCTION_PARAGRAPHS[2];
+      ctx.fillStyle=isInvitation?'#141793':'#17283a';
+      ctx.font=(isInvitation?'italic 800 ':'600 ')+fontSize+'px RobotoLocal, Arial, sans-serif';
+      lines.forEach(function(line){ctx.fillText(line,95,y,maxWidth);y+=lineHeight;});
+      y+=lineHeight*.72;
+    });
+  },1600,1120);
+}
+
+function buildIntroductionBoards(){
+  var outerMaterial=new THREE.MeshStandardMaterial({color:0x9a744f,roughness:.68,metalness:.04});
+  var metalMaterial=new THREE.MeshStandardMaterial({color:0xc6a25c,roughness:.3,metalness:.58});
+  [
+    {x:-11,title:'LỜI GIỚI THIỆU CHỦ ĐỀ 5',paragraphs:[INTRODUCTION_PARAGRAPHS[0]]},
+    {x:11,title:'KHÔNG GIAN SỐ 5',paragraphs:[INTRODUCTION_PARAGRAPHS[1],INTRODUCTION_PARAGRAPHS[2]]}
+  ].forEach(function(config){
+    var group=new THREE.Group();
+    group.position.set(config.x,4.62,40.2);
+    var outer=new THREE.Mesh(new THREE.BoxGeometry(6.55,4.75,.07),outerMaterial);
+    group.add(outer);
+    var metal=new THREE.Mesh(new THREE.BoxGeometry(6.31,4.51,.045),metalMaterial);
+    metal.position.z=.052;group.add(metal);
+    var panel=new THREE.Mesh(
+      new THREE.PlaneGeometry(6.17,4.37),
+      new THREE.MeshBasicMaterial({map:introductionBoardTex(config.title,config.paragraphs),toneMapped:false})
+    );
+    panel.position.z=.081;panel.renderOrder=6;group.add(panel);
+    var hit=new THREE.Mesh(
+      new THREE.BoxGeometry(6.55,4.75,.18),
+      new THREE.MeshBasicMaterial({visible:false})
+    );
+    hit.position.z=.11;
+    hit.userData={isInteractive:true,type:'introduction'};
+    group.add(hit);interactables.push(hit);scene.add(group);
+  });
+}
+
+function placeholderProfile(index, role, prefix, emoji){
+  var number=String(index+1).padStart(2,'0');
+  return {
+    id:prefix.toLowerCase()+'-slot-'+number,
+    rk:prefix.toLowerCase(),
+    role:role,
+    emoji:emoji,
+    name:'Hồ sơ '+number,
+    period:'Đang cập nhật',
+    pc:'placeholder',
+    bio:{dob:'—',que:'—',dv:'—',td:'—',cv:'Dữ liệu sẽ được bổ sung từ hồ sơ chính thức.'},
+    contributions:{
+      union:['Nội dung đang được cập nhật.'],
+      school:['Nội dung đang được cập nhật.'],
+      society:['Nội dung đang được cập nhật.']
+    },
+    memories:[
+      {type:'text',title:'Hồi ức trực tiếp',text:'Đang cập nhật từ hồ sơ chính thức.'},
+      {type:'text',title:'Ảnh tư liệu',text:'Đang cập nhật ảnh và chú thích.'},
+      {type:'text',title:'Phỏng vấn',text:'Đang cập nhật âm thanh hoặc video.'},
+      {type:'text',title:'Nguồn lưu trữ',text:'Đang xác minh nguồn tư liệu.'}
+    ]
+  };
+}
+
+function addProfileFrame3D(person,x,y,z,rotationY,palette,scale,accent){
+  // Cùng cơ chế ảnh nổi nhiều lớp của Chủ đề 3 – Cụm 1.
+  // Hình học dùng đúng tỷ lệ 2000:1800 nên toàn bộ thiết kế luôn hiện đủ.
+  var panelWidth=1.55;
+  var panelHeight=panelWidth*(1800/2000);
+  var depth=.105*.75;
+  var layers=7;
+  var frame=new THREE.Group();
+  frame.name='LayeredRaisedProfile';
+
+  var geometry=new THREE.PlaneGeometry(panelWidth,panelHeight);
+  var texture=new THREE.TextureLoader().load(person.image,function(loaded){
+    loaded.colorSpace=THREE.SRGBColorSpace;
+    loaded.wrapS=loaded.wrapT=THREE.ClampToEdgeWrapping;
+    loaded.anisotropy=renderer.capabilities.getMaxAnisotropy();
+    loaded.needsUpdate=true;
+  },undefined,function(error){console.warn('Không tải được ảnh chuẩn hóa:',person.code,person.image,error);});
+  texture.colorSpace=THREE.SRGBColorSpace;
+  texture.wrapS=texture.wrapT=THREE.ClampToEdgeWrapping;
+
+  var layerMaterial=new THREE.MeshStandardMaterial({
+    map:texture,color:0xa4a4a4,roughness:.62,metalness:.03,side:THREE.DoubleSide
+  });
+  for(var index=0;index<layers;index++){
+    var layer=new THREE.Mesh(geometry,layerMaterial);
+    layer.position.z=-depth+index*(depth/layers);
+    layer.castShadow=true;layer.receiveShadow=true;layer.renderOrder=2;
+    frame.add(layer);
+  }
+
+  var picture=new THREE.Mesh(
+    geometry,
+    new THREE.MeshStandardMaterial({map:texture,color:0xffffff,roughness:.68,side:THREE.DoubleSide})
+  );
+  picture.position.z=.035;
+  picture.castShadow=true;picture.receiveShadow=true;picture.renderOrder=4;
+  picture.userData={isInteractive:true,type:'profile',person:person};
+  frame.add(picture);interactables.push(picture);
+
+  frame.position.set(x,y,z);
+  frame.rotation.y=rotationY;
+  frame.scale.setScalar(scale);
+  scene.add(frame);
+  return frame;
+}
+
+function titleBannerTex(line1,line2,ar,ag,ab){
+  return mkTex(function(ctx,W,H){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba('+ar+','+ag+','+ab+',.12)';ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba('+ar+','+ag+','+ab+',.7)';ctx.lineWidth=2.5;
+    ctx.strokeRect(6,6,W-12,H-12);
+    ctx.fillStyle='rgb('+ar+','+ag+','+ab+')';
+    ctx.font='700 54px RobotoLocal, Arial Unicode MS, Arial, sans-serif';ctx.textAlign='center';
+    ctx.shadowColor='rgba(0,0,0,.8)';ctx.shadowBlur=14;
+    ctx.fillText(line1,W/2,H/2-16);
+    ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(255,255,255,.6)';ctx.font='26px RobotoLocal, Arial Unicode MS, Arial, sans-serif';
+    ctx.fillText(line2,W/2,H/2+30);
+  },1024,200);
+}
+
+function orientTex(){
+  return mkTex(function(ctx,W,H){
+    ctx.fillStyle='#0b0d14';ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(212,175,55,.45)';ctx.lineWidth=2.5;
+    ctx.strokeRect(7,7,W-14,H-14);
+    ctx.fillStyle='#d4af37';ctx.font='700 40px RobotoLocal, Arial Unicode MS, Arial, sans-serif';ctx.textAlign='center';
+    ctx.fillText('SƠ ĐỒ TRƯNG BÀY',W/2,56);
+    ctx.strokeStyle='rgba(212,175,55,.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(28,74);ctx.lineTo(W-28,74);ctx.stroke();
+    
+    // Cập nhật text sơ đồ hiển thị màu tương ứng với tường không gian
+    var zones=[
+      {y:114,c:'#d8ccb8',t:'① Sảnh trước – Lối vào & Định hướng'},
+      {y:158,c:'#dcebed',t:'② Nửa trước – Bí thư Đoàn Trường'},
+      {y:202,c:'#eee5d7',t:'③ Khu riêng – Hiệu trưởng qua các thời kỳ'},
+      {y:246,c:'#eee1cf',t:'④ Sảnh cuối – Bí thư Đảng ủy'},
+    ];
+    zones.forEach(function(z){
+      ctx.fillStyle=z.c;ctx.fillRect(28,z.y-17,16,16);
+      ctx.fillStyle='rgba(255,255,255,.82)';ctx.font='23px RobotoLocal, Arial Unicode MS, Arial, sans-serif';ctx.textAlign='left';
+      ctx.fillText(z.t,52,z.y-2);
+    });
+    ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='italic 20px RobotoLocal, Arial Unicode MS, Arial, sans-serif';ctx.textAlign='center';
+    ctx.fillText('WASD di chuyển · Kéo chuột để nhìn · Bấm để tương tác',W/2,305);
+  },1024,338);
+}
+
+function loadDecorModel(url, position, scale, rotationY, parent, collision) {
+  var holder = new THREE.Group();
+  holder.position.set(position.x, position.y || 0, position.z);
+  holder.rotation.y = rotationY || 0;
+  (parent || scene).add(holder);
+
+  gltfLoader.load(url, function(gltf) {
+    var model = gltf.scene;
+    model.scale.setScalar(scale || 1);
+
+    var box = new THREE.Box3().setFromObject(model);
+    var center = new THREE.Vector3();
+    box.getCenter(center);
+
+    model.position.x -= center.x;
+    model.position.y -= box.min.y;
+    model.position.z -= center.z;
+
+    model.traverse(function(child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+
+    holder.add(model);
+
+    if (collision && collisionWorld) {
+      collisionWorld.addFootprint(
+        position.x,
+        position.z,
+        collision.width,
+        collision.depth,
+        rotationY || 0,
+        {type: 'decor', name: collision.name || url}
+      );
+    }
+  }, undefined, function(err) {
+    console.warn('Không tải được model 3D:', url, err);
+  });
+
+  return holder;
+}
+
+function addProceduralDecor(factoryName, position, scale, rotationY, collision) {
+  var factory=OBJECT_FACTORIES[factoryName];
+  if(typeof factory!=='function'){
+    console.warn('Không tìm thấy vật thể dựng bằng mã:',factoryName);
+    return null;
+  }
+  var object=factory();
+  object.position.set(position.x,position.y||0,position.z);
+  object.rotation.y=rotationY||0;
+  object.scale.setScalar(scale||1);
+  object.traverse(function(child){
+    if(child.isMesh){
+      child.castShadow=true;
+      child.receiveShadow=true;
+    }
+  });
+  scene.add(object);
+  if(collision&&collisionWorld){
+    collisionWorld.addFootprint(
+      position.x,
+      position.z,
+      collision.width,
+      collision.depth,
+      rotationY||0,
+      {type:'decor',name:collision.name||factoryName}
+    );
+  }
+  return object;
+}
+
+// ═══════════════════════════════════════════
+//  SCENE
+// ═══════════════════════════════════════════
+function buildScene(){
+  var H=10.5;
+
+  // Lấy màu sàn từ Chủ đề 4: d8ccb8
+  var matFloor = new THREE.MeshStandardMaterial({color: 0xd8ccb8, roughness: 0.52, side: THREE.FrontSide});
+  var matDoor  = new THREE.MeshStandardMaterial({map:walnutDoorTex(),roughness:.5});
+  
+  // Tường màu Trắng Ngà (Trái - Hiệu Trưởng)
+  var matLeftWall  = new THREE.MeshStandardMaterial({color: 0xf5f0e6, roughness: 0.95});
+  // Tường màu Trắng Ngà (Phải - Bí Thư)
+  var matRightWall = new THREE.MeshStandardMaterial({color: 0xf5f0e6, roughness: 0.95});
+  
+  // Các mảng tường chung - Lấy màu tường sáng Chủ đề 4: f4f7f9
+  var matCream = new THREE.MeshStandardMaterial({color: 0xf4f7f9, roughness: 0.92});
+  var matGold  = new THREE.MeshStandardMaterial({color:0xd4af37,metalness:.65,roughness:.32});
+  var matBronzeTrim = new THREE.MeshStandardMaterial({color:0xd3b36d,metalness:.5,roughness:.3});
+  var matWallTrim = matBronzeTrim;
+  var WALL_TRIM_SIZE=.075;
+  var WALL_TRIM_END_INSET=.16;
+  
+  // Lấy trần nền phẳng an toàn để che kẽ hở
+  var matCeilBackstop = new THREE.MeshStandardMaterial({ color: 0xf1f0ec, roughness: .95, side: THREE.DoubleSide });
+
+  // helpers
+  function floorPlane(xc,zc,w,d){
+    var m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),matFloor);
+    m.rotation.x=-Math.PI/2;m.position.set(xc,0,zc);scene.add(m);
+  }
+  function carpetPlane(xc,zc,w,d){
+    var carpet=new THREE.Mesh(
+      new THREE.BoxGeometry(w,.025,d),
+      new THREE.MeshStandardMaterial({
+        color:0xffffff,
+        map:museumCarpetTex(Math.max(1,w/2.4),Math.max(1,d/2.4)),
+        roughness:1,
+        metalness:0
+      })
+    );
+    carpet.position.set(xc,.0125,zc);scene.add(carpet);
+
+    var trimMat=new THREE.MeshStandardMaterial({color:0xc6a447,roughness:.72,metalness:.18});
+    var trimWidth=.045;
+    var trimHeight=.012;
+    [
+      [w,trimHeight,trimWidth,xc,.031,zc-d/2+trimWidth/2],
+      [w,trimHeight,trimWidth,xc,.031,zc+d/2-trimWidth/2],
+      [trimWidth,trimHeight,d-trimWidth*2,xc-w/2+trimWidth/2,.031,zc],
+      [trimWidth,trimHeight,d-trimWidth*2,xc+w/2-trimWidth/2,.031,zc]
+    ].forEach(function(v){
+      var trim=new THREE.Mesh(new THREE.BoxGeometry(v[0],v[1],v[2]),trimMat);
+      trim.position.set(v[3],v[4],v[5]);scene.add(trim);
+    });
+  }
+  function ceilPlane(xc,zc,w,d){
+    // Nền trần phẳng
+    var m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),matCeilBackstop);
+    m.rotation.x=Math.PI/2;m.position.set(xc,H+.5,zc);scene.add(m);
+    // Trần thả giật cấp từ chủ đề 4
+    createDropCeiling(w, d, xc, H, zc);
+  }
+  function wallLong(x,zc,len,mat,faceDir){
+    var m=new THREE.Mesh(new THREE.BoxGeometry(WALL_THICKNESS,H,len),mat);
+    m.position.set(x,H/2,zc);scene.add(m);
+    collisionWorld.addBox(x,zc,WALL_THICKNESS,len,{type:'wall',name:'wall-long@'+x+','+zc});
+    // Ốp gạch chân tường (Chủ đề 4)
+    if(faceDir) createBaseboardTiles(len-WALL_TRIM_END_INSET*2, [x + faceDir * 0.12, 0, zc], faceDir === 1 ? Math.PI/2 : -Math.PI/2);
+    if(faceDir){
+      var upperTrim=new THREE.Mesh(new THREE.BoxGeometry(WALL_TRIM_SIZE,.055,len-WALL_TRIM_END_INSET*2),matWallTrim);
+      upperTrim.position.set(x+faceDir*.12,H-.58,zc);scene.add(upperTrim);
+    }
+  }
+  function wallCross(xc,z,wid,mat,faceDir){
+    var m=new THREE.Mesh(new THREE.BoxGeometry(wid,H,WALL_THICKNESS),mat);
+    m.position.set(xc,H/2,z);scene.add(m);
+    collisionWorld.addBox(xc,z,wid,WALL_THICKNESS,{type:'wall',name:'wall-cross@'+xc+','+z});
+    // Ốp gạch chân tường (Chủ đề 4)
+    var faceDirs=Array.isArray(faceDir)?faceDir:[faceDir];
+    faceDirs.forEach(function(dir){
+      if(dir) createBaseboardTiles(wid-WALL_TRIM_END_INSET*2, [xc, 0, z + dir * 0.12], dir === 1 ? 0 : Math.PI);
+    });
+    faceDirs.forEach(function(dir){
+      if(!dir)return;
+      var upperTrim=new THREE.Mesh(new THREE.BoxGeometry(wid-WALL_TRIM_END_INSET*2,.055,WALL_TRIM_SIZE),matWallTrim);
+      upperTrim.position.set(xc,H-.58,z+dir*.12);scene.add(upperTrim);
+    });
+  }
+  function column(x,z){
+    var m=new THREE.Mesh(new THREE.BoxGeometry(WALL_TRIM_SIZE,H,WALL_TRIM_SIZE),matBronzeTrim);
+    var inset=.12;
+    var visibleX=x+(x<0?inset:-inset);
+    var visibleZ=z+(Math.abs(x)===7?(z>0?-inset:inset):(z>0?inset:-inset));
+    m.position.set(visibleX,H/2,visibleZ);scene.add(m);
+    collisionWorld.addBox(x,z,.14,.14,{type:'column',name:'transition-column-trim'});
+  }
+  function cornerTrim(x,z,insetX,insetZ){
+    var trim=new THREE.Mesh(new THREE.BoxGeometry(WALL_TRIM_SIZE,H,WALL_TRIM_SIZE),matBronzeTrim);
+    trim.position.set(x+insetX,H/2,z+insetZ);scene.add(trim);
+  }
+
+  function doubleDoor(xc,z,doorW,doorH){
+    var leafW=doorW/2-.06,gap=.06;
+    var frameTop=doorH+.3;
+    var leafDepth=.12;
+    var leafZ=z-.08;
+    var gapMat=new THREE.MeshStandardMaterial({color:0x26170d,roughness:.9});
+
+    // Tấm nền lùi sâu che các khe nhỏ giữa cánh và khung. Tách rõ theo Z để tránh z-fighting.
+    var backing=new THREE.Mesh(new THREE.BoxGeometry(doorW-.04,doorH-.02,.035),gapMat);
+    backing.position.set(xc,doorH/2,z+.08);scene.add(backing);
+
+    var jL=new THREE.Mesh(new THREE.BoxGeometry(.3,doorH+.3,.34),matGold);
+    jL.position.set(xc-doorW/2-.15,(doorH+.3)/2,z);scene.add(jL);
+    var jR=new THREE.Mesh(new THREE.BoxGeometry(.3,doorH+.3,.34),matGold);
+    jR.position.set(xc+doorW/2+.15,(doorH+.3)/2,z);scene.add(jR);
+    var lin=new THREE.Mesh(new THREE.BoxGeometry(doorW+.6,.3,.34),matGold);
+    lin.position.set(xc,doorH+.15,z);scene.add(lin);
+
+    // Lấp kín khoảng tường từ đỉnh khung cửa lên tới trần.
+    var infillH=H-frameTop;
+    if(infillH>0){
+      var infill=new THREE.Mesh(new THREE.BoxGeometry(doorW,infillH,WALL_THICKNESS),matCream);
+      infill.position.set(xc,frameTop+infillH/2,z);scene.add(infill);
+      var infillCrown=new THREE.Mesh(new THREE.BoxGeometry(doorW,.14,.26),matGold);
+      infillCrown.position.set(xc,H-.07,z);scene.add(infillCrown);
+    }
+
+    [-1,1].forEach(function(side){
+      var leaf=new THREE.Mesh(new THREE.BoxGeometry(leafW,doorH,leafDepth),matDoor);
+      leaf.position.set(xc+side*(gap/2+leafW/2),doorH/2,leafZ);
+      scene.add(leaf);
+      collisionWorld.addBox(leaf.position.x,leafZ,leafW,leafDepth,{type:'wall',name:'entrance-door'});
+      var hd=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.34,10),matGold);
+      hd.rotation.z=Math.PI/2;
+      hd.position.set(xc+side*(gap/2+.16),doorH/2,leafZ-leafDepth/2-.04);
+      scene.add(hd);
+    });
+
+    // Nẹp giữa che khe tiếp giáp hai cánh và ổn định đường biên khi camera di chuyển.
+    var centerSeal=new THREE.Mesh(new THREE.BoxGeometry(.07,doorH,.035),matGold);
+    centerSeal.position.set(xc,doorH/2,leafZ-leafDepth/2-.018);scene.add(centerSeal);
+  }
+
+  // ── Hành lang Hiệu trưởng (-6 → +22), chỉ phục vụ 13 hồ sơ ──
+  wallLong(-7,8,28,matLeftWall,1);
+  wallLong( 7,8,28,matRightWall,-1);
+  floorPlane(0,8,14,28);
+  carpetPlane(0,8,13.2,27.2);
+  ceilPlane(0,8,14,28);
+
+  // Mỗi nửa hành lang có hệ nền, nẹp và biển tên riêng ở cả hai bên tường.
+  function exhibitBackdrop(side,zCenter,length,panelColor,accentColor,title,subtitle,titleColor,titleZ){
+    var x=side<0?-6.84:6.84;
+    var inward=side<0?1:-1;
+    var panel=new THREE.Mesh(
+      new THREE.BoxGeometry(.055,5.25,length),
+      new THREE.MeshStandardMaterial({color:panelColor,roughness:.94})
+    );
+    panel.position.set(x,3.9,zCenter);scene.add(panel);
+
+    var accentMat=new THREE.MeshStandardMaterial({color:accentColor,roughness:.55,metalness:.14});
+    var fittedLength=length-.5;
+    [1.28,6.52].forEach(function(py){
+      var rail=new THREE.Mesh(new THREE.BoxGeometry(.075,.075,fittedLength),accentMat);
+      rail.position.set(x+inward*.05,py,zCenter);scene.add(rail);
+    });
+    var lowerBand=new THREE.Mesh(new THREE.BoxGeometry(.07,.36,fittedLength),accentMat);
+    lowerBand.position.set(x+inward*.045,1.48,zCenter);scene.add(lowerBand);
+
+  }
+
+  [-1,1].forEach(function(side){
+    exhibitBackdrop(side,8,25.5,0xeee5d7,0xaa8242,'HIỆU TRƯỞNG NHÀ TRƯỜNG','','#7a522c',14);
+    var logoX=side<0?-6.72:6.72;
+    var logoRotation=side<0?Math.PI/2:-Math.PI/2;
+    createEmbossedLogo('./image/hnue-emblem-cutout.png',[logoX,7.9,20.1],.72,logoRotation,scene);
+  });
+
+  // ── Sảnh Bí thư Đoàn trường (+22 → +67), đủ dài cho 15 ảnh ngang mỗi tường ──
+  wallLong(-16,44.5,45,matCream,1);
+  wallLong( 16,44.5,45,matCream,-1);
+  wallCross(-11.5,22,9,matCream,[1,-1]);
+  wallCross( 11.5,22,9,matCream,[1,-1]);
+  wallCross(-9,67,14,matCream,-1);
+  wallCross( 9,67,14,matCream,-1);
+  doubleDoor(0,67,4,4.6);
+  // Nối liền hai nẹp ngang phía trên cửa, thay cho hai nẹp dọc gây cảm giác chia cắt.
+  var entranceUpperTrim=new THREE.Mesh(
+    new THREE.BoxGeometry(4.24,.055,WALL_TRIM_SIZE),
+    matWallTrim
+  );
+  entranceUpperTrim.position.set(0,H-.58,66.88);scene.add(entranceUpperTrim);
+  floorPlane(0,44.5,32,45);
+  carpetPlane(0,44.5,29.6,43);
+  ceilPlane(0,44.5,32,45);
+  // Phông trưng bày Đoàn trường chỉ chạy trên hai tường dọc của sảnh.
+  var youthPanelMat=new THREE.MeshStandardMaterial({color:0xdcebed,roughness:.94});
+  var youthRailMat=new THREE.MeshStandardMaterial({color:0x2c788b,roughness:.5,metalness:.16});
+  [[-15.84,1],[15.84,-1]].forEach(function(item){
+    var panel=new THREE.Mesh(new THREE.BoxGeometry(.055,5.25,43.5),youthPanelMat);
+    panel.position.set(item[0],3.9,44.5);scene.add(panel);
+    [1.28,6.52].forEach(function(py){
+      var rail=new THREE.Mesh(new THREE.BoxGeometry(.075,.075,43),youthRailMat);
+      rail.position.set(item[0]+item[1]*.05,py,44.5);scene.add(rail);
+    });
+    var band=new THREE.Mesh(new THREE.BoxGeometry(.07,.36,43),youthRailMat);
+    band.position.set(item[0]+item[1]*.045,1.48,44.5);scene.add(band);
+  });
+  createEmbossedLogo('./image/youth-union-emblem-cutout.png',[-15.72,7.9,65.25],.72,Math.PI/2,scene);
+  createEmbossedLogo('./image/youth-union-emblem-cutout.png',[15.72,7.9,49.7],.72,-Math.PI/2,scene);
+  // Hai tường đối diện dùng thứ tự Z đảo nhau để khi nhìn trực diện đều đọc:
+  // logo Đoàn → tên khu vực → logo HNUE.
+  createEmbossedLogo('./image/hnue-emblem-cutout.png',[-15.72,7.9,49.7],.66,Math.PI/2,scene);
+  createEmbossedLogo('./image/hnue-emblem-cutout.png',[15.72,7.9,65.25],.66,-Math.PI/2,scene);
+  // Hai bảng lời dẫn cũ đã được gỡ. Hai gallery kính chỉ được dựng khi có ảnh thật.
+  createEntranceGlassGallery({
+    THREE:THREE,
+    scene:scene,
+    interactables:interactables,
+    displays:[
+      {side:'left',src:null,title:''},
+      {side:'right',src:null,title:''}
+    ]
+  });
+
+  // ── Sảnh Bí thư Đảng ủy (-23 → -6), giữ nguyên tỉ lệ ──
+  wallLong(-15,-14.5,17,matCream,1);
+  wallLong( 15,-14.5,17,matCream,-1);
+  wallCross(-11,-6,8,matCream,[1,-1]);
+  wallCross( 11,-6,8,matCream,[1,-1]);
+  wallCross(0,-23,30,matCream,1);
+  floorPlane(0,-14.5,30,17);
+  carpetPlane(0,-14.5,29.2,16.2);
+  ceilPlane(0,-14.5,30,17);
+
+  // Sảnh cuối dùng trọn hệ nhận diện Bí thư Đảng ủy trên ba mặt tường.
+  var partyPanelMat=new THREE.MeshStandardMaterial({color:0xeee1cf,roughness:.94});
+  var partyRailMat=new THREE.MeshStandardMaterial({color:0x8a3c35,roughness:.42,metalness:.28});
+  [[-14.84,-14.5],[14.84,-14.5]].forEach(function(pos){
+    var inward=pos[0]<0?.05:-.05;
+    var panel=new THREE.Mesh(new THREE.BoxGeometry(.055,5.25,15.4),partyPanelMat);
+    panel.position.set(pos[0],3.9,pos[1]);scene.add(panel);
+    [1.28,6.52].forEach(function(py){
+      var rail=new THREE.Mesh(new THREE.BoxGeometry(.075,.075,14.9),partyRailMat);
+      rail.position.set(pos[0]+inward,py,pos[1]);scene.add(rail);
+    });
+    var lowerBand=new THREE.Mesh(new THREE.BoxGeometry(.07,.36,14.9),partyRailMat);
+    lowerBand.position.set(pos[0]+inward*.9,1.48,pos[1]);scene.add(lowerBand);
+  });
+  var rearPanel=new THREE.Mesh(new THREE.BoxGeometry(26.5,5.25,.055),partyPanelMat);
+  rearPanel.position.set(0,3.9,-22.84);scene.add(rearPanel);
+  [1.28,6.52].forEach(function(py){
+    var rail=new THREE.Mesh(new THREE.BoxGeometry(26,.075,.075),partyRailMat);
+    rail.position.set(0,py,-22.78);scene.add(rail);
+  });
+  var rearLowerBand=new THREE.Mesh(new THREE.BoxGeometry(26,.36,.07),partyRailMat);
+  rearLowerBand.position.set(0,1.48,-22.79);scene.add(rearLowerBand);
+  createEmbossedLogo('./image/hnue-emblem-cutout.png',[-7.35,7.9,-22.72],.72,0,scene);
+  buildAreaTitles3D();
+
+  // Cột chắn giao điểm
+  [22,-6].forEach(function(z){
+    column(-7,z);column(7,z);
+    column(z===22?-16:-15,z);column(z===22?16:15,z);
+  });
+  [
+    [-16,67,.12,-.12],[16,67,-.12,-.12],
+    [-15,-23,.12,.12],[15,-23,-.12,.12]
+  ].forEach(function(pos){
+    cornerTrim(pos[0],pos[1],pos[2],pos[3]);
+  });
+
+  // ── MỚI: FRAME MAKER (HỖ TRỢ GLTF VÀ MÔ PHỎNG 2 STYLE SKETCHFAB) ──
+  function legacyMakeFrame(person, x, y, z, ry, style, ar, ag, ab) {
+    var FW = 2.8, FH = 3.6;
+    var grp = new THREE.Group();
+    grp.position.set(x, y, z);
+    if (ry !== undefined) grp.rotation.y = ry;
+
+    // Hitbox cơ sở cho tương tác (Vẫn giữ để click được bất kể dùng 3D code hay GLB)
+    var hit = new THREE.Mesh(new THREE.BoxGeometry(FW + 0.6, FH + 0.6, 0.7), new THREE.MeshBasicMaterial({visible: false}));
+    hit.position.z = 0.1;
+    hit.userData = {isInteractive: true, type: 'profile', person: person};
+    grp.add(hit);
+    interactables.push(hit);
+
+    // Plane chứa ảnh nhân vật (Canvas Texture)
+    var picMat = new THREE.MeshStandardMaterial({map: portraitTex(person, ar, ag, ab), roughness: 0.6, emissive: new THREE.Color(0.05, 0.05, 0.05)});
+    var pic = new THREE.Mesh(new THREE.PlaneGeometry(FW, FH), picMat);
+    
+    // KIỂM TRA: NẾU CÓ ĐƯỜNG DẪN GLB THÌ TẢI GLB
+    var assetUrl = (style === 1) ? GLTF_ASSETS.frame1 : (style === 2 ? GLTF_ASSETS.frame2 : '');
+    if (assetUrl && assetUrl !== "") {
+        gltfLoader.load(assetUrl, function(gltf) {
+            var model = gltf.scene;
+            // Scale mô hình cho vừa với kích thước FW, FH (có thể cần chỉnh tùy model thật)
+            model.scale.set(1, 1, 1); 
+            grp.add(model);
+            pic.position.z = 0.1; // Chỉnh Z để ảnh lọt vào giữa khung GLB
+            grp.add(pic);
+        }, undefined, function(e) { console.error("Lỗi tải khung 3D:", e); });
+        scene.add(grp);
+        return; // Dừng tại đây, không vẽ khung giả lập
+    }
+
+    // FALLBACK: NẾU CHƯA CÓ FILE GLB -> VẼ KHUNG MÔ PHỎNG THEO STYLE SKETCHFAB
+    if (style === 1) { 
+        // STYLE 1: Khung ảnh cổ điển, dày, màu vàng/gỗ (Frame with picture portrait 04)
+        var outMat = new THREE.MeshStandardMaterial({color: 0x4a2e15, roughness: 0.9}); // Gỗ tối
+        var goldMat = new THREE.MeshStandardMaterial({color: 0xc9a227, metalness: 0.8, roughness: 0.3}); // Vàng ánh kim
+        
+        var outer = new THREE.Mesh(new THREE.BoxGeometry(FW + 0.6, FH + 0.6, 0.15), outMat);
+        outer.position.z = 0; grp.add(outer);
+        
+        var middle = new THREE.Mesh(new THREE.BoxGeometry(FW + 0.25, FH + 0.25, 0.2), goldMat);
+        middle.position.z = 0.02; grp.add(middle);
+
+        var inner = new THREE.Mesh(new THREE.BoxGeometry(FW + 0.08, FH + 0.08, 0.22), outMat);
+        inner.position.z = 0.03; grp.add(inner);
+
+        pic.position.z = 0.145; // Đẩy ảnh lên sát mép trong
+        grp.add(pic);
+
+    } else if (style === 2) {
+        // STYLE 2: Khung ảnh hiện đại, viền mỏng đen, bo viền passepartout trắng (PICTURE FRAME 15*20)
+        var frameMat = new THREE.MeshStandardMaterial({color: 0x111111, roughness: 0.7, metalness: 0.2}); // Đen/Xám đậm
+        var passepartoutMat = new THREE.MeshStandardMaterial({color: 0xfafafa, roughness: 1.0}); // Trắng bệt
+        
+        // Viền ngoài cùng
+        var outer2 = new THREE.Mesh(new THREE.BoxGeometry(FW + 0.8, FH + 0.8, 0.1), frameMat);
+        outer2.position.z = 0; grp.add(outer2);
+
+        // Bo viền trắng (Passepartout) dày và rộng
+        var matboard = new THREE.Mesh(new THREE.BoxGeometry(FW + 0.72, FH + 0.72, 0.12), passepartoutMat);
+        matboard.position.z = 0.01; grp.add(matboard);
+
+        // Viền lót sát ảnh (Tùy chọn)
+        var inner2 = new THREE.Mesh(new THREE.BoxGeometry(FW + 0.04, FH + 0.04, 0.13), frameMat);
+        inner2.position.z = 0.02; grp.add(inner2);
+
+        pic.position.z = 0.086; 
+        grp.add(pic);
+
+      } else if (style === 3) {
+        // STYLE 3: Khung trưng bày ấm, hợp không gian truyền thống số
+        var woodMat = new THREE.MeshStandardMaterial({color: 0x3d2a17, roughness: 0.88});
+        var goldMat3 = new THREE.MeshStandardMaterial({color: 0xb89262, metalness: 0.7, roughness: 0.32});
+        var matBoardMat = new THREE.MeshStandardMaterial({color: 0xf7f1e6, roughness: 0.98});
+
+        var outer3 = new THREE.Mesh(new THREE.BoxGeometry(FW + .88, FH + .88, .14), woodMat);
+        outer3.position.z = 0; grp.add(outer3);
+
+        var trim3 = new THREE.Mesh(new THREE.BoxGeometry(FW + .42, FH + .42, .12), goldMat3);
+        trim3.position.z = 0.015; grp.add(trim3);
+
+        var mat3 = new THREE.Mesh(new THREE.BoxGeometry(FW + .18, FH + .18, .1), matBoardMat);
+        mat3.position.z = 0.03; grp.add(mat3);
+
+        var inner3 = new THREE.Mesh(new THREE.BoxGeometry(FW + .06, FH + .06, .08), woodMat);
+        inner3.position.z = 0.045; grp.add(inner3);
+
+        pic.position.z = 0.09; 
+        grp.add(pic);
+
+    } else {
+        // Mặc định (như bản cũ)
+        var back = new THREE.Mesh(new THREE.BoxGeometry(FW+.22,FH+.22,.06), new THREE.MeshStandardMaterial({color:0xf0ece2,roughness:.8}));
+        back.position.z=-.06;grp.add(back);
+        var frame = new THREE.Mesh(new THREE.BoxGeometry(FW+.14,FH+.14,.1), new THREE.MeshStandardMaterial({color:new THREE.Color('rgb('+ar+','+ag+','+ab+')'),metalness:.62,roughness:.34}));
+        grp.add(frame);
+        pic.position.z = 0.051; grp.add(pic);
+    }
+
+    scene.add(grp);
+  }
+
+  // ── SẢNH VÀO: 29 BÍ THƯ ĐOÀN TRÊN HAI TƯỜNG DỌC (15 + 14) ──
+  var youthSlots=PROFILE_DATA.filter(function(profile){return profile.rk==='bt';});
+  if(youthSlots.length!==29){
+    console.error('Dữ liệu Bí thư Đoàn trường không hợp lệ: cần 29 hồ sơ, nhận được '+youthSlots.length+'.');
+  }
+  youthSlots.slice(0,15).forEach(function(person,i){
+    addProfileFrame3D(person,-15.72,4.05,64.8-i*(40.6/14),Math.PI/2,'youth',1.6,[58,139,160]);
+  });
+  youthSlots.slice(15).forEach(function(person,i){
+    addProfileFrame3D(person,15.72,4.05,24.2+i*(40.6/13),-Math.PI/2,'youth',1.6,[58,139,160]);
+  });
+
+  // ── NỬA SAU HÀNH LANG: 13 HIỆU TRƯỞNG, MỖI TƯỜNG ĐỌC TRÁI → PHẢI ──
+  var principalSlots=PROFILE_DATA.filter(function(profile){return profile.rk==='ht';});
+  if(principalSlots.length!==13){
+    console.error('Dữ liệu Hiệu trưởng không hợp lệ: cần 13 hồ sơ, nhận được '+principalSlots.length+'.');
+  }
+  // Tường trái: hồ sơ 1–7 theo Z giảm.
+  principalSlots.slice(0,7).forEach(function(person,i){
+    addProfileFrame3D(person,-6.72,4.05,18-i*(20/6),Math.PI/2,'principal',1.55,[176,137,67]);
+  });
+  // Tường phải: hồ sơ 8–13 theo Z tăng để đọc trái → phải khi đứng đối diện.
+  principalSlots.slice(7).forEach(function(person,i){
+    addProfileFrame3D(person,6.72,4.05,-2+i*4,-Math.PI/2,'principal',1.55,[176,137,67]);
+  });
+
+  // ── SẢNH CUỐI: 19 BÍ THƯ ĐẢNG ỦY, BA TƯỜNG ĐỀU ĐỌC TRÁI → PHẢI (5 + 9 + 5) ──
+  var partySlots=PROFILE_DATA.filter(function(profile){return profile.rk==='du';});
+  if(partySlots.length!==19){
+    console.error('Dữ liệu Bí thư Đảng ủy không hợp lệ: cần 19 hồ sơ, nhận được '+partySlots.length+'.');
+  }
+  // Lùi các tấm đầu/cuối khỏi góc tường để chúng không ló qua nẹp khi nhìn
+  // chéo từ hành lang Hiệu trưởng; đồng thời giữ lề hai đầu cân nhau.
+  var partySideSlots=[-9.2,-11.85,-14.5,-17.15,-19.8];
+  partySideSlots.forEach(function(z,i){
+    addProfileFrame3D(partySlots[i],-14.72,4.05,z,Math.PI/2,'party',1.6,[154,111,58]);
+  });
+  Array.from({length:9},function(_,i){return -11.5+i*(23/8);}).forEach(function(x,i){
+    addProfileFrame3D(partySlots[i+5],x,4.05,-22.72,0,'party',1.7,[154,111,58]);
+  });
+  partySideSlots.slice().reverse().forEach(function(z,i){
+    addProfileFrame3D(partySlots[i+14],14.72,4.05,z,-Math.PI/2,'party',1.6,[154,111,58]);
+  });
+
+  // Không đặt cây sát cửa vì hai cánh tường này đã dùng cho hồ sơ Đoàn trường.
+}
+
+// ═══════════════════════════════════════════
+//  LIGHTING
+// ═══════════════════════════════════════════
+function buildLighting(){
+  scene.add(new THREE.AmbientLight(0xfff0dd,.92));
+  scene.add(new THREE.HemisphereLight(0xfff8e8,0x5a4025,.76));
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+function init(){
+  prog(8,'Khởi tạo renderer...');
+  scene=new THREE.Scene();
+  scene.background=new THREE.Color(0xbec8d2);
+  scene.fog=new THREE.FogExp2(0xbec8d2,.011);
+
+  collisionWorld=CollisionWorld2D.create({
+    playerRadius:PLAYER_RADIUS,
+    debug:COLLISION_DEBUG,
+    scene:scene
+  });
+
+  camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.1,140);
+  camera.position.set(0,2.5,53);
+  camera.rotation.order='YXZ';
+
+  renderer=new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.shadowMap.enabled=false;
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.28;
+  document.body.appendChild(renderer.domElement);
+
+  raycaster=new THREE.Raycaster();
+
+  prog(25,'Xây dựng không gian...');
+  buildLighting();
+
+  prog(50,'Đặt hiện vật...');
+  buildScene();
+
+  prog(80,'Chuẩn bị giao diện...');
+  setupControls();
+  setupMinimap();
+  setupUI();
+
+  prog(100,'Hoàn tất!');
+
+  // Chế độ kiểm tra ảnh chụp: ?audit=HT-01&tab=bio|ach|qte.
+  // Không ảnh hưởng luồng tham quan thông thường và giúp mở đúng hồ sơ khi QA.
+  var auditParams=new URLSearchParams(location.search);
+  var auditCode=auditParams.get('audit');
+  var auditView=auditParams.get('view');
+  if(auditCode){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('intro').classList.remove('show');
+    document.getElementById('intro').style.display='none';
+    document.getElementById('hud').classList.add('on');
+    playing=true;
+    var auditProfile=PROFILE_DATA.find(function(p){return p.code===auditCode;});
+    if(auditProfile){
+      openModal(auditProfile);
+      var auditTab=auditParams.get('tab');
+      var auditButton=auditTab&&document.querySelector('.tb[data-t="'+auditTab+'"]');
+      if(auditButton)auditButton.click();
+    }
+  }else if(auditView){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('intro').classList.remove('show');
+    document.getElementById('intro').style.display='none';
+    document.getElementById('hud').classList.add('on');
+    playing=true;
+    var auditViews={
+      introBoards:{position:[0,3.2,62],yaw:0},
+      entranceDoor:{position:[0,3.2,55],yaw:Math.PI},
+      transition:{position:[0,2.5,8],yaw:0},
+      trimFrontLeft:{position:[-3,3.3,19],yaw:2.47},
+      trimRearLeft:{position:[-3,3.3,-3],yaw:.67},
+      youthLogo:{position:[0,7.65,64],yaw:-Math.PI/2},
+      hnueLogo:{position:[0,7.65,19],yaw:-Math.PI/2},
+      ceilingLights:{position:[0,2.5,62],yaw:0,pitch:.48},
+      youthEnd:{position:[0,2.5,44.5],yaw:Math.PI/2},
+      principalLeft:{position:[0,2.5,8],yaw:-Math.PI/2},
+      principalRight:{position:[0,2.5,8],yaw:Math.PI/2},
+      party:{position:[0,2.5,-8],yaw:0}
+    };
+    var selectedView=auditViews[auditView]||auditViews.transition;
+    camera.position.set(selectedView.position[0],selectedView.position[1],selectedView.position[2]);
+    camYaw=selectedView.yaw;
+    camPitch=selectedView.pitch||0;
+    camera.rotation.set(camPitch,camYaw,0);
+  }else{
+    setTimeout(function(){
+      var ls=document.getElementById('loading');
+      ls.style.opacity='0';
+      setTimeout(function(){
+        ls.style.display='none';
+        document.getElementById('intro').classList.add('show');
+      },700);
+    },300);
+  }
+
+  renderer.setAnimationLoop(loop);
+}
+
+// ═══════════════════════════════════════════
+//  CONTROLS
+// ═══════════════════════════════════════════
+function setupControls(){
+  document.addEventListener('mousedown',function(e){
+    if(e.target.closest('#modal-wrap,#intro,#minimap,button,input,select'))return;
+    isDrag=true;dragX=e.clientX;dragY=e.clientY;
+    mdTime=performance.now();mdX=e.clientX;mdY=e.clientY;
+  });
+  document.addEventListener('mousemove',function(e){
+    if(!isDrag)return;
+    var dx=e.clientX-dragX,dy=e.clientY-dragY;
+    camYaw-=dx*.003;camPitch-=dy*.003;
+    camPitch=Math.max(-1.1,Math.min(1.1,camPitch));
+    camera.rotation.set(0,0,0);
+    camera.rotation.y=camYaw;camera.rotation.x=camPitch;
+    dragX=e.clientX;dragY=e.clientY;
+  });
+  document.addEventListener('mouseup',function(e){
+    var dt=performance.now()-mdTime;
+    var dd=Math.sqrt(Math.pow(e.clientX-mdX,2)+Math.pow(e.clientY-mdY,2));
+    isDrag=false;
+    if(dt<280&&dd<8)doClick();
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.target.tagName==='INPUT')return;
+    switch(e.code){
+      case 'KeyW':case 'ArrowUp':    mF=true;break;
+      case 'KeyS':case 'ArrowDown':  mB=true;break;
+      case 'KeyA':case 'ArrowLeft':  mL=true;break;
+      case 'KeyD':case 'ArrowRight': mR=true;break;
+      case 'Escape':onEsc();break;
+    }
+  });
+  document.addEventListener('keyup',function(e){
+    switch(e.code){
+      case 'KeyW':case 'ArrowUp':    mF=false;break;
+      case 'KeyS':case 'ArrowDown':  mB=false;break;
+      case 'KeyA':case 'ArrowLeft':  mL=false;break;
+      case 'KeyD':case 'ArrowRight': mR=false;break;
+    }
+  });
+
+  window.addEventListener('resize',function(){
+    camera.aspect=innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+}
+
+function doClick(){
+  if(!playing)return;
+  raycaster.setFromCamera(new THREE.Vector2(0,0),camera);
+  var hits=raycaster.intersectObjects(interactables,true);
+  if(!hits.length)return;
+  var obj=hits[0].object;
+  while(obj&&!obj.userData.isInteractive)obj=obj.parent;
+  if(!obj)return;
+  if(obj.userData.type==='profile')openModal(obj.userData.person);
+  else if(obj.userData.type==='introduction')openIntroductionModal();
+  else if(obj.userData.type==='entrance-gallery')obj.userData.openGallery?.();
+}
+
+// ═══════════════════════════════════════════
+//  MINIMAP
+// ═══════════════════════════════════════════
+function setupMinimap(){
+  var c=document.getElementById('mmcv');
+  mmCtx=c.getContext('2d');
+}
+function drawMinimap(){
+  if(!mmCtx)return;
+  var W=106,H=190;
+  mmCtx.clearRect(0,0,W,H);
+  mmCtx.fillStyle='rgba(0,0,0,.55)';mmCtx.fillRect(0,0,W,H);
+  function wx(world){return(world+20)/40*W;}
+  function wz(world){return(world+24)/92*H;}
+  
+  mmCtx.fillStyle='rgba(63,143,163,0.72)';
+  mmCtx.fillRect(wx(-16),wz(22),wx(16)-wx(-16),wz(67)-wz(22));
+  
+  // Hành lang giữa chỉ còn khu Hiệu trưởng.
+  mmCtx.fillStyle='rgba(181,139,66,0.72)';
+  mmCtx.fillRect(wx(-7),wz(-6),wx(7)-wx(-7),wz(22)-wz(-6));
+
+  mmCtx.fillStyle='rgba(138,60,53,0.72)';
+  mmCtx.fillRect(wx(-15),wz(-23),wx(15)-wx(-15),wz(-6)-wz(-23));
+  
+  var px=wx(camera.position.x),pz=wz(camera.position.z);
+  var dir=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
+  mmCtx.strokeStyle='#d4af37';mmCtx.lineWidth=1.5;
+  mmCtx.beginPath();mmCtx.moveTo(px,pz);mmCtx.lineTo(px+dir.x*12,pz+dir.z*12);mmCtx.stroke();
+  mmCtx.fillStyle='#f0d060';
+  mmCtx.beginPath();mmCtx.arc(px,pz,4,0,Math.PI*2);mmCtx.fill();
+}
+
+// ═══════════════════════════════════════════
+//  UI
+// ═══════════════════════════════════════════
+function setupUI(){
+  document.getElementById('start-btn').addEventListener('click',function(){
+    var intro=document.getElementById('intro');
+    intro.style.opacity='0';
+    setTimeout(function(){
+      intro.classList.remove('show');
+      document.getElementById('hud').classList.add('on');
+      playing=true;
+    },480);
+  });
+
+  document.getElementById('menuBtn').addEventListener('click',onEsc);
+  document.getElementById('mclose').addEventListener('click',closeModal);
+  document.getElementById('mback').addEventListener('click',showModalMenu);
+  document.getElementById('modal-wrap').addEventListener('click',function(e){
+    if(e.target===document.getElementById('modal-wrap'))closeModal();
+  });
+  document.getElementById('intro-info-close').addEventListener('click',closeIntroductionModal);
+  document.getElementById('intro-info-wrap').addEventListener('click',function(e){
+    if(e.target===this)closeIntroductionModal();
+  });
+  document.getElementById('mbody').addEventListener('click',function(e){
+    var button=e.target.closest('.expand-toggle');
+    if(!button)return;
+    var copy=button.closest('.expandable-copy');
+    var expanded=copy.classList.toggle('expanded');
+    button.setAttribute('aria-expanded',String(expanded));
+    button.textContent=expanded?'Thu gọn':'... Xem thêm';
+  });
+  document.querySelectorAll('.tb').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('on');b.setAttribute('aria-selected','false');});
+      document.querySelectorAll('.tp').forEach(function(p){p.classList.remove('on');});
+      btn.classList.add('on');
+      btn.setAttribute('aria-selected','true');
+      document.getElementById('tp-'+btn.dataset.t).classList.add('on');
+      document.getElementById('modal').classList.add('detail-open');
+      var labels={
+        bio:'Tiểu sử',
+        ach:'Đóng góp',
+        qte:'Hồi ức và chia sẻ'
+      };
+      document.getElementById('modal-page-label').textContent=labels[btn.dataset.t];
+      document.getElementById('mbody').scrollTop=0;
+    });
+  });
+}
+
+function showModalMenu(){
+  document.getElementById('modal').classList.remove('detail-open');
+  document.getElementById('modal-page-label').textContent='Hồ sơ nhân vật';
+  document.querySelectorAll('.tb').forEach(function(b){
+    b.classList.remove('on');
+    b.setAttribute('aria-selected','false');
+  });
+  document.querySelectorAll('.tp').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('mbody').scrollTop=0;
+}
+
+function openIntroductionModal(){
+  playing=false;
+  document.getElementById('intro-info-body').innerHTML=INTRODUCTION_PARAGRAPHS.map(function(paragraph){
+    return '<p>'+escapeProfileHtml(paragraph)+'</p>';
+  }).join('');
+  document.getElementById('intro-info-wrap').classList.add('open');
+  document.querySelector('.intro-info-body').scrollTop=0;
+}
+
+function closeIntroductionModal(){
+  document.getElementById('intro-info-wrap').classList.remove('open');
+  playing=true;
+}
+
+function onEsc(){
+  if(document.getElementById('intro-info-wrap').classList.contains('open')){closeIntroductionModal();return;}
+  if(document.getElementById('modal-wrap').classList.contains('open')){closeModal();return;}
+  playing=false;
+  document.getElementById('hud').classList.remove('on');
+  var intro=document.getElementById('intro');
+  intro.style.opacity='0';
+  intro.classList.add('show');
+  setTimeout(function(){intro.style.opacity='1';},10);
+}
+
+// MODAL
+function escapeProfileHtml(value){
+  return String(value==null?'':value)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function formatProfileText(value){
+  return escapeProfileHtml(value).replace(/\r?\n/g,'<br>');
+}
+
+function publicProfileText(value){
+  if(typeof value!=='string')return value;
+  return value
+    .replace(/\s*\(theo\s+(?:Excel|DOCX)\s+cập nhật\)\.?/giu,'')
+    .replace(/\s*[–—-]?\s*theo\s+(?:Excel|DOCX)\s+cập nhật\.?/giu,'')
+    .replace(/\s+([,)])/g,'$1')
+    .trim();
+}
+
+function isPublicProfileValue(value){
+  var text=String(publicProfileText(value)==null?'':publicProfileText(value)).trim();
+  return Boolean(text)&&text!=='—'&&!/\(\s*\?\s*\)|(?:đang\s+(?:được\s+)?(?:xác minh|cập nhật)|đang\s+cần\s+xác minh)/i.test(text);
+}
+
+function profileItems(value){
+  var values=Array.isArray(value)?value:[value];
+  return values.map(publicProfileText).filter(isPublicProfileValue);
+}
+
+function publicProfileSource(value){
+  var source=String(value==null?'':value)
+    .replace(/\s*[–—-]?\s*nguồn(?:\s+hyperlink)?\s+cột\s+G(?:\s*[–—-]\s*[A-Z]{2}-\d+)?/giu,'')
+    .replace(/\s+trong\s+cột\s+G/giu,'')
+    .replace(/\s*[–—-]?\s*(?:trích\s+trong\s+)?DOCX\s+cập nhật(?:\s*[–—-]\s*[A-Z]{2}-\d+)?/giu,'')
+    .replace(/\s*[–—-]?\s*theo\s+(?:Excel|DOCX)\s+cập nhật/giu,'')
+    .replace(/\s*[–—-]\s*$/u,'')
+    .trim();
+  return isPublicProfileValue(source)?source:'';
+}
+
+function bioField(label,values,fallback,full){
+  var value=completeField(values,fallback);
+  if(!isPublicProfileValue(value))return '';
+  return '<div class="bitem'+(full?' full':'')+'"><label>'+escapeProfileHtml(label)+'</label>'+expandableCopy(value,'p',full?150:95)+'</div>';
+}
+
+function expandableCopy(value,tag,threshold){
+  var text=String(value==null?'':value);
+  tag=tag||'div';
+  threshold=threshold||150;
+  if(text.length<=threshold)return '<'+tag+'>'+formatProfileText(text)+'</'+tag+'>';
+  return '<div class="expandable-copy"><'+tag+' class="expandable-text">'+formatProfileText(text)+'</'+tag+'>'+
+    '<button class="expand-toggle" type="button" aria-expanded="false">... Xem thêm</button></div>';
+}
+
+function sourceModalData(person){
+  var documentData=PROFILE_FULL_CONTENT[person.code];
+  return documentData&&documentData.modal?documentData.modal:null;
+}
+
+function completeField(values,fallback){
+  var items=profileItems(values);
+  return items.length?items.join('\n'):fallback;
+}
+
+function completeItems(values,fallback){
+  var items=profileItems(values);
+  return items.length?items:profileItems(fallback);
+}
+
+function sourceMemoryCards(values,person){
+  var cards=[];
+  profileItems(values).forEach(function(text){
+    if(/^[-–—]\s*/.test(text)&&cards.length&&!cards[cards.length-1].source){
+      cards[cards.length-1].source=text.replace(/^[-–—]\s*|\s*[-–—]$/g,'').trim();
+    }else{
+      cards.push({type:/^[“\"]/.test(text)?'quote':'text',text:text,source:''});
+    }
+  });
+  return cards.map(function(item){return memoryCard(item,person);}).join('');
+}
+
+function contributionSection(title,value){
+  var items=profileItems(value);
+  if(!items.length)return '';
+  return '<section class="asec"><h3>'+escapeProfileHtml(title)+'</h3><ul class="alist">'+
+    items.map(function(item){return '<li>'+expandableCopy(item,'div',145)+'</li>';}).join('')+
+    '</ul></section>';
+}
+
+function safeProfileMediaUrl(value){
+  var url=String(value||'').trim();
+  if(/^(https?:\/\/|\.\.?\/|data:image\/)/i.test(url))return escapeProfileHtml(url);
+  return '';
+}
+
+function memoryCard(item,person){
+  if(typeof item==='string')item={type:'text',text:item};
+  item=item||{};
+  var type=item.type||'text';
+  var media=safeProfileMediaUrl(item.src||item.url);
+  var publicText=publicProfileText(item.text||item.caption||'');
+  var title=item.title?'<div class="memory-title">'+escapeProfileHtml(item.title)+'</div>':'';
+  var publicSource=publicProfileSource(item.source);
+  var source=publicSource?'<div class="memory-source">Nguồn: '+escapeProfileHtml(publicSource)+'</div>':'';
+  var content='';
+  if(type==='image'&&media){
+    content='<img src="'+media+'" alt="'+escapeProfileHtml(item.caption||item.title||person.name)+'"/>'+
+      (isPublicProfileValue(publicText)?'<div>'+escapeProfileHtml(publicText)+'</div>':'');
+  }else if(type==='audio'&&media){
+    content='<audio controls preload="none" src="'+media+'"></audio>';
+  }else if(type==='video'&&media){
+    content='<video controls preload="metadata" src="'+media+'"></video>';
+  }else if(type==='quote'){
+    content=expandableCopy(publicText,'blockquote',175);
+  }else{
+    content=expandableCopy(publicText,'div',175);
+  }
+  if(!media&&!isPublicProfileValue(publicText))return '';
+  return '<article class="memory-card">'+title+content+source+'</article>';
+}
+
+var PRINCIPAL_MODAL_NAMES={
+  'HT-01':'GS.TSKH. Lê Văn Thiêm',
+  'HT-02':'GS. Đặng Thai Mai',
+  'HT-03':'GS.VS. Phạm Huy Thông',
+  'HT-04':'GS.TS.NGND. Nguyễn Lương Ngọc',
+  'HT-05':'GS.VS.TSKH. Nguyễn Cảnh Toàn',
+  'HT-06':'GS.TS.NGND. Dương Trọng Bái',
+  'HT-07':'PGS.TS.NGND. Phạm Quý Tư',
+  'HT-08':'GS.TS.NGND. Vũ Tuấn',
+  'HT-09':'PGS.TS.NGƯT. Nghiêm Đình Vỳ',
+  'HT-10':'GS.TS.NGƯT. Đinh Quang Báo',
+  'HT-11':'GS.TS.NGƯT. Nguyễn Viết Thịnh',
+  'HT-12':'GS.TS.NGƯT. Nguyễn Văn Minh',
+  'HT-13':'PGS.TS. Nguyễn Đức Sơn'
+};
+
+function bareProfileName(value){
+  return String(value||'')
+    .replace(/^(?:(?:GS|PGS|TSKH|TS|VS|NGND|NGƯT|NDND)\.?\s*)+/iu,'')
+    .replace(/^(?:Đ\/c|Đ-c|Đồng chí|Đại tá|Nhà giáo)\s*/iu,'')
+    .trim();
+}
+
+function modalDisplayName(person){
+  if(person.rk==='ht')return PRINCIPAL_MODAL_NAMES[person.code]||person.name;
+  if(person.rk==='du'||person.rk==='bt')return 'Đồng chí '+bareProfileName(person.name);
+  return person.name;
+}
+
+function openModal(p){
+  playing=false;
+  var theme=p.rk==='du'?'party':(p.rk==='bt'?'youth':'principal');
+  document.getElementById('modal').dataset.theme=theme;
+  document.getElementById('mrole').textContent=p.role;
+  var modalName=document.getElementById('mname');
+  var displayName=modalDisplayName(p);
+  modalName.textContent=displayName;
+  var nameLength=Array.from(displayName||'').length;
+  modalName.style.fontSize=nameLength>32?'.86rem':(nameLength>27?'.99rem':(nameLength>22?'1.04rem':'1.14rem'));
+  document.getElementById('mperiod').textContent=p.period;
+  var photo=document.getElementById('mphoto');
+  var fallback=document.getElementById('mavatar-fallback');
+  // Modal luôn dùng chân dung gốc trong hồ sơ; person.image chỉ dành cho
+  // tấm thiết kế chuẩn hóa nổi trên tường.
+  var portraitSource=p.sources&&p.sources.portrait;
+  var photoUrl=portraitSource?('./'+String(portraitSource).replace(/^\.\//,'')):
+    (p.photo||p.portrait||p.imageUrl||p.image||'');
+  fallback.textContent=p.emoji||'👤';
+  fallback.style.display='';
+  photo.style.display='none';
+  photo.removeAttribute('src');
+  if(photoUrl){
+    photo.alt='Chân dung '+p.name;
+    photo.onload=function(){photo.style.display='block';fallback.style.display='none';};
+    photo.onerror=function(){photo.style.display='none';fallback.style.display='';};
+    photo.src=photoUrl;
+  }
+  var bio=p.bio||{};
+  var sourceData=sourceModalData(p);
+  var fullBio=sourceData&&sourceData.bio?sourceData.bio:{};
+  document.getElementById('tp-bio').innerHTML=
+    '<h2 class="section-title">Tiểu sử</h2><div class="bgrid">'+
+    bioField('Họ và tên / tên khác',fullBio.name,p.name,false)+
+    bioField('Năm sinh',fullBio.dob,bio.dob,false)+
+    bioField('Quê quán',fullBio.que,bio.que,false)+
+    bioField('Vào Đảng',fullBio.dv,bio.dv,false)+
+    bioField('Trình độ',fullBio.td,bio.td,true)+
+    bioField('Chức vụ và quá trình công tác',fullBio.cv,bio.cv,true)+
+    bioField('Thông tin bổ sung',fullBio.other,'',true)+
+    '</div>';
+  var contributions=p.contributions||{};
+  var fullContributions=sourceData&&sourceData.contributions?sourceData.contributions:{};
+  var contributionLabels=p.rk==='du'
+    ?['Công tác Đảng','Nhà trường','Đất nước và xã hội']
+    :(p.rk==='bt'
+      ?['Công tác Đoàn','Nhà trường','Nghiên cứu và xã hội']
+      :['Quản lý và xây dựng trường','Khoa học – giáo dục','Đất nước và xã hội']);
+  var contributionHtml=
+    contributionSection(contributionLabels[0],completeItems(fullContributions.union,contributions.union||p.doan))+
+    contributionSection(contributionLabels[1],completeItems(fullContributions.school,contributions.school||p.truong))+
+    contributionSection(contributionLabels[2],completeItems(fullContributions.society,contributions.society||p.xahoi||p.society))+
+    contributionSection('Khen thưởng',fullContributions.awards)+
+    contributionSection('Thông tin bổ sung',fullContributions.other);
+  document.getElementById('tp-ach').innerHTML=
+    '<h2 class="section-title">Đóng góp</h2><div class="contribution-grid">'+
+    contributionHtml+
+    '</div>';
+  var memories=Array.isArray(p.memories)?p.memories.slice():[];
+  if(!memories.length&&p.quote)memories.push({type:'quote',text:p.quote,source:p.name});
+  var fullMemories=sourceData&&sourceData.memories?sourceData.memories:[];
+  var memoryHtml=fullMemories.length?sourceMemoryCards(fullMemories,p):memories.map(function(item){return memoryCard(item,p);}).join('');
+  document.getElementById('tp-qte').innerHTML=memoryHtml?'<h2 class="section-title">Hồi ức</h2><div class="memory-grid">'+memoryHtml+'</div>':'';
+  document.querySelector('.tb[data-t="ach"]').hidden=!contributionHtml;
+  document.querySelector('.tb[data-t="qte"]').hidden=!memoryHtml;
+  showModalMenu();
+  document.getElementById('modal-wrap').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modal-wrap').classList.remove('open');
+  showModalMenu();
+  playing=true;
+}
+
+// ═══════════════════════════════════════════
+//  ANIMATION LOOP
+// ═══════════════════════════════════════════
+var _fw=new THREE.Vector3();
+var _rt=new THREE.Vector3();
+var _yUp=new THREE.Vector3(0,1,0);
+
+function canMoveTo(x, z) {
+  if (z >= -6 && z <= 22) {
+    return x >= -6.55 && x <= 6.55;
+  }
+  if (z >= 22 && z <= 67) {
+    return x >= -17.55 && x <= 17.55;
+  }
+  if (z >= -23 && z < -6) {
+    return x >= -14.55 && x <= 14.55;
+  }
+  return false;
+}
+
+function canOccupy(x, z) {
+  return canMoveTo(x, z) && !collisionWorld.collidesAt(x, z);
+}
+
+function moveCameraWithCollisions(dx, dz) {
+  var distance=Math.hypot(dx,dz);
+  var maxStep=PLAYER_RADIUS*.45;
+  var steps=Math.max(1,Math.ceil(distance/maxStep));
+  var stepX=dx/steps;
+  var stepZ=dz/steps;
+  var blockedX=false;
+  var blockedZ=false;
+
+  for(var i=0;i<steps;i++){
+    if(canOccupy(camera.position.x+stepX,camera.position.z)){
+      camera.position.x+=stepX;
+    }else{
+      blockedX=true;
+    }
+
+    if(canOccupy(camera.position.x,camera.position.z+stepZ)){
+      camera.position.z+=stepZ;
+    }else{
+      blockedZ=true;
+    }
+  }
+
+  if(blockedX)velX=0;
+  if(blockedZ)velZ=0;
+}
+
+function loop(){
+  var now=performance.now();
+  var dt=Math.min((now-prevT)/1000,.05);
+  prevT=now;
+
+  if(playing){
+    var decay=1-Math.min(1,12*dt);
+    velX*=decay;velZ*=decay;
+    var spd=52;
+    _fw.set(0,0,-1).applyAxisAngle(_yUp,camYaw);
+    _rt.set(1,0,0).applyAxisAngle(_yUp,camYaw);
+    if(mF){velX+=_fw.x*spd*dt;velZ+=_fw.z*spd*dt;}
+    if(mB){velX-=_fw.x*spd*dt;velZ-=_fw.z*spd*dt;}
+    if(mL){velX-=_rt.x*spd*dt;velZ-=_rt.z*spd*dt;}
+    if(mR){velX+=_rt.x*spd*dt;velZ+=_rt.z*spd*dt;}
+
+    moveCameraWithCollisions(velX*dt,velZ*dt);
+    camera.position.y=2.5;
+
+    raycaster.setFromCamera(new THREE.Vector2(0,0),camera);
+    var hits=raycaster.intersectObjects(interactables,true);
+    var aimed=false;
+    if(hits.length){
+      var obj=hits[0].object;
+      while(obj&&!obj.userData.isInteractive)obj=obj.parent;
+      if(obj){
+        aimed=true;
+        var lbl='Bấm để xem: '+(obj.userData.person?obj.userData.person.name:(obj.userData.label||''));
+        document.getElementById('aim-hint').textContent=lbl;
+        document.getElementById('aim-hint').classList.add('show');
+      }
+    }
+    if(!aimed){document.getElementById('aim-hint').classList.remove('show');}
+    document.getElementById('xhair').classList.toggle('hot',aimed);
+    document.getElementById('zone-lbl').textContent=getZone(camera.position.z);
+    drawMinimap();
+  }
+
+  renderer.render(scene,camera);
+}
+
+// ═══════════════════════════════════════════
+//  START
+// ═══════════════════════════════════════════
+window.addEventListener('load',function(){
+  var start=function(){setTimeout(init,100);};
+  if(document.fonts&&document.fonts.load){
+    Promise.all([
+      document.fonts.load('400 16px RobotoLocal'),
+      document.fonts.load('700 30px RobotoLocal'),
+      document.fonts.load('900 42px RobotoLocal')
+    ]).then(start).catch(start);
+  }else start();
+});
+</script>
+</body>
+</html>

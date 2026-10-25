@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phòng Truyền thống số · Chủ đề 5 · Không gian vòng tròn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles/cd5-ver-2-4.css?v=20261019-1">
+</head>
+<body>
+
+<div id="blocker" style="display: flex;">
+    <h1>Chủ đề 5 · Từ đoàn viên đến nhà giáo – Người truyền lửa</h1>
+    <p>Không gian thử nghiệm vòng tròn, gồm ba khu trưng bày liên tục từ trái sang phải.<br>
+    Bí thư Đoàn trường → Hiệu trưởng Nhà trường → Bí thư Đảng ủy Nhà trường.<br><br>
+    <span class="control-key">Giữ chuột trái + kéo</span> để xoay góc nhìn &nbsp;·&nbsp;
+    <span class="control-key">W A S D</span> để di + &nbsp;·&nbsp;
+    <span class="control-key">Bấm</span> vào hiện vật để xem chi tiết.</p>
+    <button class="btn-start" id="btn-start">Bước Vào Không Gian</button>
+</div>
+
+<div id="fade-overlay"></div>
+<div id="zone-flash"></div>
+<div id="hover-dot"></div>
+<div id="focus-label"></div>
+
+<div id="zone-banner">Sảnh trung tâm</div>
+
+<div id="journey-progress" aria-label="Các khu vực tham quan tự do">
+    <span class="journey-step is-unlocked" data-zone="1">01 <b>Bí thư Đoàn trường</b></span>
+    <span class="journey-step is-unlocked" data-zone="2">02 <b>Hiệu trưởng</b></span>
+    <span class="journey-step is-unlocked" data-zone="3">03 <b>Bí thư Đảng ủy</b></span>
+</div>
+
+<div id="hud-toolbar">
+    <div class="hud-btn" id="btn-guide">📖 Hướng dẫn</div>
+    <div class="hud-btn" id="btn-reset">↺ Đặt lại</div>
+</div>
+
+<div id="now-playing">
+    <span class="np-icon" id="np-mute-btn" title="Tắt/Bật tiếng">🔊</span>
+    <div class="np-info">
+        <div class="np-label">Đang phát nhạc</div>
+        <div class="np-track" id="np-track-name">Tên bài hát...</div>
+    </div>
+    <div class="np-controls">
+        <button class="np-ctrl-btn" id="np-vol-down" title="Giảm âm lượng" aria-label="Giảm âm lượng">−</button>
+        <button class="np-ctrl-btn" id="np-vol-up" title="Tăng âm lượng" aria-label="Tăng âm lượng">+</button>
+    </div>
+</div>
+
+    <div id="hud-hint">Giữ <b>chuột trái</b> + kéo để nhìn quanh &nbsp;|&nbsp; <b>W A S D</b> / mũi tên để di chuyển &nbsp;|&nbsp; Tự do tham quan cả 3 cụm</div>
+
+<aside id="province-selector" aria-hidden="true">
+    <div class="province-selector-title"></div>
+    <div class="province-selector-note"></div>
+    <div id="province-buttons"></div>
+</aside>
+
+<div id="info-overlay">
+    <div id="info-panel">
+        <div class="info-close" id="info-close">✕</div>
+        <div class="info-zone" id="info-zone">Cụm 1</div>
+        <span class="info-code" id="info-code"></span>
+        <h2 id="info-title">Tiêu đề</h2>
+        <div class="info-meta" id="info-meta"></div>
+        <div class="info-content" id="info-content"></div>
+        <div id="info-img-container"><img id="info-img" src="" alt="Tư liệu"></div>
+    </div>
+</div>
+
+<div id="guide-overlay">
+    <div id="guide-panel">
+        <div class="info-close" id="guide-close">✕</div>
+        <h2>Hướng dẫn tham quan</h2>
+        <ul>
+            <li><span class="gicon">🖱️</span> Giữ <b>chuột trái</b> rồi kéo để xoay góc nhìn xung quanh.</li>
+            <li><span class="gicon">⌨️</span> Dùng <b>W A S D</b> hoặc các <b>phím mũi tên</b> để đi lại trong phòng.</li>
+            <li><span class="gicon">🖼️</span> <b>Bấm</b> vào ảnh chân dung để xem hồ sơ chi tiết sau khi nội dung Chủ đề 5 được đưa vào.</li>
+            <li><span class="gicon">➡️</span> Tuyến tham quan đi theo thứ tự <b>Bí thư Đoàn trường → Hiệu trưởng → Bí thư Đảng ủy</b>.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="document-overlay" role="dialog" aria-modal="true" aria-labelledby="document-title">
+    <div id="document-panel">
+        <header class="document-toolbar">
+            <div>
+                <span class="document-kicker">TƯ LIỆU GỐC</span>
+                <h2 id="document-title">Tài liệu</h2>
+                <span id="document-page-count"></span>
+            </div>
+            <button id="document-close" type="button" aria-label="Đóng tài liệu">✕</button>
+        </header>
+        <iframe id="document-frame" title="Trình đọc tài liệu PDF"></iframe>
+    </div>
+</div>
+
+<div id="canvas-container"></div>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+    }
+}
+</script>
+
+<script type="module" src="./scripts/v2-4/main.js?v=20261019-1"></script>
+</body>
+</html>

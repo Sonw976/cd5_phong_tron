@@ -1,0 +1,1183 @@
+{
+  "generatedAt": "2026-10-13T01:24:11.857Z",
+  "canonicalRoots": [
+    "BÍ THƯ ĐẢNG ỦY",
+    "BÍ THƯ ĐOÀN TRƯỜNG ",
+    "HIỆU TRƯỞNG NHÀ TRƯỜNG "
+  ],
+  "policy": {
+    "docx": "Nguồn nội dung chính",
+    "excel": "Đối chiếu mã, danh mục, nhiệm kỳ và thứ tự",
+    "columnG": "Luôn kiểm tra; được dùng các liên kết do nhóm cung cấp",
+    "missing": "Đang xác minh...",
+    "conflicts": "Giữ kết quả đã xác minh khi DOCX có lỗi rõ ràng và lưu verificationNotes"
+  },
+  "summary": {
+    "total": 61,
+    "byGroup": {
+      "ht": 13,
+      "du": 19,
+      "bt": 29
+    },
+    "withDocx": 57,
+    "withPortrait": 61,
+    "missingDocx": [
+      "DT-04",
+      "DT-05",
+      "DT-09",
+      "DT-10"
+    ],
+    "missingPortrait": []
+  },
+  "records": [
+    {
+      "code": "HT-01",
+      "group": "ht",
+      "name": "GS.TSKH. Lê Văn Thiêm",
+      "role": "Hiệu trưởng",
+      "period": "1951 – 1954",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /1. GS.TSKH. Lê Văn Thiêm/GS.TSKH Lê Văn Thiêm .docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /1. GS.TSKH. Lê Văn Thiêm/GS.TSKH Lê Văn Thiêm.avif",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-01",
+      "columnGReferences": [
+        "https://hnue.edu.vn/tin-tuc/8840/nguoi-con-uu-tu-cua-dong-ho-le-lang-trung-le.html"
+      ],
+      "verificationNotes": [
+        "DOCX cập nhật có dòng 'Toàn quyền Việt Nam tại Viện Liên hợp Nghiên cứu Hạt nhân Dubna' trong giai đoạn 1956–1980; chức danh này có dấu hiệu sai nên không đưa lên giao diện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-02",
+      "group": "ht",
+      "name": "GS. Đặng Thai Mai",
+      "role": "Hiệu trưởng",
+      "period": "1954 – 1956",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /2. GS. Đặng Thai Mai/Nội dung .docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /2. GS. Đặng Thai Mai/GS Đặng Thai Mai.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-02",
+      "columnGReferences": [
+        "https://vnu.edu.vn/-post39883.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-03",
+      "group": "ht",
+      "name": "GS.VS. Phạm Huy Thông",
+      "role": "Hiệu trưởng",
+      "period": "1956 – 1967",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /3. GS.VS. Phạm Huy Thông/GS.VS Phạm Huy Thông.docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /3. GS.VS. Phạm Huy Thông/GS.VS. Phạm Huy Thông.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-03",
+      "columnGReferences": [
+        "https://hnue.edu.vn/tin-tuc/6788/gs-pham-huy-thong-mot-nguoi-nuoc-nam-ky-la.html",
+        "https://thuvienhungyen.vn/dat-va-nguoi-hung-yen/pham-huy-thong-1916-1988.html",
+        "http://khaocohoc.gov.vn/ky-niem-100-nam-ngay-sinh-giao-su-vien-sy-pham-huy-thong"
+      ],
+      "verificationNotes": [
+        "Excel cập nhật ghi nhiệm kỳ 1956–1957, trong khi DOCX cập nhật ghi 1956–1967; giao diện tuân theo DOCX và dùng 1956–1967."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-04",
+      "group": "ht",
+      "name": "GS.NGND. Nguyễn Lương Ngọc",
+      "role": "Hiệu trưởng",
+      "period": "1967 – 1975",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /4. GS. Nguyễn Lương Ngọc /Nội dung  (2).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /4. GS. Nguyễn Lương Ngọc /04 GS Nguyen Luong Ngoc.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-04",
+      "columnGReferences": [
+        "https://staff.hnue.edu.vn/Tintuc-Sukien/Trangtintonghop/tabid/260/news/331/GiaosuHieutruongNGUYENLUONGNGOC.aspx",
+        "https://cand.vn/giao-su-nguyen-luong-ngoc-tai-hoa-va-duc-do-post331819.html"
+      ],
+      "verificationNotes": [
+        "DOCX cập nhật ghi phần quy đổi quê quán là 'nay là huyện tỉnh Ninh Bình', câu bị thiếu địa danh; giao diện giữ địa danh lịch sử trước phần quy đổi."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-05",
+      "group": "ht",
+      "name": "GS.TSKH.NGND. Nguyễn Cảnh Toàn",
+      "role": "Hiệu trưởng",
+      "period": "1967 – 1975",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /5. GS.TSKH. Nguyễn Cảnh Toàn /Nội dung  (3).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /5. GS.TSKH. Nguyễn Cảnh Toàn /GS.TSKH Nguyễn Cảnh Toàn (1926-2017).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-05",
+      "columnGReferences": [
+        "https://cand.vn/giao-su-nguyen-luong-ngoc-tai-hoa-va-duc-do-post331819.html",
+        "https://nhandan.vn/giao-su-nguyen-canh-toan-nguoi-danh-ca-cuoc-doi-cho-su-nghiep-khoa-hoc-va-giao-duc-post285318.html"
+      ],
+      "verificationNotes": [
+        "Liên kết bài về GS. Nguyễn Lương Ngọc xuất hiện trong cột G của HT-05 nhưng không nói về GS. Nguyễn Cảnh Toàn; liên kết được lưu để phản ánh đúng Excel nhưng không dùng bổ sung nội dung."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-06",
+      "group": "ht",
+      "name": "GS.NGND. Dương Trọng Bái",
+      "role": "Hiệu trưởng",
+      "period": "1975 – 1980",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /6.GS. Dương Trọng Bái /GS.TS.NGND Dương Trọng Bái.docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /6.GS. Dương Trọng Bái /GS.Dương Trọng Bái.webp",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-06",
+      "columnGReferences": [
+        "https://hnue.edu.vn/tin-tuc/6755?page=4"
+      ],
+      "verificationNotes": [
+        "DOCX cập nhật và Excel ghi nhiệm kỳ 1975–1980, nhưng dòng quá trình công tác trong chính DOCX ghi 1976–1980; giao diện dùng mốc 1975–1980 theo tiêu đề hồ sơ. DOCX ghi ngày sinh 29/08/1934 trong khi tên hồ sơ và nguồn cột G xác nhận năm 1924; giao diện dùng 29/08/1924."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-07",
+      "group": "ht",
+      "name": "PGS.TS.NGND. Phạm Quý Tư",
+      "role": "Hiệu trưởng",
+      "period": "1980 – 1988",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /7. PGS. TS. Phạm Quý Tư /Nội dung  (5).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /7. PGS. TS. Phạm Quý Tư /PGS.TS Phạm Quý Tư.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-07",
+      "columnGReferences": [
+        "https://staff.hnue.edu.vn/Gioithieu/Gioithieuchung/ThehelanhdaoTruong/tabid/478/Category/29/News/333/PGSTSNGNDPHAMQUYTU-HieutruongTruongDHSPHaNoi1980-1989.aspx"
+      ],
+      "verificationNotes": [
+        "Danh sách tổng hợp chính thức HNUE ghi nhiệm kỳ 1980–1988; bài chân dung chi tiết HNUE ghi 1980–1989. Giao diện tạm dùng mốc danh sách tổng hợp.",
+        "Bài chân dung chính thức xác nhận học hàm PGS.TS, không phải GS.TS như một dòng trong DOCX."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-08",
+      "group": "ht",
+      "name": "GS.TS.NGND. Vũ Tuấn",
+      "role": "Hiệu trưởng",
+      "period": "1988 – 1992",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /8. GS.TS. Vũ Tuấn /Nội dung  (6).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /8. GS.TS. Vũ Tuấn /GS.TS Vũ Tuấn.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-08",
+      "columnGReferences": [
+        "https://staff.hnue.edu.vn/Gioithieu/Gioithieuchung/ThehelanhdaoTruong/tabid/478/Category/29/News/334/GiaosuHieutruongVUTUAN.aspx"
+      ],
+      "verificationNotes": [
+        "Danh sách tổng hợp chính thức HNUE ghi 1988–1992; bài chân dung chi tiết HNUE ghi 1989–1992. Giao diện tạm dùng mốc danh sách tổng hợp."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-09",
+      "group": "ht",
+      "name": "PGS.TS. Nghiêm Đình Vỳ",
+      "role": "Hiệu trưởng",
+      "period": "1992 – 1997",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /9. PGS.TS. Nghiêm Đình Vỳ /Nội dung  (7).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /9. PGS.TS. Nghiêm Đình Vỳ /PGS.TS Nghiêm Đình Vì.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-09",
+      "columnGReferences": [
+        "https://staff.hnue.edu.vn/Gioithieu/Gioithieuchung/ThehelanhdaoTruong/tabid/478/Category/29/News/335/PGSTSNGHIEMDINHVY-HieutruongTruongDHSPHaNoi1992-1997.aspx"
+      ],
+      "verificationNotes": [
+        "Tên tệp ảnh ghi “Nghiêm Đình Vì”; DOCX và danh mục ghi “Nghiêm Đình Vỳ”."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-10",
+      "group": "ht",
+      "name": "GS.TS.NGƯT. Đinh Quang Báo",
+      "role": "Hiệu trưởng",
+      "period": "1997 – 2006",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /10. GS.TS. Đinh Quang Báo /Nội dung  (8).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /10. GS.TS. Đinh Quang Báo /GS.TS. Đinh Quang Báo.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-10",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo",
+        "http://hdgsnn.gov.vn/files/anhbaiviet/files/2020/LLKH%20Thanh%20vien%20cac%20HD%20nganh%202020/20-HD%20Tam%20ly%20hoc%20LLKH%202020/20-HD%20Tam%20ly-GS%20DQ%20Bao_0001.pdf",
+        "https://www.hanoi.edu.vn/tin-tuc-su-kien/gsts-dinh-quang-bao-phai-doi-moi-dong-bo-de-dap-ung-chuong-trinh-giao-duc-pho-t/ctmb/525/7166",
+        "https://daibieunhandan.vn/gs-ts-dinh-quang-bao-nganh-su-pham-can-dong-bo-chinh-sach-de-giu-suc-hut-10352823.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-11",
+      "group": "ht",
+      "name": "GS.TS.NGƯT. Nguyễn Viết Thịnh",
+      "role": "Hiệu trưởng",
+      "period": "2006 – 2012",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /11. GS.TS. Nguyễn Viết Thịnh /Nội dung  (9).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /11. GS.TS. Nguyễn Viết Thịnh /Nguyễn Viết Thịnh.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-11",
+      "columnGReferences": [
+        "https://daibieunhandan.vn/giao-su-nguyen-viet-thinh-nguoi-danh-tron-doi-cong-hien-cho-su-nghiep-khoa-hoc-va-giao-duc-dia-li-10337989.html"
+      ],
+      "verificationNotes": [
+        "DOCX cập nhật ghi nhầm 'GS.TS Địa ký'; giao diện chuẩn hóa thành 'GS.TS Địa lý'."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-12",
+      "group": "ht",
+      "name": "GS.TS.NGƯT. Nguyễn Văn Minh",
+      "role": "Hiệu trưởng",
+      "period": "2012 – 2024",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /12. GS.TS Nguyễn Văn Minh /Nội dung  (10).docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /12. GS.TS Nguyễn Văn Minh /GS_TS_NguyenVanMinh.avif",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-12",
+      "columnGReferences": [
+        "https://hnue.edu.vn/tin-tuc/11045?page=75",
+        "https://vnexpress.net/tu-cau-hoc-tro-tung-bo-hoc-den-hieu-truong-su-pham-ha-noi-4678383.html",
+        "https://daibieunhandan.vn/gs-ts-nguyen-van-minh-khi-day-hoc-hay-bien-cai-phuc-tap-thanh-cai-don-gian-nhat-10333365.html",
+        "https://hanoimoi.vn/nguoi-thay-truyen-cam-hung-cho-cac-the-he-sinh-vien-su-pham-664761.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "HT-13",
+      "group": "ht",
+      "name": "PGS.TS. Nguyễn Đức Sơn",
+      "role": "Hiệu trưởng",
+      "period": "2024 – nay",
+      "sourceDocx": "HIỆU TRƯỞNG NHÀ TRƯỜNG /13. PGS.TS. Nguyễn Đức Sơn /PGS,TS Nguyễn Đức Sơn.docx",
+      "portrait": "HIỆU TRƯỞNG NHÀ TRƯỜNG /13. PGS.TS. Nguyễn Đức Sơn /Thầy Nguyễn Đức Sơn.png",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – HT-13",
+      "columnGReferences": [
+        "https://staff.hnue.edu.vn/directories/?sonnd",
+        "https://vietnamnet.vn/pgs-ts-nguyen-duc-son-lam-hieu-truong-truong-dh-su-pham-ha-noi-2278710.html",
+        "https://nhandan.vn/pho-giao-su-tien-si-nguyen-duc-son-giu-chuc-hieu-truong-truong-dai-hoc-su-pham-ha-noi-nhiem-ky-2025-2030-post912022.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-01",
+      "group": "du",
+      "name": "GS.NGND. Trần Văn Giàu",
+      "role": "Bí thư Đảng ủy",
+      "period": "1954 – 1956",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/1. GS. Trần Văn Giàu/Nội dung.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/1. GS. Trần Văn Giàu/1-gs-tran-van-giau26-10-32-40.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-01",
+      "columnGReferences": [
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dvF1",
+        "https://www.hcmcpv.org.vn/tin-tuc/dong-chi-tran-van-giau-nha-cach-mang-ban-linh-nha-giao-uyen-bac-1491883988",
+        "https://nhandan.vn/tieu-su-dong-chi-tran-van-giau-post515408.html",
+        "https://tracuusapnhap.vn/xa-cu/an-luc-long/chau-thanh/long-an/"
+      ],
+      "verificationNotes": [
+        "Các nguồn cột G có hai cách ghi ngày sinh: 06/09/1911 (quy đổi từ ngày âm lịch) và 11/09/1911 (hồ sơ lưu trữ); giao diện giữ ngày 11/09/1911 theo hồ sơ lưu trữ và DOCX cập nhật."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-02",
+      "group": "du",
+      "name": "NGND. Nguyễn Danh Hoàn",
+      "role": "Bí thư Đảng ủy",
+      "period": "1956 – 1962",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/2. Đ-c Nguyễn Danh Hoàn/Tài liệu không có tiêu đề.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/2. Đ-c Nguyễn Danh Hoàn/Nguyễn Danh Hoàn_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-02",
+      "columnGReferences": [
+        "https://thanhnien.hnue.edu.vn/Tin-t%E1%BB%A9c-S%E1%BB%B1-ki%E1%BB%87n/p/1847",
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dvF1"
+      ],
+      "verificationNotes": [
+        "DOCX cập nhật gán quê quán và trình độ trùng với GS.TS Phan Ngọc Liên, đồng thời ghi địa danh 'Quảng Ngãi (nay là tỉnh Kon Tum)' không phù hợp; hai trường này được trả về 'Đang xác minh...'.",
+        "Liên kết HNUE trong cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-03",
+      "group": "du",
+      "name": "Đồng chí Đỗ Đức Uyên",
+      "role": "Bí thư Đảng ủy",
+      "period": "1962 – 1967",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/3. Đ-c Đỗ Đức Uyên/Đỗ Đức Uyên_.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/3. Đ-c Đỗ Đức Uyên/Đỗ Đức Uyên_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-03",
+      "columnGReferences": [
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dvF1",
+        "https://staff.hnue.edu.vn/Gioithieu/Gioithieuchung/BithuDanguyquacacthoiky.aspx"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-04",
+      "group": "du",
+      "name": "Đồng chí Nguyễn Chí Linh",
+      "role": "Bí thư Đảng ủy",
+      "period": "1967 – 1980",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/4. Đ-c Nguyễn Chí Linh/Nguyễn Chí Linh.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/4. Đ-c Nguyễn Chí Linh/Nguyễn Chí Linh_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-04",
+      "columnGReferences": [
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dvF1",
+        "https://staff.hnue.edu.vn/Gioithieu/Gioithieuchung/BithuDanguyquacacthoiky.aspx"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-05",
+      "group": "du",
+      "name": "Đồng chí Hà Năng Kháng",
+      "role": "Bí thư Đảng ủy",
+      "period": "1967 – 1975",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/5. Đ-c Hà Năng Kháng/HÀ NĂNG KHÁNG.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/5. Đ-c Hà Năng Kháng/Hà Năng Kháng_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-05",
+      "columnGReferences": [
+        "https://hpu2.edu.vn/vi-VN/hpu2-bai-viet/dang-uy-dang-bo/dang-bo-truong-dai-hoc-su-pham-ha-noi-2-53-nam-xay-dung-va-truong-thanh",
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dvF1"
+      ],
+      "verificationNotes": [
+        "DOCX cập nhật xác nhận nhiệm kỳ nhưng chưa có ngày sinh, quê quán, ngày vào Đảng và trình độ."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-06",
+      "group": "du",
+      "name": "NGƯT. Trần Thị Thục Nga",
+      "role": "Bí thư Đảng ủy",
+      "period": "1980 – 1982",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/7. Đ-c Trần Thị Thục Nga/TRẦN THỊ THỤC NGA.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/7. Đ-c Trần Thị Thục Nga/Trần Thị Thục Nga_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-06",
+      "columnGReferences": [
+        "https://www.vwu.vn/tin-chi-tiet/-/chi-tiet/cau-chuyen-%C4%91ac-biet-ve-me-va-con-gai-%C4%91eu-la-%C4%91ai-bieu-quoc-hoi-22767-5.html",
+        "https://dbqh.quochoi.vn/dbqh/ABC/N/type/0/Default.aspx",
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo",
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dvF1"
+      ],
+      "verificationNotes": [
+        "Liên kết Hội Liên hiệp Phụ nữ Việt Nam trong cột G bị timeout khi kiểm tra; dữ liệu hiển thị lấy từ DOCX cập nhật."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-07",
+      "group": "du",
+      "name": "PGS.TS. Trần Thị Tâm Đan",
+      "role": "Bí thư Đảng ủy",
+      "period": "1982 – 1983",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/8. PGS.TS Trần Thị Tâm Đan/Nội dung .docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/8. PGS.TS Trần Thị Tâm Đan/Trần Thị Tâm Đan_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-07",
+      "columnGReferences": [
+        "https://giaoducthoidai.vn/pgstran-thi-tam-dan-tan-tuy-va-hi-sinh-la-truyen-thong-cua-nha-giao-viet-nam-post572686.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-08",
+      "group": "du",
+      "name": "PGS. Phan Sĩ Tấn",
+      "role": "Bí thư Đảng ủy",
+      "period": "1983 – 1984",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/9. PGS. Phan Sĩ Tấn/PHAN SỸ TẤN.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/9. PGS. Phan Sĩ Tấn/Phan Sỹ Tấn_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-08",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [
+        "Tên nhân vật ghi 'Sĩ' trong DOCX và Excel; tên tệp ảnh ghi 'Sỹ'."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-09",
+      "group": "du",
+      "name": "GS.TS.NGND. Phan Ngọc Liên",
+      "role": "Bí thư Đảng ủy",
+      "period": "1985 – 1990",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/10. GS.TS. Phan Ngọc Liên/PHAN NGỌC LIÊN.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/10. GS.TS. Phan Ngọc Liên/Phan Ngọc Liên_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-09",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [
+        "DOCX cập nhật ghi 'Quảng Ngãi (nay là tỉnh Kon Tum)'; phần quy đổi địa danh không được sử dụng vì không phù hợp, giao diện giữ địa danh gốc."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-10",
+      "group": "du",
+      "name": "GS.TS.NGND. Nguyễn Hữu Mình",
+      "role": "Bí thư Đảng ủy",
+      "period": "1990 – 1992",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/11. GS.TS. Nguyễn Hữu Mình  /GS.TS NGUYỄN HỮU MÌNH.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/11. GS.TS. Nguyễn Hữu Mình  /Nguyễn Hữu Mình_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-10",
+      "columnGReferences": [
+        "https://phys.hnue.edu.vn/gioi-thieu/lich-su-khoa-vat-li/",
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-11",
+      "group": "du",
+      "name": "GS.TS. Bùi Văn Huệ",
+      "role": "Bí thư Đảng ủy",
+      "period": "1992 – 1999",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/12. GS.TS Bùi Văn Huệ  /GS. TS BÙI VĂN HUỆ.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/12. GS.TS Bùi Văn Huệ  /Bùi Văn Huệ_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-11",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-12",
+      "group": "du",
+      "name": "GS.TS.NGƯT. Đinh Quang Báo",
+      "role": "Bí thư Đảng ủy",
+      "period": "1999 – 2000",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/13. GS.TS Đinh Quang Báo  /GS.TS ĐINH QUANG BÁO.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/13. GS.TS Đinh Quang Báo  /Đinh Quang Báo_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-12",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo",
+        "http://hdgsnn.gov.vn/files/anhbaiviet/files/2020/LLKH%20Thanh%20vien%20cac%20HD%20nganh%202020/20-HD%20Tam%20ly%20hoc%20LLKH%202020/20-HD%20Tam%20ly-GS%20DQ%20Bao_0001.pdf",
+        "https://www.hanoi.edu.vn/tin-tuc-su-kien/gsts-dinh-quang-bao-phai-doi-moi-dong-bo-de-dap-ung-chuong-trinh-giao-duc-pho-t/ctmb/525/7166",
+        "https://daibieunhandan.vn/gs-ts-dinh-quang-bao-nganh-su-pham-can-dong-bo-chinh-sach-de-giu-suc-hut-10352823.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-13",
+      "group": "du",
+      "name": "PGS.TS.NGƯT. Đinh Ngọc Bảo",
+      "role": "Bí thư Đảng ủy",
+      "period": "2000 – 2006",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/14. PGS.TS Đinh Ngọc Bảo  /PGS.TS ĐINH NGỌC BẢO.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/14. PGS.TS Đinh Ngọc Bảo  /Đinh Ngọc Bảo_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-13",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [
+        "Phần chức vụ trong DOCX ghi 2006–2012, mâu thuẫn với tiêu đề DOCX và Excel ghi 2000–2006; giao diện dùng 2000–2006."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-14",
+      "group": "du",
+      "name": "PGS.TS.NGƯT. Trần Văn Ba",
+      "role": "Bí thư Đảng ủy",
+      "period": "2006 – 2012",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/15. PGS.TS Trần Văn Ba     /PGS.TS TRẦN VĂN BA.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/15. PGS.TS Trần Văn Ba     /Trần Văn Ba.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-14",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [
+        "Tên hồ sơ ghi PGS.TS nhưng dòng trình độ trong DOCX ghi GS.TS; giao diện giữ PGS.TS theo tên hồ sơ và Excel."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-15",
+      "group": "du",
+      "name": "PGS.TS. Đặng Xuân Thư",
+      "role": "Bí thư Đảng ủy",
+      "period": "2012 – 02/2020",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/16. PGS.TS Đặng Xuân Thư    /PGS.TS ĐẶNG XUÂN THƯ.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/16. PGS.TS Đặng Xuân Thư    /Đặng Xuân Thư_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-15",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-16",
+      "group": "du",
+      "name": "GS.TS. Đỗ Việt Hùng",
+      "role": "Bí thư Đảng ủy",
+      "period": "06/2020 – 09/2023",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/17. GS.TS Đỗ Việt Hùng  /GS.TS ĐỖ VIỆT HÙNG.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/17. GS.TS Đỗ Việt Hùng  /GS_TS_DoVietHung.avif",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-16",
+      "columnGReferences": [
+        "http://hdgsnn.gov.vn/files/anhbaiviet/files/2020/LLKH%20Thanh%20vien%20cac%20HD%20nganh%202020/16-HD%20Ngon%20ngu%20hoc%20LLKH%202020/16-Hd%20Ngon%20ngu-GS%20DV%20Hung_0001.pdf",
+        "https://nguvan.hnue.edu.vn/B%E1%BB%99-m%C3%B4n-ng%C3%B4n-ng%E1%BB%AF"
+      ],
+      "verificationNotes": [
+        "DOCX ghi nhầm 'GT.TS'; chuẩn hóa thành GS.TS theo tên hồ sơ và Excel."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-17",
+      "group": "du",
+      "name": "GS.TS.NGƯT. Nguyễn Văn Minh",
+      "role": "Phụ trách Đảng ủy",
+      "period": "09/2023 – 12/2023; 01/2026 – 05/2026",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/18. GS.TS Nguyễn Văn Minh  /GS.TS.NGUT Nguyễn Văn Minh.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/18. GS.TS Nguyễn Văn Minh  /GS_TS_NguyenVanMinh.avif",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-17",
+      "columnGReferences": [
+        "https://hnue.edu.vn/gioi-thieu/bi-thu-dang-bo"
+      ],
+      "verificationNotes": [
+        "Excel cập nhật ghi DU-17 là 2020–2024, trong khi DOCX cập nhật ghi rõ vai trò Phụ trách Đảng ủy ở hai giai đoạn 09/2023–12/2023 và 01/2026–05/2026; giao diện ưu tiên DOCX."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-18",
+      "group": "du",
+      "name": "PGS.TS. Nguyễn Văn Hiền",
+      "role": "Bí thư Đảng ủy",
+      "period": "12/2023 – 01/2026",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/19. PGS.TS Nguyễn Văn Hiền  /PGS.TS NGUYỄN VĂN HIỀN.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/19. PGS.TS Nguyễn Văn Hiền  /Nguyễn Văn Hiền_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-18",
+      "columnGReferences": [
+        "https://staff.hnue.edu.vn/directories/?hiennv",
+        "https://hnue.edu.vn/tin-tuc/11110",
+        "https://hnue.edu.vn/tin-tuc/11045?page=75"
+      ],
+      "verificationNotes": [
+        "Trang HNUE trong cột G xác nhận được bổ nhiệm Giám đốc Sở GD&ĐT Hà Nội ngày 13/01/2026; thời điểm kết thúc nhiệm vụ Bí thư hiển thị theo mốc Excel."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DU-19",
+      "group": "du",
+      "name": "PGS.TS. Nguyễn Đức Sơn",
+      "role": "Bí thư Đảng ủy",
+      "period": "05/2026 – nay",
+      "sourceDocx": "BÍ THƯ ĐẢNG ỦY/20. PGS.TS Nguyễn Đức Sơn/PGS.TS NGUYỄN ĐỨC SƠN.docx",
+      "portrait": "BÍ THƯ ĐẢNG ỦY/20. PGS.TS Nguyễn Đức Sơn/Thầy Nguyễn Đức Sơn.png",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DU-19",
+      "columnGReferences": [
+        "https://staff.hnue.edu.vn/directories/?sonnd",
+        "https://vietnamnet.vn/pgs-ts-nguyen-duc-son-lam-hieu-truong-truong-dh-su-pham-ha-noi-2278710.html",
+        "https://nhandan.vn/pho-giao-su-tien-si-nguyen-duc-son-giu-chuc-hieu-truong-truong-dh-su-pham-ha-noi-nhiem-ky-2025-2030-post912022.html",
+        "https://nhandan.vn/pho-giao-su-tien-si-nguyen-duc-son-giu-chuc-hieu-truong-truong-dai-hoc-su-pham-ha-noi-nhiem-ky-2025-2030-post912022.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-01",
+      "group": "bt",
+      "name": "Đồng chí Lê Hùng",
+      "role": "Bí thư Đoàn trường",
+      "period": "1957 – 1959",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /1. Đại tá Lê Hùng/1. Đại tá Lê Hùng.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /1. Đại tá Lê Hùng/Đại tá Lê Hùng (Bí thư Đoàn trường giai đoạn 1956 - 1958).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-01",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [
+        "DOCX ghi nhiệm kỳ 1956–1958, khác mốc 1957–1959 trong Excel; giao diện giữ mốc Excel để bảo toàn dòng thời gian."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-02",
+      "group": "bt",
+      "name": "Đồng chí Nguyễn Đình Chương",
+      "role": "Bí thư Đoàn trường",
+      "period": "1959 – 1961",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /2. Đồng chí Nguyễn Đình Chương/2. Nguyễn Đình Chương_.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /2. Đồng chí Nguyễn Đình Chương/Đồng chí Nguyễn Đình Chương (Bí thư Đoàn trường giai đoạn 1959 - 1961).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-02",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts",
+        "https://www.facebook.com/thanhnien.hnue/posts/b%C3%AD-th%C6%B0-%C4%91o%C3%A0n-tr%C6%B0%E1%BB%9Dng-%C4%91%E1%BA%A1i-h%E1%BB%8Dc-s%C6%B0-ph%E1%BA%A1m-h%C3%A0-n%E1%BB%99i-qua-c%C3%A1c-th%E1%BB%9Di-k%E1%BB%B3%C4%91o%C3%A0n-thanh-ni%C3%AAn-c%E1%BB%99ng-s%E1%BA%A3/990923192835996/"
+      ],
+      "verificationNotes": [
+        "Excel ghi Nguyễn Đình Chương ở tên hồ sơ nhưng cột danh mục ghi Lê Đình Chương; DOCX, tên thư mục và ảnh đều dùng Nguyễn Đình Chương nên giao diện giữ tên này."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-03",
+      "group": "bt",
+      "name": "Đồng chí Trịnh Ngọc Trình",
+      "role": "Bí thư Đoàn trường",
+      "period": "1962 – 1965",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /3. Đồng chí Trịnh Ngọc Trình/3.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /3. Đồng chí Trịnh Ngọc Trình/Đồng chí Trịnh Ngọc Trình (Bí thư Đoàn trường giai đoạn 1962 - 1965).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-03",
+      "columnGReferences": [
+        "https://nhandan.vn/nho-em-ngoc-ngay-ay-post448130.html",
+        "https://vovworld.vn/vi-VN/viet-nam-dat-nuoc-con-nguoi/nha-giao-trinh-ngoc-trinh-cong-dan-uu-tu-thu-do-ha-noi-2018-1616217.vov5",
+        "https://vov.gov.vn/trinh-ngoc-trinh-hanh-phuc-cua-toi-la-den-duoc-voi-dong-bao-dtnew-111137"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-04",
+      "group": "bt",
+      "name": "Đồng chí Vũ Như Ngọc",
+      "role": "Bí thư Đoàn trường",
+      "period": "1965 – 1966",
+      "sourceDocx": "Đang thiếu DOCX trong nguồn mới; dùng Excel và cột G",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /4. Đồng chí Vũ Như Ngọc /Đồng chí Vũ Như Ngọc (Bí thư Đoàn trường giai đoạn 1965 - 1966).jpg",
+      "hasDocx": false,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-04",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Thiếu DOCX – dùng Excel và cột G"
+    },
+    {
+      "code": "DT-05",
+      "group": "bt",
+      "name": "Đồng chí Nguyễn Văn Mạo",
+      "role": "Bí thư Đoàn trường",
+      "period": "1966 – 1967",
+      "sourceDocx": "Đang thiếu DOCX trong nguồn mới; dùng Excel và cột G",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /5. Đồng chí Nguyễn Văn Mạo/Đồng chí Nguyễn Văn Mạo (Giai đoạn 1966 - 1967).jpg",
+      "hasDocx": false,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-05",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [
+        "Excel ghi Nguyễn Văn Mạo ở tên hồ sơ nhưng cột danh mục ghi Nguyễn Văn Mão; tên thư mục và ảnh dùng Nguyễn Văn Mạo nên giao diện giữ tên này."
+      ],
+      "status": "Thiếu DOCX – dùng Excel và cột G"
+    },
+    {
+      "code": "DT-06",
+      "group": "bt",
+      "name": "Nhà giáo Phạm Như Thân",
+      "role": "Bí thư Đoàn trường",
+      "period": "1967 – 1969",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /6. Nhà giáo Phạm Như Thân/6. Nhà giáo Phạm Như Thân.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /6. Nhà giáo Phạm Như Thân/Nhà giáo Phạm Như Thân (giai đoạn 1967 - 1969).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-06",
+      "columnGReferences": [
+        "https://hnue.edu.vn/tin-tuc/4895/nho-mai-cuu-bi-thu-doan-thanh-nien-truong-dhsp-ha-noi-nha-giao-pham-nhu-than.html"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-09",
+      "group": "bt",
+      "name": "Đồng chí Nguyễn Ngọc Doãn",
+      "role": "Bí thư Đoàn trường",
+      "period": "1968 – 1972",
+      "sourceDocx": "Đang thiếu DOCX trong nguồn mới; dùng Excel và cột G",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /9. Đồng chí Nguyễn Ngọc Doãn /Đồng chí Nguyễn Ngọc Doãn (Bí thư Đoàn trường giai đoạn 1968 - 1972).jpg",
+      "hasDocx": false,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-09",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Thiếu DOCX – dùng Excel và cột G"
+    },
+    {
+      "code": "DT-07",
+      "group": "bt",
+      "name": "Đồng chí Đỗ Bội Toàn",
+      "role": "Bí thư Đoàn trường",
+      "period": "1969 – 1972",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /7. Đồng chí Đỗ Bội Toàn/ĐỒNG CHÍ ĐỖ BỘI TOÀN.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /7. Đồng chí Đỗ Bội Toàn/Đồng chí Đỗ Bội Toàn (Bí thư Đoàn trường 1969 - 1972).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-07",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-08",
+      "group": "bt",
+      "name": "PGS.TS. Trần Quang Nhiếp",
+      "role": "Bí thư Đoàn trường",
+      "period": "1972 – 1975",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /8. Đồng chí Trần Quang Nhiếp /PGS. TS Trần Quang Nhiếp.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /8. Đồng chí Trần Quang Nhiếp /PGS.TS. Trần Quang Nhiếp (Bí thư Đoàn trường 1972 - 1975).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-08",
+      "columnGReferences": [
+        "https://baochinhphu.vn/tac-gia-co-nhieu-dau-sach-hoc-va-lam-theo-bac-ho-102255750.htm"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-10",
+      "group": "bt",
+      "name": "Đồng chí Nguyễn Đình Lượng",
+      "role": "Bí thư Đoàn trường",
+      "period": "1972 – 1975; 1976 – 1978",
+      "sourceDocx": "Đang thiếu DOCX trong nguồn mới; dùng Excel và cột G",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /10. Đồng chí Nguyễn Đình Lượng/Đồng chí Nguyễn Đình Lượng (Bí thư Đoàn trường giai đoạn 1972 - 1978).jpg",
+      "hasDocx": false,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-10",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [
+        "Excel ghi Nguyễn Đình Lượng ở tên hồ sơ nhưng cột danh mục ghi Nguyễn Đình Lương; tên thư mục và ảnh dùng Nguyễn Đình Lượng nên giao diện giữ tên này."
+      ],
+      "status": "Thiếu DOCX – dùng Excel và cột G"
+    },
+    {
+      "code": "DT-11",
+      "group": "bt",
+      "name": "Đồng chí Phạm Đăng Dư",
+      "role": "Bí thư Đoàn trường",
+      "period": "1978 – 1982",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /11. Đồng chí Phạm Đăng Dư/Đc Phạm Đăng Dư.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /11. Đồng chí Phạm Đăng Dư/Đồng chí Phạm Đăng Dư (Bí thư giai đoạn 1978 – 1982).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-11",
+      "columnGReferences": [
+        "https://dhsphn.edu.vn/tin-tuc/6546?page=2"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-12",
+      "group": "bt",
+      "name": "TS. Võ Thế Quân",
+      "role": "Bí thư Đoàn trường",
+      "period": "1982 – 1983",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /12. Đồng chí Võ Thế Quân/Đc Võ Thế Quân.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /12. Đồng chí Võ Thế Quân/Đồng chí Võ Thế Quân (Bí thư giai đoạn 1982 – 1983).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-12",
+      "columnGReferences": [
+        "https://dongdops.edu.vn/tin-tuc/ts-vo-the-quan-nguoi-thay-tam-huyet-sang-tao"
+      ],
+      "verificationNotes": [
+        "Liên kết cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-13",
+      "group": "bt",
+      "name": "Đồng chí Trần Văn Nguyệt",
+      "role": "Bí thư Đoàn trường",
+      "period": "1983 – 1984",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /13. Đồng chí Trần Văn Nguyệt/Tiểu sử.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /13. Đồng chí Trần Văn Nguyệt/Đồng chí Trần Văn Nguyệt (Bí thư giai đoạn 1983 – 1984).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-13",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts",
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dvFi"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-14",
+      "group": "bt",
+      "name": "Đồng chí Lê Quốc Băng",
+      "role": "Bí thư Đoàn trường",
+      "period": "1984 – 1985",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /14. Đồng chí Lê Quốc Băng/14.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /14. Đồng chí Lê Quốc Băng/Đồng chí Lê Quốc Băng (Bí thư giai đoạn 1984 – 1985).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-14",
+      "columnGReferences": [
+        "https://fpe.hnue.edu.vn/45-n%C4%83m/p/258"
+      ],
+      "verificationNotes": [
+        "DOCX ghi nhiệm kỳ 1984–1986, khác mốc 1984–1985 trong Excel; giao diện giữ mốc Excel. Dòng trình độ trong DOCX có dấu hỏi nên chưa khẳng định học vị."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-15",
+      "group": "bt",
+      "name": "TS. Dương Duy Bằng",
+      "role": "Bí thư Đoàn trường",
+      "period": "1986 – 1987",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /15. Đồng chí Dương Duy Bằng/15.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /15. Đồng chí Dương Duy Bằng/Đồng chí Dương Duy Bằng (Bí thư giai đoạn 1986 – 1987).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-15",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-16",
+      "group": "bt",
+      "name": "PGS.TS. Nguyễn Tân Ân",
+      "role": "Bí thư Đoàn trường",
+      "period": "1988 – 1991",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /16. PGS.TS. Nguyễn Tân Ân/PGS.TS. Nguyễn Tân Ân.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /16. PGS.TS. Nguyễn Tân Ân/Đồng chí Nguyễn Tân  Ân (Bí thư giai đoạn 1988 – 1991).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-16",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-17",
+      "group": "bt",
+      "name": "ThS. Nguyễn Đức Tuấn",
+      "role": "Bí thư Đoàn trường",
+      "period": "1991 – 1995",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /17. Đồng chí Nguyễn Đức Tuấn/17.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /17. Đồng chí Nguyễn Đức Tuấn/Đồng chí Nguyễn Đức Tuấn (Bí thư giai đoạn 1991 – 1995).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-17",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-18",
+      "group": "bt",
+      "name": "Đồng chí Phạm Tất Thắng",
+      "role": "Bí thư Đoàn trường",
+      "period": "1996 – 1998",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /18. Đồng chí Phạm Tất Thắng/18.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /18. Đồng chí Phạm Tất Thắng/Đồng chí Phạm Tất Thắng (Bí thư Đoàn trường giai đoạn 1996 - 1998).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-18",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-19",
+      "group": "bt",
+      "name": "Đồng chí Nguyễn Văn Phong",
+      "role": "Bí thư Đoàn trường",
+      "period": "1998 – 2002",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /19. Đồng chí Nguyễn Văn Phong/19. Đ_c Nguyễn Văn Phong.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /19. Đồng chí Nguyễn Văn Phong/Đồng chí Nguyễn Văn Phong.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-19",
+      "columnGReferences": [
+        "https://hanoimoi.vn/tom-tat-qua-trinh-cong-tac-cua-pho-bi-thu-thanh-uy-ha-noi-nguyen-van-phong-502480.html"
+      ],
+      "verificationNotes": [
+        "DOCX ghi nhiệm kỳ 1992–2002, chồng lấn DT-17 và DT-18; Excel ghi 1998–2002 nên giao diện giữ mốc Excel.",
+        "Liên kết cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện.",
+        "Nguồn mới có hai ảnh; dùng Đồng chí Nguyễn Văn Phong.jpg vì có độ phân giải và dung lượng cao hơn."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-20",
+      "group": "bt",
+      "name": "PGS.TS. Trịnh Thị Lan",
+      "role": "Bí thư Đoàn trường",
+      "period": "2002 – 2004",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /20. Đồng chí Trịnh Thị Lan/Tiểu sử.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /20. Đồng chí Trịnh Thị Lan/Đồng chí Trịnh Thị Lan (Bí thư Đoàn trường giai đoạn 2002 - 2004).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-20",
+      "columnGReferences": [
+        "https://scholar.google.com/citations?user=dTnw3gsAAAAJ&hl=vi"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-21",
+      "group": "bt",
+      "name": "PGS.TS. Nguyễn Văn Hiền",
+      "role": "Bí thư Đoàn trường",
+      "period": "2004 – 2006",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /21. PGS.TS. Nguyễn Văn Hiền/PGS.TS Nguyễn Văn Hiền.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /21. PGS.TS. Nguyễn Văn Hiền/Đ_c Nguyễn Văn Hiền_.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-21",
+      "columnGReferences": [
+        "https://hnue.edu.vn/tin-tuc/11110?page=1"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-22",
+      "group": "bt",
+      "name": "PGS.TS. Nguyễn Xuân Thành",
+      "role": "Bí thư Đoàn trường",
+      "period": "2006 – 2007",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /22. PGS.TS. Nguyễn Xuân Thành/PGS.TS Nguyễn Xuân Thành.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /22. PGS.TS. Nguyễn Xuân Thành/Đồng chí Nguyễn Xuân Thành (Bí thư giai đoạn 2006 – 2007).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-22",
+      "columnGReferences": [
+        "https://www.facebook.com/thanhnien.hnue/posts"
+      ],
+      "verificationNotes": [],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-23",
+      "group": "bt",
+      "name": "PGS.TS. Nguyễn Bá Cường",
+      "role": "Bí thư Đoàn trường",
+      "period": "2007 – 2012",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /23. PGS.TS. Nguyễn Bá Cường/PGS.TS Nguyễn Bá Cường.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /23. PGS.TS. Nguyễn Bá Cường/Đồng chí Nguyễn Bá Cường (Bí thư giai đoạn 2007 – 2012).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-23",
+      "columnGReferences": [
+        "https://web.facebook.com/share/p/185VsEBuNB/",
+        "https://staff.hnue.edu.vn/directories/?cuongnb"
+      ],
+      "verificationNotes": [
+        "Bài Facebook trong cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-24",
+      "group": "bt",
+      "name": "TS. Lê Xuân Quang",
+      "role": "Bí thư Đoàn trường",
+      "period": "2012 – 2015",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /24. TS. Lê Xuân Quang/TS Lê Xuân Quang.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /24. TS. Lê Xuân Quang/Đồng chí Lê Xuân Quang (Bí thư Đoàn trường giai đoạn 2012 - 2015).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-24",
+      "columnGReferences": [
+        "https://drive.google.com/drive/folders/1KLqWpTW7P51jZxKgeogMHUZwnn82dv"
+      ],
+      "verificationNotes": [
+        "Bài Facebook trong cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-25",
+      "group": "bt",
+      "name": "TS. Nguyễn Thanh Xuân",
+      "role": "Bí thư Đoàn trường",
+      "period": "2015 – 2017",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /25. TS. Nguyễn Thanh Xuân/TS Nguyễn Thanh Xuân.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /25. TS. Nguyễn Thanh Xuân/Đồng chí Nguyễn Thanh Xuân (Bí thư giai đoạn 2015 – 2017).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-25",
+      "columnGReferences": [
+        "https://web.facebook.com/share/p/185VsEBuNB/"
+      ],
+      "verificationNotes": [
+        "Bài Facebook trong cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-26",
+      "group": "bt",
+      "name": "TS. Nguyễn Văn Thỏa",
+      "role": "Bí thư Đoàn trường",
+      "period": "2017 – 2019",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /26. TS. Nguyễn Văn Thỏa/TS. Nguyễn Văn Thỏa.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /26. TS. Nguyễn Văn Thỏa/TS. Nguyễn Văn Thỏa.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-26",
+      "columnGReferences": [
+        "https://web.facebook.com/share/p/185VsEBuNB/"
+      ],
+      "verificationNotes": [
+        "Bài Facebook trong cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-27",
+      "group": "bt",
+      "name": "TS. Đinh Minh Hằng",
+      "role": "Bí thư Đoàn trường",
+      "period": "2019 – 2022",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /27. TS. Đinh Minh Hằng/TS. Đinh Minh Hằng.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /27. TS. Đinh Minh Hằng/Đồng chí Đinh Minh Hằng (Bí thư giai đoạn 2019 – 2022).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-27",
+      "columnGReferences": [
+        "https://dantri.com.vn/giao-duc/nu-tien-si-tung-tu-choi-2-hoc-bong-quoc-te-de-day-van-que-nha-20171119111951711.htm",
+        "https://nguvan.hnue.edu.vn/C%C3%A1n-b%E1%BB%99/L%C3%BD-l%E1%BB%8Bch-khoa-h%E1%BB%8Dc/p/122",
+        "https://www.qdnd.vn/ho-so-su-kien/nhung-tam-guong-binh-di-ma-cao-quy-lan-thu10/mot-dang-vien-tre-tieu-bieu-cua-thu-do-618929"
+      ],
+      "verificationNotes": [
+        "Hai nguồn Dân trí và Khoa Ngữ văn HNUE truy cập được; liên kết Báo Quân đội nhân dân trong cột G hiện không truy cập được."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-28",
+      "group": "bt",
+      "name": "TS. Bùi Thị Hà Giang",
+      "role": "Bí thư Đoàn trường",
+      "period": "2022 – 2024",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /28. TS. Bùi Thị Hà Giang/TS. Bùi Thị Hà Giang.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /28. TS. Bùi Thị Hà Giang/Đồng chí Bùi Thị Hà Giang (Bí thư giai đoạn 2022 - 2024).jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-28",
+      "columnGReferences": [
+        "https://web.facebook.com/share/p/185VsEBuNB/"
+      ],
+      "verificationNotes": [
+        "Bài Facebook trong cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện."
+      ],
+      "status": "Hoàn chỉnh"
+    },
+    {
+      "code": "DT-29",
+      "group": "bt",
+      "name": "TS. Phạm Thị Thanh Thúy",
+      "role": "Bí thư Đoàn trường",
+      "period": "2024 – nay",
+      "sourceDocx": "BÍ THƯ ĐOÀN TRƯỜNG /29. TS. Phạm Thị Thanh Thúy/TS. Phạm Thị Thanh Thúy.docx",
+      "portrait": "BÍ THƯ ĐOÀN TRƯỜNG /29. TS. Phạm Thị Thanh Thúy/Cô Thúy.jpg",
+      "hasDocx": true,
+      "hasPortrait": true,
+      "excelReference": "Chủ đề 5 Cập nhật 06_10_2026.xlsx – DT-29",
+      "columnGReferences": [
+        "https://web.facebook.com/share/p/1FuTxsNotR/"
+      ],
+      "verificationNotes": [
+        "Bài Facebook trong cột G hiện không truy cập được; chưa dùng để bổ sung dữ kiện.",
+        "Tên hồ sơ trong Excel thiếu dấu ở chữ 'Thị'; cột danh mục, DOCX và tên thư mục đều ghi Phạm Thị Thanh Thúy nên giao diện dùng cách viết này."
+      ],
+      "status": "Hoàn chỉnh"
+    }
+  ]
+}
