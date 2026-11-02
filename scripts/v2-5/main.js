@@ -66,17 +66,13 @@ const effectUpdaters = [];
 const framePolicy = createAdaptiveFramePolicy({ activeFps: 60, idleFps: 12 });
 let webglContextAvailable = true;
 const topicDoorState = createTopicDoorState();
+const previewSearchParams = new URLSearchParams(window.location.search);
+const FORCE_PREVIEW_RENDERING = ['introPreview', 'contentPreview', 'entrancePreview', 'gapPreview', 'ceilingPreview']
+    .some(parameter => previewSearchParams.has(parameter));
 
-let elHoverDot, elFocusLabel, elZoneBanner, elFade, elZoneFlash, elCanvas;
-let elNowPlaying, elTrackName, elMuteBtn, elVolDown, elVolUp;
-let elProvinceSelector, elProvinceButtons, elJourneyProgress;
+let elHoverDot, elFocusLabel, elFade, elCanvas;
+let elProvinceSelector, elProvinceButtons;
 
-let masterVolume = 1.0;   // 0..1 — âm lượng tổng do người dùng điều chỉnh
-let isMuted = false;      // tắt tiếng thủ công
-
-// Phương án lai cho việc đổi zone: rời khỏi 1 zone từ ngưỡng này trở lên thì
-// lần sau quay lại sẽ phát LẠI TỪ ĐẦU; nhanh hơn ngưỡng này thì PHÁT TIẾP đoạn dang dở.
-const RESTART_THRESHOLD_MS = 20000; // 20 giây — chỉnh số này nếu muốn nhạy/chậm hơn
 // Màu nhận diện dùng cho các mảng nền chữ/trưng bày của riêng Cụm 2.
 // Không dùng màu này để thay bảng màu bản đồ, TV hoặc popup giao diện.
 const ZONE2_CONTENT_BLUE = '#0092DF';
@@ -89,16 +85,12 @@ const ZONE1_BA_PALETTE = Object.freeze({
 });
 const USE_ZONE1_EDITORIAL_V2 = document.body.dataset.zone1Layout === 'editorial-v2';
 const ZONE2_PHOTO_ONLY = document.body.dataset.zone2PhotoOnly === 'true';
+const USE_CD3_CEILING_LIGHTING = document.body.dataset.lightingSystem === 'cd3-ceiling';
 const ZONE1_RAISED_TEXT_DEMO = true;
 const architectureMaterials = createCircularArchitectureMaterials();
 const UI_FONT = USE_ZONE1_EDITORIAL_V2
     ? "'Roboto','Arial','Helvetica',sans-serif"
     : DEFAULT_UI_FONT;
-
-// Biến cho 3D Audio
-let audioListener;
-let audioLoader;
-const positionalAudios = [];
 
 let heatmapTVCanvas, heatmapTVCtx, heatmapTVTex, heatmapTVMesh;
 let vietnamMapState = null;
@@ -203,15 +195,6 @@ const { resolveMovement } = createRadialCollision({
     boundaries: BOUNDARIES,
     boundaryGap: BOUNDARY_GAP
 });
-
-function updateJourneyProgress(activeZoneId = 0) {
-    if (!elJourneyProgress) return;
-    elJourneyProgress.querySelectorAll('.journey-step').forEach(step => {
-        const zoneId = Number(step.dataset.zone);
-        step.classList.add('is-unlocked');
-        step.classList.toggle('is-active', zoneId === activeZoneId);
-    });
-}
 
 function pointInPolygon(point, vs) {
     let x = point[0], y = point[1]; let inside = false;
@@ -323,19 +306,21 @@ function init() {
     scene.background = new THREE.Color(ARCHITECTURE_COLORS.ceiling);
     scene.fog = new THREE.Fog(ARCHITECTURE_COLORS.ceiling, 18, 64);
 
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x8d6b35, 0.92);
+    // Bản copy có thể thử nguyên tắc chiếu sáng của cd3_1_ltr:
+    // nền thấp hơn, độ sáng chính đến từ các đèn trần có nguồn thật.
+    const hemiLight = new THREE.HemisphereLight(
+        0xffffff, 0x8d6b35, USE_CD3_CEILING_LIGHTING ? 0.72 : 1.0
+    );
     hemiLight.position.set(0, 30, 0); scene.add(hemiLight);
-    const ambient = new THREE.AmbientLight(0xffffff, 0.76); scene.add(ambient);
+    const ambient = new THREE.AmbientLight(
+        0xffffff, USE_CD3_CEILING_LIGHTING ? 0.58 : 0.88
+    );
+    scene.add(ambient);
 
     camera = new THREE.PerspectiveCamera(68, window.innerWidth / window.innerHeight, 0.1, 140);
     camera.position.set(SPAWN_POS.x, EYE_Y, SPAWN_POS.z);
     yaw = Math.PI + Math.atan2(SPAWN_POS.x, -SPAWN_POS.z); 
     pitch = 0; applyCameraRotation();
-
-    // -- THÊM AUDIO LISTENER VÀO CAMERA --
-    audioListener = new THREE.AudioListener();
-    camera.add(audioListener);
-    audioLoader = new THREE.AudioLoader();
 
     renderer = createConfiguredRenderer({
         onContextLost: () => { webglContextAvailable = false; },
@@ -355,52 +340,20 @@ function init() {
     
     elHoverDot = document.getElementById('hover-dot');
     elFocusLabel = document.getElementById('focus-label');
-    elZoneBanner = document.getElementById('zone-banner');
     elFade = document.getElementById('fade-overlay');
-    elZoneFlash = document.getElementById('zone-flash');
-    elNowPlaying = document.getElementById('now-playing');
-    elTrackName = document.getElementById('np-track-name');
-    elMuteBtn = document.getElementById('np-mute-btn');
-    elVolDown = document.getElementById('np-vol-down');
-    elVolUp = document.getElementById('np-vol-up');
     elProvinceSelector = document.getElementById('province-selector');
     elProvinceButtons = document.getElementById('province-buttons');
-    elJourneyProgress = document.getElementById('journey-progress');
     // Bản khung Chủ đề 5 không lấy bản đồ hoặc dữ liệu trưng bày của Chủ đề 3.
 
     startBtn.addEventListener('click', () => {
-        started = true; blocker.style.display = 'none'; 
-        document.getElementById('hud-hint').style.display = 'block';
-        document.getElementById('hud-toolbar').style.display = 'flex'; 
-        elZoneBanner.style.display = 'block';
-        elJourneyProgress.style.display = 'flex';
-        updateJourneyProgress(0);
+        if (startBtn.disabled) return;
+        started = true;
+        blocker.classList.add('is-ready');
+        blocker.setAttribute('aria-busy', 'false');
+        setTimeout(() => { blocker.hidden = true; }, 750);
         // Bảng tỉnh chỉ xuất hiện sau khi camera thực sự đi vào Cụm 2.
         elProvinceSelector.style.display = 'none';
-
-        // Đánh thức Context Audio (Yêu cầu bắt buộc của trình duyệt)
-        if (audioListener.context.state === 'suspended') {
-            audioListener.context.resume();
-        }
-
-        // Phát ngầm tất cả các nhạc nền cụm đã tải xong (đang ở volume 0)
-        // Âm lượng thực tế sẽ do recalcAudioTargets() + vòng lặp fade trong animate() quyết định
-        positionalAudios.forEach(entry => {
-            if (!entry.sound.isPlaying && entry.sound.buffer) entry.sound.play();
-        });
     });
-
-    document.getElementById('btn-guide').addEventListener('click', () => {
-        moveForward = moveBackward = moveLeft = moveRight = false;
-        velocity.set(0, 0, 0);
-        clearInteractionHover();
-        document.getElementById('guide-overlay').style.display = 'flex';
-    });
-    document.getElementById('guide-close').addEventListener('click', () => {
-        document.getElementById('guide-overlay').style.display = 'none';
-        scheduleHeatmapAutoAdvance(performance.now());
-    });
-    document.getElementById('btn-reset').addEventListener('click', resetToSpawn);
     document.getElementById('info-close').addEventListener('click', () => {
         document.getElementById('info-overlay').style.display = 'none';
         scheduleHeatmapAutoAdvance(performance.now());
@@ -409,16 +362,6 @@ function init() {
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) scheduleHeatmapAutoAdvance(performance.now());
     });
-
-    // ── Điều khiển âm lượng: click icon loa để tắt/bật tiếng, nút +/- để tăng giảm 10%/lần ──
-    elMuteBtn.addEventListener('click', () => {
-        isMuted = !isMuted;
-        updateVolumeIcon();
-        recalcAudioTargets();
-    });
-    elVolDown.addEventListener('click', () => setMasterVolume(masterVolume - 0.1));
-    elVolUp.addEventListener('click', () => setMasterVolume(masterVolume + 0.1));
-    updateVolumeIcon();
 
     document.addEventListener('keydown', (e) => {
         if (!started) return;
@@ -429,11 +372,6 @@ function init() {
             if (infoOverlay?.style.display === 'flex') {
                 infoOverlay.style.display = 'none';
                 scheduleHeatmapAutoAdvance(performance.now());
-                return;
-            }
-            const guideOverlay = document.getElementById('guide-overlay');
-            if (guideOverlay?.style.display === 'flex') {
-                guideOverlay.style.display = 'none';
                 return;
             }
         }
@@ -450,7 +388,10 @@ function init() {
     window.addEventListener('resize', onWindowResize);
 
     buildArchitecture();
-    buildCeilings(); buildZoneContents();
+    buildCeilings();
+    if (USE_CD3_CEILING_LIGHTING) createCd3CeilingLighting();
+    else createPortraitGalleryLighting();
+    buildZoneContents();
 }
 
 function applyCameraRotation() {
@@ -462,7 +403,6 @@ function resetToSpawn() {
     camera.position.set(SPAWN_POS.x, EYE_Y, SPAWN_POS.z); yaw = Math.PI + Math.atan2(SPAWN_POS.x, -SPAWN_POS.z); pitch = 0; applyCameraRotation();
     document.getElementById('info-overlay').style.display = 'none';
     closeProfileModal();
-    updateJourneyProgress(0);
     framePolicy.invalidate(3);
 }
 
@@ -497,7 +437,7 @@ function isInteractionModalOpen() {
     return isDocumentOpen
         || isProfileModalOpen()
         || document.getElementById('info-overlay')?.style.display === 'flex'
-        || document.getElementById('guide-overlay')?.style.display === 'flex';
+        ;
 }
 
 function clearInteractionHover() {
@@ -1159,11 +1099,9 @@ function buildArchitecture() {
     );
     entranceFloor.name = 'entrance-radial-sector-floor';
 
-    // Chỉ giữ hai nẹp phân cách Cụm 1–2 và Cụm 2–3. Cung tường nhỏ đối diện
-    // cửa chính được để liền mạch dành cho bảng lời dẫn tổng quát.
+    // Giữ mặt tường của vòng tròn nhỏ liền mạch 360°. Không đặt nẹp
+    // dọc tại ranh giới các cụm vì chúng cắt ngang nhịp trưng bày hồ sơ.
     BOUNDARIES.forEach((angle) => {
-        // Nẹp đồng rộng 0,2 áp trên mặt ngoài tường lõi tại ranh giới cụm.
-        buildBronzeCoreBand(angle);
         // Vách ngắn nhận diện ranh giới khu nhưng không khóa tuyến tham quan vòng tròn.
         buildRadialWall(angle, R_OUTER - BOUNDARY_WALL_LENGTH, R_OUTER, [], WALL_H, WALL_THICK, 1);
     });
@@ -1456,6 +1394,30 @@ function createWallInfographic(radius, y) {
     interactiveObjects.push(panel);
 }
 
+function createPerforatedCeiling(rInner, rOuter, a0, a1, y, material, parent) {
+    const shape = new THREE.Shape();
+    shape.moveTo(Math.cos(a0) * rOuter, Math.sin(a0) * rOuter);
+    shape.absarc(0, 0, rOuter, a0, a1, false);
+    shape.lineTo(Math.cos(a1) * rInner, Math.sin(a1) * rInner);
+    shape.absarc(0, 0, rInner, a1, a0, true);
+    shape.closePath();
+    getCd3FixtureLayout().forEach(fixture => {
+        let angle = fixture.angle;
+        while (angle < a0) angle += Math.PI * 2;
+        if (angle > a1 || fixture.radius < rInner || fixture.radius > rOuter) return;
+        const hole = new THREE.Path();
+        hole.absarc(Math.cos(angle) * fixture.radius, Math.sin(angle) * fixture.radius,
+            .90, 0, Math.PI * 2, true);
+        shape.holes.push(hole);
+    });
+    const geometry = new THREE.ShapeGeometry(shape, 96);
+    geometry.rotateX(Math.PI / 2);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.y = y;
+    mesh.name = 'ceiling-with-recessed-light-openings';
+    parent.add(mesh);
+}
+
 function buildCeilings() {
     const ceiling = new THREE.Group();
     ceiling.name = 'radial-drop-ceiling';
@@ -1517,7 +1479,11 @@ function buildCeilings() {
         createAnnularSectorMesh(R_CORE - 0.1, R_OUTER + 0.12, a0, a1, backstopY, backstopMat, steps, ceiling);
         createAnnularSectorMesh(R_CORE - 0.08, innerTransitionR + 0.08, a0, a1, rimY, rimMat, steps, ceiling);
         createAnnularSectorMesh(outerTransitionR - 0.08, R_OUTER + 0.1, a0, a1, rimY, rimMat, steps, ceiling);
-        createAnnularSectorMesh(innerTransitionR, outerTransitionR, a0, a1, recessedY, recessedMat, steps, ceiling);
+        if (USE_CD3_CEILING_LIGHTING) {
+            createPerforatedCeiling(innerTransitionR, outerTransitionR, a0, a1, recessedY, recessedMat, ceiling);
+        } else {
+            createAnnularSectorMesh(innerTransitionR, outerTransitionR, a0, a1, recessedY, recessedMat, steps, ceiling);
+        }
 
         createArcFascia(innerTransitionR, a0, a1, rimY, recessedY, fasciaMat, steps, ceiling);
         createArcFascia(outerTransitionR, a0, a1, rimY, recessedY, fasciaMat, steps, ceiling);
@@ -1534,7 +1500,9 @@ function buildCeilings() {
 
     // Hai vòng đèn âm trần đồng tâm: một vòng sát trụ giữa và một vòng gần
     // tường ngoài. InstancedMesh giữ 74 bộ đèn ở đúng 2 draw call chính.
-    createConcentricCeilingLightRings(ceiling, rimY - .205);
+    if (!USE_CD3_CEILING_LIGHTING) {
+        createConcentricCeilingLightRings(ceiling, rimY - .205);
+    }
 
     // Hai dầm hai bên sảnh cửa thay cho dầm giữa cũ, nhờ đó toàn bộ hình quạt
     // từ cửa đến vòng tròn trong trở thành một không gian riêng thống nhất.
@@ -1561,11 +1529,11 @@ function buildCeilings() {
     const entranceA0 = -Math.PI / 2 - ENTRANCE_HALF_ANGLE;
     const entranceA1 = -Math.PI / 2 + ENTRANCE_HALF_ANGLE;
     const entranceCeilingMat = architectureMaterials.ceiling;
-    createAnnularSectorMesh(
+    (USE_CD3_CEILING_LIGHTING ? createPerforatedCeiling : createAnnularSectorMesh)(
         R_CORE - .08, R_OUTER + .1,
         entranceA0, entranceA1,
         rimY - rimThickness / 2 - .025,
-        entranceCeilingMat, 32, ceiling
+        entranceCeilingMat, ...(USE_CD3_CEILING_LIGHTING ? [ceiling] : [32, ceiling])
     );
 
     const entranceCenterInlay = architectureMaterials.trim.clone();
@@ -1635,115 +1603,136 @@ function createConcentricCeilingLightRings(parent, y) {
     parent.add(housings, diffusers);
 }
 
-// --- HÀM TẠO LOA 3D CHUYÊN DỤNG ---
+function createCd3CeilingFixture(angle, radius, {
+    intensity = 52, distance = 22, name = 'cd3-ceiling-light'
+} = {}) {
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    // Mặt kính nằm ngang với mặt dưới của vành trần (xấp xỉ 7,51 m),
+    // còn thân chóa được giấu phía trên.
+    const isEntrance = name.includes('entrance');
+    const ceilingY = isEntrance ? WALL_H - .385 : WALL_H + .18;
+    const fixtureY = ceilingY + .16;
+    const housing = new THREE.Mesh(
+        // Chóa nông, phần lớn chìm trong trần để đọc đúng là đèn âm.
+        new THREE.CylinderGeometry(.90, .90, .32, 48, 1, true),
+        new THREE.MeshStandardMaterial({ color: 0x2f3032, roughness: .7, metalness: .12, side: THREE.DoubleSide })
+    );
+    housing.position.set(x, fixtureY, z);
+    housing.name = `${name}-housing`;
+    scene.add(housing);
 
-function createZone3DAudio(path, position, zoneId) {
-    const sound = new THREE.PositionalAudio(audioListener);
+    const rim = new THREE.Mesh(
+        new THREE.RingGeometry(.86, .90, 48),
+        new THREE.MeshStandardMaterial({ color: 0x6f4a28, roughness: .42, metalness: .55 })
+    );
+    rim.rotation.x = Math.PI / 2;
+    rim.position.set(x, ceilingY + .001, z);
+    rim.name = `${name}-rim`;
+    scene.add(rim);
 
-    // Metadata điều khiển "cách ly cứng theo zone": mỗi loa chỉ được mở âm lượng
-    // khi camera đang đứng trong đúng zoneId của nó. Bắt đầu ở mức 0 (câm lặng).
-    // leftAt = 0 nghĩa là "chưa từng ghé qua" → lần đầu tiên vào zone sẽ luôn phát từ đầu bài.
-    const audioEntry = { zoneId, sound, baseVolume: 1.0, targetVolume: 0, leftAt: 0 };
+    const lens = new THREE.Mesh(
+        new THREE.CircleGeometry(.72, 48),
+        new THREE.MeshBasicMaterial({ color: 0xffedcf, side: THREE.DoubleSide })
+    );
+    lens.rotation.x = Math.PI / 2;
+    lens.position.set(x, ceilingY + .05, z);
+    lens.name = `${name}-lens`;
+    scene.add(lens);
 
-    audioLoader.load(path, function(buffer) {
-        sound.setBuffer(buffer);
-        // Cấu hình mô hình lan truyền âm thanh (vẫn giữ để có chiều sâu không gian
-        // NHẸ trong phạm vi zone, nhưng việc cách ly giữa các zone do targetVolume quyết định)
-        sound.setDistanceModel('linear'); 
-        sound.setRefDistance(8);   
-        sound.setMaxDistance(25);  
-        sound.setRolloffFactor(1);
-        sound.setLoop(true);
-        
-        // KHÔNG bật to ngay: chỉ phát "ngầm" ở volume 0, chờ recalcAudioTargets() mở dần
-        sound.setVolume(0);
-        
-        // Nếu người dùng đã click Bắt Đầu trước khi load xong
-        if (started) {
-            sound.play();
-        }
-    }, 
-    undefined, 
-    function(err) {
-        // KHÔNG còn phát âm thanh dự phòng nữa — nếu file lỗi/không tải được thì
-        // track này im lặng vĩnh viễn (sound.buffer vẫn là null, mọi nơi khác trong code
-        // đều kiểm tra "if (entry.sound.buffer)" trước khi play/tính volume nên tự động bỏ qua).
-        // Cảnh báo rõ trong Console để người chỉnh sửa dễ debug đường dẫn/CORS.
-        console.warn(`⚠️ Không tải được nhạc cho zone ${zoneId}: "${path}"`);
-        console.warn('   → Kiểm tra lại đường dẫn file, hoặc file không cho phép CORS. Zone này sẽ không phát nhạc.');
-    });
-
-    // Tạo Mesh rỗng để neo Âm thanh vào Không gian
-    const speakerMesh = new THREE.Object3D();
-    speakerMesh.position.copy(position);
-    speakerMesh.add(sound);
-    scene.add(speakerMesh);
-    
-    positionalAudios.push(audioEntry);
+    const light = new THREE.PointLight(0xffe7c2, intensity, distance, 1.75);
+    // Giữ cao độ PointLight trước khi khoét hốc: fixtureY cũ = WALL_H - .29,
+    // nguồn thấp hơn .14. Mô hình âm trần và nguồn sáng được căn độc lập
+    // để giữ nguyên vị trí, độ lan của đốm sáng đã duyệt.
+    light.position.set(x, WALL_H - .43, z);
+    light.name = name;
+    light.castShadow = false;
+    scene.add(light);
+    return light;
 }
 
-// Phương án lai: nếu rời khỏi 1 zone từ RESTART_THRESHOLD_MS trở lên thì lần quay lại
-// sẽ phát LẠI TỪ ĐẦU bài (stop rồi play lại, offset về 0); nếu quay lại nhanh hơn ngưỡng
-// đó (ví dụ đứng gần biên 2 zone rồi nhích qua lại) thì PHÁT TIẾP đúng đoạn đang dang dở,
-// tránh giật/restart liên tục.
-function handleZoneMusicTransition(oldZoneId, newZoneId) {
-    const now = performance.now();
+// Chuyển nguyên tắc hệ đèn của cd3_1_ltr sang mặt bằng tròn:
+// ít nguồn PointLight có chóa thật, phân bố theo cung thay vì dày đặc
+// các đèn trang trí. Bản chính không gọi hàm này.
+function getCd3FixtureLayout() {
+    // Lùi vòng đèn vào phía trụ giữa để nó nằm gọn trên dải trần
+    // hạ cốt, đồng thời tăng mật độ để nhịp chiếu sáng liên tục hơn.
+    const radius = (R_CORE + R_OUTER) / 2 - 1.2;
+    const count = 12;
+    const entranceClearance = ENTRANCE_HALF_ANGLE + THREE.MathUtils.degToRad(5);
+    const start = -Math.PI / 2 + entranceClearance;
+    const sweep = Math.PI * 2 - entranceClearance * 2;
 
-    // Đánh dấu mốc thời gian vừa rời khỏi zone cũ (nếu có zone cũ)
-    if (oldZoneId !== null) {
-        positionalAudios.forEach(entry => {
-            if (entry.zoneId === oldZoneId) entry.leftAt = now;
+    const fixtures = [];
+    for (let index = 0; index < count; index += 1) {
+        const angle = start + sweep * (index + .5) / count;
+        fixtures.push({ angle, radius,
+            intensity: 52,
+            distance: 22,
+            name: `cd3-gallery-ceiling-light-${index + 1}`
         });
     }
 
-    // Zone mới được kích hoạt: nếu đã "vắng mặt" đủ lâu (hoặc chưa từng ghé, leftAt=0)
-    // thì restart về đầu bài; ngược lại giữ nguyên nguồn phát đang chạy ngầm.
-    positionalAudios.forEach(entry => {
-        if (entry.zoneId === newZoneId && entry.sound.buffer) {
-            const awayMs = now - entry.leftAt;
-            if (awayMs >= RESTART_THRESHOLD_MS) {
-                if (entry.sound.isPlaying) entry.sound.stop();
-                entry.sound.play();
-            }
-            entry.leftAt = now; // đang active — mốc này sẽ bị ghi đè khi thực sự rời đi lần sau
-        }
+    // Hai đèn sảnh đối xứng, tránh đè lên nẹp/dầm giữa cửa.
+    [-1, 1].forEach(side => {
+        fixtures.push({ angle: -Math.PI / 2 + side * ENTRANCE_HALF_ANGLE * .42,
+                radius,
+                intensity: 38,
+                distance: 18,
+                name: `cd3-entrance-ceiling-light-${side < 0 ? 'left' : 'right'}`
+            });
+    });
+    return fixtures;
+}
+
+function createCd3CeilingLighting() {
+    getCd3FixtureLayout().forEach(({ angle, radius, ...options }) => {
+        createCd3CeilingFixture(angle, radius, options);
     });
 }
 
-// Cách ly cứng theo zone + áp dụng âm lượng tổng/mute do người dùng điều chỉnh.
-// Chỉ zone đang đứng trong mới có targetVolume > 0, và toàn bộ bị nhân thêm masterVolume,
-// hoặc về thẳng 0 nếu đang isMuted — tất cả gói gọn trong MỘT nguồn sự thật duy nhất.
-function recalcAudioTargets() {
-    positionalAudios.forEach(entry => {
-        const zoneActive = (entry.zoneId === lastZoneId);
-        entry.targetVolume = (zoneActive && !isMuted) ? entry.baseVolume * masterVolume : 0;
-    });
-}
+// Vòng đèn trần chỉ là các mặt phát sáng trang trí. Dùng cặp
+// spotlight hướng riêng vào hai mặt tường thay cho PointLight phát mọi hướng;
+// nhờ vậy hồ sơ vẫn sáng mà trần không còn các quầng trắng vô định.
+function createPortraitGalleryLighting() {
+    const lightRadius = (R_CORE + R_OUTER) / 2;
+    const lightCount = 10;
+    const entranceClearance = ENTRANCE_HALF_ANGLE + THREE.MathUtils.degToRad(3);
+    const startAngle = -Math.PI / 2 + entranceClearance;
+    const sweep = Math.PI * 2 - entranceClearance * 2;
 
-// Đặt âm lượng tổng (0..1), tự động bỏ mute nếu người dùng chủ động tăng lên từ 0
-function setMasterVolume(v) {
-    masterVolume = Math.min(1, Math.max(0, v));
-    if (masterVolume > 0 && isMuted) isMuted = false;
-    updateVolumeIcon();
-    recalcAudioTargets();
-}
+    for (let index = 0; index < lightCount; index += 1) {
+        const angle = startAngle + sweep * (index + .5) / lightCount;
+        const lightPosition = new THREE.Vector3(
+            Math.cos(angle) * lightRadius, WALL_H - 1.55, Math.sin(angle) * lightRadius
+        );
 
-// Cập nhật icon loa theo trạng thái: 🔇 khi mute/volume=0, 🔉 khi nhỏ, 🔊 khi bình thường
-function updateVolumeIcon() {
-    if (!elMuteBtn) return;
-    if (isMuted || masterVolume <= 0) {
-        elMuteBtn.textContent = '🔇';
-        elMuteBtn.classList.add('muted');
-        elMuteBtn.title = 'Bật tiếng';
-    } else if (masterVolume < 0.55) {
-        elMuteBtn.textContent = '🔉';
-        elMuteBtn.classList.remove('muted');
-        elMuteBtn.title = 'Tắt tiếng';
-    } else {
-        elMuteBtn.textContent = '🔊';
-        elMuteBtn.classList.remove('muted');
-        elMuteBtn.title = 'Tắt tiếng';
+        [
+            { radius: R_OUTER - .45, name: 'outer' },
+            { radius: R_CORE + .45, name: 'inner' }
+        ].forEach(destination => {
+            const target = new THREE.Object3D();
+            target.position.set(
+                Math.cos(angle) * destination.radius, 3.55, Math.sin(angle) * destination.radius
+            );
+            scene.add(target);
+
+            const light = new THREE.SpotLight(
+                0xffe7c2, 52, 18, THREE.MathUtils.degToRad(34), .82, 1.65
+            );
+            light.position.copy(lightPosition);
+            light.target = target;
+            light.name = `portrait-gallery-${destination.name}-light-${index + 1}`;
+            light.castShadow = false;
+            scene.add(light);
+        });
     }
+}
+
+// Các bố cục thử nghiệm cũ vẫn có thể gọi hàm này, nhưng
+// Chủ đề 5 hiện không tạo, tải hoặc phát bất kỳ nhạc nền nào.
+function createZone3DAudio(path, position, zoneId) {
+    return null;
 }
 
 // --- HÀM RENDER CHỮ 3D VÀ BẢNG THÔNG TIN ---
@@ -2444,6 +2433,10 @@ function addTopic5AreaHeaderLogos({ key, titleAngle, titleWidth, radius, y, isCo
 }
 
 function buildTopic5PortraitGallery() {
+    // Dịch toàn bộ vòng lùi đúng một nhịp: DT-01 thay vào chính vị trí DT-29
+    // của bố cục liền trước. Vòng vẫn kín 360°, khoảng cách và thứ tự thời gian
+    // của toàn bộ 29 hồ sơ không thay đổi.
+    const coreGallerySeam = THREE.MathUtils.degToRad(187 + 360 * 3 / 29);
     const configurations = [
         { zoneId: 1, key: 'du', expected: 19, width: 3.80, accent: 0x9a6f3a, surface: 'outer' },
         { zoneId: 2, key: 'ht', expected: 13, width: 3.80, accent: 0xb58a43, surface: 'outer' },
@@ -2465,9 +2458,14 @@ function buildTopic5PortraitGallery() {
             ? zone.a0 + ENTRANCE_HALF_ANGLE : zone.a0;
         const wallEnd = !isCore && Math.abs(zone.a1 - Math.PI * 3 / 2) < .001
             ? zone.a1 - ENTRANCE_HALF_ANGLE : zone.a1;
-        // Lề động gồm nửa bề rộng ảnh và khoảng thở 0,42 đơn vị.
-        // Nhờ vậy ảnh đầu/cuối không thể xuyên vào vách hướng tâm tại ranh giới khu.
-        const marginAngle = isCore ? 0 : (configuration.width / 2 + .42) / radius;
+        // Khe biên tại cửa/vách bằng đúng khe giữa hai hồ sơ. Với chiều
+        // dài cung L, n hồ sơ rộng w và n+1 khe bằng nhau, ta có:
+        // L = n*w + (n+1)*gap. Sau đó dịch tâm hồ sơ đầu/cuối vào
+        // một khoảng w/2 + gap để cả nhóm giữ nhịp đều.
+        const arcLength = (wallEnd - wallStart) * radius;
+        const equalEdgeGap = isCore ? 0 : Math.max(.28,
+            (arcLength - profiles.length * configuration.width) / (profiles.length + 1));
+        const marginAngle = isCore ? 0 : (configuration.width / 2 + equalEdgeGap) / radius;
         const start = wallStart + marginAngle;
         const end = wallEnd - marginAngle;
         const height = configuration.width / (10 / 9);
@@ -2478,7 +2476,9 @@ function buildTopic5PortraitGallery() {
             const fraction = isCore
                 ? (index + .5) / profiles.length
                 : (profiles.length === 1 ? .5 : index / (profiles.length - 1));
-            const angle = THREE.MathUtils.lerp(start, end, fraction);
+            const angle = isCore
+                ? coreGallerySeam + Math.PI * 2 * fraction
+                : THREE.MathUtils.lerp(start, end, fraction);
             const originalPortrait = profile.sources?.portrait
                 ? `./${String(profile.sources.portrait).replace(/^\.\//u, '')}`
                 : profile.image;
@@ -2505,9 +2505,11 @@ function buildTopic5PortraitGallery() {
             });
         });
 
+        // Giữ biển tên và hai logo ở chính diện cửa để định hướng rõ ràng;
+        // chỉ dải chân dung dịch chuyển theo hành trình thời gian mới.
         const titleAngle = isCore ? -Math.PI / 2 : (wallStart + wallEnd) / 2;
         const titleWidth = isCore ? 10.5 : configuration.key === 'ht' ? 15 : 13;
-        const titleY = isCore ? 6.35 : 6.82;
+        const titleY = isCore ? 6.30 : 6.70;
         createZone1RaisedText({
             x: Math.cos(titleAngle) * radius,
             z: Math.sin(titleAngle) * radius,
@@ -2515,9 +2517,13 @@ function buildTopic5PortraitGallery() {
             rotY: faceCoreRotY(titleAngle) + (isCore ? Math.PI : 0),
             curveRadius: isCore ? -radius : radius,
             w: titleWidth,
-            h: isCore ? 1.05 : .72,
+            h: isCore ? 1.20 : 1.02,
             text: zone.name.toUpperCase(),
             textRole: 'section-title',
+            // Quy đổi trực tiếp từ cỡ TextGeometry của ver 2.3:
+            // Bí thư Đảng ủy .48; Hiệu trưởng và Bí thư Đoàn .43.
+            fontScale: configuration.key === 'du' ? 1.55
+                : configuration.key === 'ht' ? 1.40 : 1.20,
             align: 'center',
             fontWeight: 900,
             textColor: '#d3b36d',
@@ -4839,8 +4845,7 @@ function resumeHeatmapOverviewSlideshow(immediate = false) {
 function updateHeatmapOverviewSlideshow(timeMs) {
     if (!heatmapOverviewNextAt || !heatmapOverviewSlides.length) return;
     const infoOpen = document.getElementById('info-overlay')?.style.display === 'flex';
-    const guideOpen = document.getElementById('guide-overlay')?.style.display === 'flex';
-    if (isDocumentOpen || infoOpen || guideOpen || document.hidden) return;
+    if (isDocumentOpen || infoOpen || document.hidden) return;
     if (timeMs < heatmapOverviewNextAt) return;
     const activity = getDisplayedHeatmapActivity();
     const mediaItems = getHeatmapMedia(activity);
@@ -5182,9 +5187,6 @@ function checkMapHotspotClick(uvX, uvY) {
 
     // Dùng các giá trị này để hiệu chỉnh chính xác hotspot theo vị trí bạn chỉ.
     console.info(`[Northern map] UV: ${uvX.toFixed(4)}, ${uvY.toFixed(4)}`);
-    elZoneFlash.style.boxShadow = `inset 0 0 260px 60px #f4b223`;
-    elZoneFlash.style.opacity = '0.5';
-    setTimeout(() => { elZoneFlash.style.opacity = '0'; }, 300);
 }
 
 function getProvinceAtUV(uvX, uvY) {
@@ -5205,45 +5207,6 @@ const baseFogColor = new THREE.Color(ARCHITECTURE_COLORS.ceiling);
 const targetFogColor = new THREE.Color(ARCHITECTURE_COLORS.ceiling);
 let zoneFlashTimer = null;
 
-function updateZoneBanner(zone) {
-    if (zone.id !== lastZoneId) {
-        const isFirstLoad = lastZoneId === null; const oldZoneId = lastZoneId; lastZoneId = zone.id;
-        if (started && elProvinceSelector) {
-            elProvinceSelector.style.display = (SHOW_PROVINCE_SELECTOR && zone.id === 2) ? 'block' : 'none';
-        }
-        elZoneBanner.textContent = zone.id === 0 ? 'Sảnh trung tâm' : zone.name;
-        const hex = '#' + zone.color.toString(16).padStart(6, '0');
-        elZoneBanner.style.color = hex; elZoneBanner.style.borderColor = hex;
-        targetFogColor.copy(baseFogColor).lerp(new THREE.Color(zone.color), zone.id === 0 ? 0 : 0.12);
-        
-        if (!isFirstLoad) {
-            elZoneFlash.style.boxShadow = `inset 0 0 260px 60px ${hex}`; elZoneFlash.style.opacity = '0.5';
-            clearTimeout(zoneFlashTimer); zoneFlashTimer = setTimeout(() => { elZoneFlash.style.opacity = '0'; }, 550);
-        }
-        
-        // Phương án lai: quyết định restart-từ-đầu hay phát-tiếp tuỳ thời gian đã rời zone
-        handleZoneMusicTransition(oldZoneId, zone.id);
-
-        // Cách ly cứng âm thanh theo zone: chỉ mở đúng 1 bài của zone hiện tại,
-        // mọi zone khác (kể cả khi đứng ở id 0 - Sảnh trung tâm) đều bị tắt.
-        // Đồng thời áp dụng masterVolume/mute hiện tại của người dùng.
-        recalcAudioTargets();
-
-        // Điều khiển giao diện Loa phát nhạc
-        if (zone.id === 0) {
-            elNowPlaying.classList.remove('show');
-            setTimeout(() => { if (lastZoneId === 0) elNowPlaying.style.display = 'none'; }, 500);
-        } else {
-            elNowPlaying.style.display = 'flex';
-            void elNowPlaying.offsetWidth; // Bắt buộc trình duyệt render lại để chạy animation mượt
-            elNowPlaying.classList.add('show');
-            elTrackName.textContent = zone.track;
-            elTrackName.style.color = hex;
-        }
-    }
-    scene.fog.color.lerp(targetFogColor, 0.06);
-}
-
 function onWindowResize() {
     resizeRenderer(renderer, camera);
     framePolicy.invalidate(3);
@@ -5256,10 +5219,8 @@ function animate() {
     const doorAnimating = Boolean(topicDoorState.transition) || Boolean(
         door && Math.abs((door.openProgress || 0) - (door.targetOpenProgress || 0)) > .002
     );
-    const audioFading = positionalAudios.some(entry => entry.sound.buffer
-        && Math.abs(entry.sound.getVolume() - entry.targetVolume) > .002);
-    const activeMotion = isDragging || moveForward || moveBackward || moveLeft || moveRight
-        || velocity.lengthSq() > .0004 || doorAnimating || audioFading;
+    const activeMotion = FORCE_PREVIEW_RENDERING || isDragging || moveForward || moveBackward || moveLeft || moveRight
+        || velocity.lengthSq() > .0004 || doorAnimating;
     if (!framePolicy.shouldRun(time, activeMotion)) return;
     const delta = Math.min(0.1, (time - prevTime) / 1000); prevTime = time;
     for (const fn of effectUpdaters) fn(time / 1000, delta);
@@ -5286,46 +5247,32 @@ function animate() {
         camera.position.y = EYE_Y;
         tryStartTopicDoorTransition(topicDoorState, camera);
         
-        const r = Math.hypot(camera.position.x, camera.position.z);
-        let cz = { id: 0, color: GOLD, name: 'Sảnh trung tâm' };
-        if (r > R_CORE + 0.1 || camera.position.z < -R_CORE) {
-            const a = normalizeAngle(Math.atan2(camera.position.z, camera.position.x));
-            if (camera.position.z < -R_CORE && Math.abs(camera.position.x) < 3.5) {
-                cz = { id: 0, color: GOLD, name: 'Lối vào' };
-            } else if (r < R_CORE + 4.4) {
-                // Đứng sát trụ giữa: nhận diện khu Bí thư Đảng ủy độc lập với góc.
-                cz = getZoneById(3);
-            } else {
-                // Kiểm tra góc `a` (đã chuẩn hóa về [0, 2π)) so với a0/a1 THÔ của từng zone
-                // theo CẢ 2 cách biểu diễn: chính nó, và trừ thêm 2π (đưa về dải âm).
-                // Cách này xử lý đúng cả zone quét qua điểm gốc 0°/360° (như Cụm 3: -90°→30°)
-                // mà không cần đụng tới a0/a1 thô đang dùng để dựng hình học tường/sàn.
-                cz = ZONES.filter(z => z.surface === 'outer').find(z => {
-                    const inRange = (ang) => ang >= z.a0 && ang < z.a1;
-                    return inRange(a) || inRange(a - Math.PI * 2);
-                }) || cz;
-            }
-        }
-        updateJourneyProgress(cz.id);
-        updateZoneBanner(cz);
-
-        // Fade âm lượng từng loa về đúng targetVolume (0 hoặc baseVolume) mỗi khung hình,
-        // đây là bước thực thi "cách ly cứng": zone không đứng trong sẽ luôn tiến về volume 0.
-        const AUDIO_FADE_SPEED = 3.5; // càng lớn chuyển càng nhanh (giây^-1)
-        positionalAudios.forEach(entry => {
-            if (!entry.sound.buffer) return;
-            const cur = entry.sound.getVolume();
-            if (Math.abs(cur - entry.targetVolume) > 0.002) {
-                entry.sound.setVolume(cur + (entry.targetVolume - cur) * Math.min(1, delta * AUDIO_FADE_SPEED));
-            }
-        });
     }
     renderer.render(scene, camera);
 }
 
 window.onload = async function () {
+    const loadingStatus = document.getElementById('room-loading-status');
+    const startBtn = document.getElementById('btn-start');
+    let trackedAssetsStarted = false;
+    const markRoomReady = () => {
+        if (loadingStatus) loadingStatus.textContent = 'Không gian đã sẵn sàng';
+        if (startBtn) startBtn.disabled = false;
+        document.getElementById('blocker')?.setAttribute('aria-busy', 'false');
+    };
+    THREE.DefaultLoadingManager.onStart = () => {
+        trackedAssetsStarted = true;
+        if (loadingStatus) loadingStatus.textContent = 'Đang tải tài nguyên trưng bày…';
+    };
+    THREE.DefaultLoadingManager.onProgress = (_url, loaded, total) => {
+        if (loadingStatus) loadingStatus.textContent = `Đang tải tài nguyên · ${loaded}/${total}`;
+    };
+    THREE.DefaultLoadingManager.onLoad = markRoomReady;
+    THREE.DefaultLoadingManager.onError = url => {
+        console.warn('[Chủ đề 5] Không tải được tài nguyên:', url);
+    };
+
     if (!WebGL.isWebGL2Available()) {
-        const startBtn = document.getElementById('btn-start');
         startBtn.disabled = true;
         startBtn.textContent = 'Thiết bị không hỗ trợ WebGL 2';
         document.getElementById('blocker').appendChild(WebGL.getWebGL2ErrorMessage());
@@ -5338,6 +5285,9 @@ window.onload = async function () {
 
     console.info(`[Chủ đề 5 · ver 2.5] Three.js r${THREE.REVISION}`);
     init();
+    // Trường hợp các texture đã có trong cache và LoadingManager không
+    // phát onStart, vẫn mở nút sau khi cảnh và font đã dựng xong.
+    if (!trackedAssetsStarted) requestAnimationFrame(() => requestAnimationFrame(markRoomReady));
     window.getTopic3SceneAudit = () => collectSceneAudit(
         scene, interactiveObjects, renderer, getTextureLoadAudit()
     );
@@ -5387,6 +5337,15 @@ window.onload = async function () {
     if (new URLSearchParams(window.location.search).has('gapPreview')) {
         document.getElementById('blocker').style.display = 'none';
         camera.position.set(0, EYE_Y, -13.2);
+        yaw = 0;
+        pitch = 0;
+        applyCameraRotation();
+    }
+
+    // Góc duyệt khoảng cách hai hồ sơ sát cửa chính.
+    if (new URLSearchParams(window.location.search).has('entrancePreview')) {
+        document.getElementById('blocker').style.display = 'none';
+        camera.position.set(0, EYE_Y, -23.0);
         yaw = 0;
         pitch = 0;
         applyCameraRotation();

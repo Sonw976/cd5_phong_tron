@@ -7,52 +7,39 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./styles/cd5-ver-2-5.css?v=20261025-3">
+<link rel="stylesheet" href="./styles/cd5-ver-2-5.css?v=20261030-4">
 </head>
-<body>
+<body data-lighting-system="cd3-ceiling">
 
-<div id="blocker" style="display: flex;">
-    <h1>Chủ đề 5 · Từ đoàn viên đến nhà giáo – Người truyền lửa</h1>
-    <p>Không gian thử nghiệm vòng tròn, gồm ba khu trưng bày liên tục từ trái sang phải.<br>
-    Tường ngoài: Bí thư Đảng ủy → Hiệu trưởng Nhà trường.<br>
-    Trụ giữa: Bí thư Đoàn trường.<br><br>
-    <span class="control-key">Giữ chuột trái + kéo</span> để xoay góc nhìn &nbsp;·&nbsp;
-    <span class="control-key">W A S D</span> để di + &nbsp;·&nbsp;
-    <span class="control-key">Bấm</span> vào hiện vật để xem chi tiết.</p>
-    <button class="btn-start" id="btn-start">Bước Vào Không Gian</button>
-</div>
+<section id="blocker" class="room-loading-screen" aria-live="polite" aria-busy="true">
+    <div class="loading-atmosphere" aria-hidden="true"></div>
+    <div class="loading-shell">
+        <header class="loading-header">
+            <div class="loading-brand">
+                <img src="./image/hnue-emblem-cutout.png" alt="Logo Trường Đại học Sư phạm Hà Nội" class="loading-logo loading-logo-hnue">
+                <div>
+                    <p class="loading-eyebrow">KHÔNG GIAN TRUYỀN THỐNG SỐ - HNUE</p>
+                    <h1>Từ đoàn viên đến những người truyền lửa</h1>
+                </div>
+                <img src="./image/youth-union-emblem-cutout.png" alt="Logo Đoàn Thanh niên" class="loading-logo loading-logo-doan">
+            </div>
+        </header>
+        <div class="loading-divider" aria-hidden="true"><span></span></div>
+        <footer class="loading-progress-wrap">
+            <div class="loading-progress-track" aria-hidden="true"><span></span></div>
+            <div class="loading-status-row">
+                <span id="room-loading-status">Đang chuẩn bị không gian trưng bày 3D…</span>
+            </div>
+            <button class="btn-start enter-room-button" id="btn-start" type="button" disabled>
+                <span>VÀO PHÒNG</span><i aria-hidden="true">→</i>
+            </button>
+        </footer>
+    </div>
+</section>
 
 <div id="fade-overlay"></div>
-<div id="zone-flash"></div>
 <div id="hover-dot"></div>
 <div id="focus-label"></div>
-
-<div id="zone-banner">Sảnh trung tâm</div>
-
-<div id="journey-progress" aria-label="Các khu vực tham quan tự do">
-    <span class="journey-step is-unlocked" data-zone="1">01 <b>Bí thư Đảng ủy</b></span>
-    <span class="journey-step is-unlocked" data-zone="2">02 <b>Hiệu trưởng</b></span>
-    <span class="journey-step is-unlocked" data-zone="3">03 <b>Bí thư Đoàn trường · Trụ giữa</b></span>
-</div>
-
-<div id="hud-toolbar">
-    <div class="hud-btn" id="btn-guide">📖 Hướng dẫn</div>
-    <div class="hud-btn" id="btn-reset">↺ Đặt lại</div>
-</div>
-
-<div id="now-playing">
-    <span class="np-icon" id="np-mute-btn" title="Tắt/Bật tiếng">🔊</span>
-    <div class="np-info">
-        <div class="np-label">Đang phát nhạc</div>
-        <div class="np-track" id="np-track-name">Tên bài hát...</div>
-    </div>
-    <div class="np-controls">
-        <button class="np-ctrl-btn" id="np-vol-down" title="Giảm âm lượng" aria-label="Giảm âm lượng">−</button>
-        <button class="np-ctrl-btn" id="np-vol-up" title="Tăng âm lượng" aria-label="Tăng âm lượng">+</button>
-    </div>
-</div>
-
-    <div id="hud-hint">Giữ <b>chuột trái</b> + kéo để nhìn quanh &nbsp;|&nbsp; <b>W A S D</b> / mũi tên để di chuyển &nbsp;|&nbsp; Tự do tham quan cả 3 cụm</div>
 
 <aside id="province-selector" aria-hidden="true">
     <div class="province-selector-title"></div>
@@ -99,18 +86,6 @@
     </div>
 </div>
 
-<div id="guide-overlay">
-    <div id="guide-panel">
-        <div class="info-close" id="guide-close">✕</div>
-        <h2>Hướng dẫn tham quan</h2>
-        <ul>
-            <li><span class="gicon">🖱️</span> Giữ <b>chuột trái</b> rồi kéo để xoay góc nhìn xung quanh.</li>
-            <li><span class="gicon">⌨️</span> Dùng <b>W A S D</b> hoặc các <b>phím mũi tên</b> để đi lại trong phòng.</li>
-            <li><span class="gicon">🖼️</span> <b>Bấm</b> vào ảnh chân dung để xem hồ sơ chi tiết sau khi nội dung Chủ đề 5 được đưa vào.</li>
-            <li><span class="gicon">➡️</span> Tường ngoài trưng bày <b>Bí thư Đảng ủy → Hiệu trưởng</b>; trụ giữa trưng bày <b>Bí thư Đoàn trường</b>.</li>
-        </ul>
-    </div>
-</div>
 
 <div id="document-overlay" role="dialog" aria-modal="true" aria-labelledby="document-title">
     <div id="document-panel">
@@ -137,6 +112,6 @@
 }
 </script>
 
-<script type="module" src="./scripts/v2-5/main.js?v=20261025-11"></script>
+<script type="module" src="./scripts/v2-5/main.js?v=20261102-recessed-holes-4"></script>
 </body>
 </html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phòng Truyền thống số · Chủ đề 5 · Không gian vòng tròn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles/cd5-ver-2-5.css?v=20261030-4">
+</head>
+<body>
+
+<section id="blocker" class="room-loading-screen" aria-live="polite" aria-busy="true">
+    <div class="loading-atmosphere" aria-hidden="true"></div>
+    <div class="loading-shell">
+        <header class="loading-header">
+            <div class="loading-brand">
+                <img src="./image/hnue-emblem-cutout.png" alt="Logo Trường Đại học Sư phạm Hà Nội" class="loading-logo loading-logo-hnue">
+                <div>
+                    <p class="loading-eyebrow">KHÔNG GIAN TRUYỀN THỐNG SỐ - HNUE</p>
+                    <h1>Từ đoàn viên đến những người truyền lửa</h1>
+                </div>
+                <img src="./image/youth-union-emblem-cutout.png" alt="Logo Đoàn Thanh niên" class="loading-logo loading-logo-doan">
+            </div>
+        </header>
+        <div class="loading-divider" aria-hidden="true"><span></span></div>
+        <footer class="loading-progress-wrap">
+            <div class="loading-progress-track" aria-hidden="true"><span></span></div>
+            <div class="loading-status-row">
+                <span id="room-loading-status">Đang chuẩn bị không gian trưng bày 3D…</span>
+            </div>
+            <button class="btn-start enter-room-button" id="btn-start" type="button" disabled>
+                <span>VÀO PHÒNG</span><i aria-hidden="true">→</i>
+            </button>
+        </footer>
+    </div>
+</section>
+
+<div id="fade-overlay"></div>
+<div id="hover-dot"></div>
+<div id="focus-label"></div>
+
+<aside id="province-selector" aria-hidden="true">
+    <div class="province-selector-title"></div>
+    <div class="province-selector-note"></div>
+    <div id="province-buttons"></div>
+</aside>
+
+<div id="modal-wrap" role="dialog" aria-modal="true" aria-labelledby="modal-page-label">
+    <div id="modal" data-theme="principal">
+        <div class="modal-brand"><img src="./image/hnue-emblem-cutout.png" alt="Logo HNUE"><strong>HNUE</strong></div>
+        <div id="modal-page-label">Hồ sơ nhân vật</div>
+        <button id="mclose" type="button" aria-label="Đóng hồ sơ">✕</button>
+        <div class="profile-layout">
+            <aside id="mhead">
+                <div id="mavatar"><img id="mphoto" alt=""><span id="mavatar-fallback">👤</span></div>
+                <div id="mheadtxt"><div id="mname"></div><div id="mrole"></div><div id="mperiod"></div></div>
+            </aside>
+            <section id="mdetail">
+                <button id="mback" type="button">← Quay lại</button>
+                <div id="mtabs" role="tablist" aria-label="Nội dung hồ sơ">
+                    <button class="tb" data-t="bio" role="tab"><span class="tab-icon">♙</span><span>Tiểu sử</span></button>
+                    <button class="tb" data-t="ach" role="tab"><span class="tab-icon">☆</span><span>Đóng góp</span></button>
+                    <button class="tb" data-t="qte" role="tab"><span class="tab-icon">◷</span><span>Hồi ức</span></button>
+                </div>
+                <div id="mbody">
+                    <div class="tp" id="tp-bio" role="tabpanel"></div>
+                    <div class="tp" id="tp-ach" role="tabpanel"></div>
+                    <div class="tp" id="tp-qte" role="tabpanel"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div id="info-overlay">
+    <div id="info-panel">
+        <div class="info-close" id="info-close">✕</div>
+        <div class="info-zone" id="info-zone">Cụm 1</div>
+        <span class="info-code" id="info-code"></span>
+        <h2 id="info-title">Tiêu đề</h2>
+        <div class="info-meta" id="info-meta"></div>
+        <div class="info-content" id="info-content"></div>
+        <div id="info-img-container"><img id="info-img" src="" alt="Tư liệu"></div>
+    </div>
+</div>
+
+
+<div id="document-overlay" role="dialog" aria-modal="true" aria-labelledby="document-title">
+    <div id="document-panel">
+        <header class="document-toolbar">
+            <div>
+                <span class="document-kicker">TƯ LIỆU GỐC</span>
+                <h2 id="document-title">Tài liệu</h2>
+                <span id="document-page-count"></span>
+            </div>
+            <button id="document-close" type="button" aria-label="Đóng tài liệu">✕</button>
+        </header>
+        <iframe id="document-frame" title="Trình đọc tài liệu PDF"></iframe>
+    </div>
+</div>
+
+<div id="canvas-container"></div>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+    }
+}
+</script>
+
+<script type="module" src="./scripts/v2-5/main.js?v=20261031-3"></script>
+</body>
+</html>

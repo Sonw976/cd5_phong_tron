@@ -285,6 +285,11 @@ const STANDARDIZED_NAME_EXCEPTIONS={
   'DT-15':'Dương Huy Bằng','DT-16':'Nguyễn Tân An',
   'DU-01':'Trần Văn Giàu(Đảng Ủy)','DU-17':'Nguyễn Văn Minh(Đảng Ủy)','DU-18':'Nguyễn Văn Hiền(Đảng Ủy)'
 };
+// Tệp "Ảnh đã chuẩn hóa" nằm trong hồ sơ HT-09 hiện là contact sheet gồm
+// 12 hiệu trưởng. Dùng đúng ảnh chuẩn hóa cá nhân lưu ở thư mục cấp trên.
+const STANDARDIZED_PORTRAIT_OVERRIDES={
+  'HT-09':'./HIỆU TRƯỞNG NHÀ TRƯỜNG /PGS.TS.NGƯT Nghiêm Đình Vỳ.png'
+};
 function standardizedDisplayName(person){
   if(STANDARDIZED_PRINCIPAL_FILES[person.code])return STANDARDIZED_PRINCIPAL_FILES[person.code];
   var base=STANDARDIZED_NAME_EXCEPTIONS[person.code]||String(person.name).replace(
@@ -293,6 +298,10 @@ function standardizedDisplayName(person){
   return base+'.png';
 }
 PROFILE_DATA.forEach(function(person){
+  if(STANDARDIZED_PORTRAIT_OVERRIDES[person.code]){
+    person.image=STANDARDIZED_PORTRAIT_OVERRIDES[person.code];
+    return;
+  }
   var source=String(person.sources&&person.sources.portrait||'').replace(/^\.\//,'');
   var slash=source.lastIndexOf('/');
   if(slash<0)return;
