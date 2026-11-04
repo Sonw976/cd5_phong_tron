@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { addLotusSeparator, addFloorDirection, createRoomMinimap } from './lotus-navigation.js';
 import WebGL from "three/addons/capabilities/WebGL.js";
 import { MEDIA_ASSETS, placeholderImage } from "./config/assets.js";
 import {
@@ -51,6 +52,7 @@ let prevTime = performance.now();
 let yaw = 0, pitch = 0;
 let isDragging = false, dragMoved = false, lastMouseX = 0, lastMouseY = 0;
 let started = false;
+let updateTopic5Minimap = null;
 let isDocumentOpen = false;
 
 let raycaster;
@@ -392,6 +394,10 @@ function init() {
     if (USE_CD3_CEILING_LIGHTING) createCd3CeilingLighting();
     else createPortraitGalleryLighting();
     buildZoneContents();
+    if (USE_CD3_CEILING_LIGHTING) {
+        addFloorDirection(scene);
+        updateTopic5Minimap = createRoomMinimap({rCore:R_CORE,rOuter:R_OUTER,boundaries:BOUNDARIES});
+    }
 }
 
 function applyCameraRotation() {
@@ -1752,7 +1758,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 function createLayeredRaisedSurface({
     geometry, texture = null, position, rotationY = 0,
     depth = .105, layers = 7, tint = 0xa8a8a8,
-    roughness = .62, metalness = .03, transparent = false
+    roughness = .62, metalness = .03, transparent = false, densePhotoLayers = false
 }) {
     // Giảm toàn bộ độ nổi còn 3/4 so với thiết lập ban đầu.
     const effectiveDepth = depth * .75;
@@ -1769,6 +1775,28 @@ function createLayeredRaisedSurface({
     const group = new THREE.Group();
     group.position.set(position.x, position.y, position.z);
     group.rotation.y = rotationY;
+    if (densePhotoLayers) {
+        // Giữ đúng hai mặt biên của 7 lớp cũ; chỉ chia nhỏ khoảng giữa.
+        // Instancing gom các lớp của mỗi hồ sơ thành một draw call.
+        const count = 32;
+        const stack = new THREE.InstancedMesh(geometry.clone(), material, count);
+        const matrix = new THREE.Matrix4();
+        for (let index = 0; index < count; index += 1) {
+            const z = -effectiveDepth + (effectiveDepth - effectiveDepth / layers) * index / (count - 1);
+            matrix.makeTranslation(0, 0, z);
+            stack.setMatrixAt(index, matrix);
+        }
+        stack.instanceMatrix.needsUpdate = true;
+        stack.computeBoundingBox();
+        stack.computeBoundingSphere();
+        stack.castShadow = true;
+        stack.receiveShadow = true;
+        stack.renderOrder = 2;
+        stack.name = 'dense-photo-stack-32-layers';
+        group.add(stack);
+        scene.add(group);
+        return { group, material };
+    }
     for (let index = 0; index < layers; index += 1) {
         const layerGeometry = geometry.clone();
         layerGeometry.translate(0, 0, -effectiveDepth + index * (effectiveDepth / layers));
@@ -2068,7 +2096,8 @@ function createWallPhotoTile(cfg) {
     tile.receiveShadow = true;
     raisedLayers = createLayeredRaisedSurface({
         geometry, position: cfg, rotationY: cfg.rotY,
-        tint: 0xa4a4a4, depth: cfg.photoDepth || .105, layers: 7
+        tint: 0xa4a4a4, depth: cfg.photoDepth || .105, layers: 7,
+        densePhotoLayers: USE_CD3_CEILING_LIGHTING && Boolean(cfg.profile)
     });
     tile.userData = {
         type: 'artifact', title: cfg.title, zoneName: cfg.zoneName, content: cfg.content,
@@ -2440,7 +2469,7 @@ function buildTopic5PortraitGallery() {
     const configurations = [
         { zoneId: 1, key: 'du', expected: 19, width: 3.80, accent: 0x9a6f3a, surface: 'outer' },
         { zoneId: 2, key: 'ht', expected: 13, width: 3.80, accent: 0xb58a43, surface: 'outer' },
-        { zoneId: 3, key: 'bt', expected: 29, width: 3.55, accent: 0x235da8, surface: 'core' }
+        { zoneId: 3, key: 'bt', expected: 29, width: USE_CD3_CEILING_LIGHTING ? 3.25 : 3.55, accent: 0x235da8, surface: 'core' }
     ];
 
     configurations.forEach(configuration => {
@@ -2452,8 +2481,10 @@ function buildTopic5PortraitGallery() {
 
         const isCore = configuration.surface === 'core';
         const radius = isCore
-            ? R_CORE + WALL_THICK / 2 + .15 + FRAME_DEPTH / 2
-            : WALL_MOUNT_R;
+            ? R_CORE + WALL_THICK / 2 + (USE_CD3_CEILING_LIGHTING ? .025 : .15 + FRAME_DEPTH / 2)
+            : (USE_CD3_CEILING_LIGHTING ? R_OUTER - WALL_THICK / 2 - .10 : WALL_MOUNT_R);
+        // Bản copy đặt phần lưng lớp ảnh ăn nhẹ vào tường đa giác để không
+        // lộ khe khi nhìn xiên; chiều dày .12 * .75 và kích thước ảnh giữ nguyên.
         const wallStart = !isCore && Math.abs(zone.a0 + Math.PI / 2) < .001
             ? zone.a0 + ENTRANCE_HALF_ANGLE : zone.a0;
         const wallEnd = !isCore && Math.abs(zone.a1 - Math.PI * 3 / 2) < .001
@@ -2469,6 +2500,11 @@ function buildTopic5PortraitGallery() {
         const start = wallStart + marginAngle;
         const end = wallEnd - marginAngle;
         const height = configuration.width / (10 / 9);
+        const coreFirstAngle = coreGallerySeam + Math.PI / profiles.length;
+        const coreStep = Math.PI * 2 / (profiles.length + 1);
+        if (isCore && USE_CD3_CEILING_LIGHTING) {
+            addLotusSeparator(scene, radius + .12, coreFirstAngle - coreStep, bendGeometry);
+        }
 
         profiles.forEach((profile, index) => {
             // Góc tăng dần tương ứng đúng chiều trái → phải khi đứng đối diện tường ngoài.
@@ -2477,7 +2513,8 @@ function buildTopic5PortraitGallery() {
                 ? (index + .5) / profiles.length
                 : (profiles.length === 1 ? .5 : index / (profiles.length - 1));
             const angle = isCore
-                ? coreGallerySeam + Math.PI * 2 * fraction
+                ? (USE_CD3_CEILING_LIGHTING ? coreFirstAngle + index * coreStep
+                    : coreGallerySeam + Math.PI * 2 * fraction)
                 : THREE.MathUtils.lerp(start, end, fraction);
             const originalPortrait = profile.sources?.portrait
                 ? `./${String(profile.sources.portrait).replace(/^\.\//u, '')}`
@@ -5248,6 +5285,7 @@ function animate() {
         tryStartTopicDoorTransition(topicDoorState, camera);
         
     }
+    updateTopic5Minimap?.(camera);
     renderer.render(scene, camera);
 }
 
@@ -5404,6 +5442,13 @@ window.onload = async function () {
         });
     }
 
+    if (new URLSearchParams(window.location.search).has('lotusPreview')) {
+        document.getElementById('blocker').style.display = 'none';
+        const angle=THREE.MathUtils.degToRad(187+360*3/29)+Math.PI/29-Math.PI*2/30;
+        const radius=R_CORE+6.8;
+        camera.position.set(Math.cos(angle)*radius,3.1,Math.sin(angle)*radius);
+        yaw=faceCoreRotY(angle)+Math.PI;pitch=0;applyCameraRotation();
+    }
     renderer.setAnimationLoop(animate);
     framePolicy.invalidate(4);
     if (new URLSearchParams(window.location.search).has('audit')) {

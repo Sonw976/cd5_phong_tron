@@ -1,4 +1,10 @@
 body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0a0e17; font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; }
+.topic5-map-panel{position:absolute;top:.9rem;left:.9rem;z-index:6;display:grid;justify-items:center;gap:.32rem;padding:.65rem;border:1px solid #d6b86f;border-radius:16px;background:rgba(18,79,130,.94);box-shadow:0 12px 30px #12599540;backdrop-filter:blur(14px);pointer-events:none}
+.topic5-map-title{color:#f8fafc;font-size:1.40rem;font-weight:900;letter-spacing:.02em}
+.topic5-map{width:170px;height:210px;border:2px solid #d6b86f;border-radius:10px;background:#2474ac;overflow:hidden}
+.topic5-map svg{display:block;width:100%;height:100%}
+.topic5-map-key{color:#f8fafc;font-size:1.24rem;font-weight:700;max-width:116px;text-align:center;line-height:1.2}
+@media(max-width:760px){.topic5-map-panel{padding:.55rem;top:.75rem;left:.75rem}.topic5-map{width:125px;height:156px}.topic5-map-key{display:none}}
     * { font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; box-sizing: border-box; }
     #province-selector { display: none !important; }
     body[data-zone1-layout="editorial-v2"],
