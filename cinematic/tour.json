@@ -1,0 +1,199 @@
+{
+  "title": "Chu de 5 - Continuous walking gimbal",
+  "preserveUserView": true,
+  "defaults": {
+    "heading": "corridor",
+    "distance": 7,
+    "speed": 2.5,
+    "hold": 0,
+    "lookAhead": 0,
+    "easing": "linear"
+  },
+  "shots": [
+    {
+      "target": "DU-01"
+    },
+    {
+      "target": "DU-02"
+    },
+    {
+      "target": "DU-03"
+    },
+    {
+      "target": "DU-04"
+    },
+    {
+      "target": "DU-05"
+    },
+    {
+      "target": "DU-06"
+    },
+    {
+      "target": "DU-07"
+    },
+    {
+      "target": "DU-08"
+    },
+    {
+      "target": "DU-09"
+    },
+    {
+      "target": "DU-10"
+    },
+    {
+      "target": "DU-11"
+    },
+    {
+      "target": "DU-12"
+    },
+    {
+      "target": "DU-13"
+    },
+    {
+      "target": "DU-14"
+    },
+    {
+      "target": "DU-15"
+    },
+    {
+      "target": "DU-16"
+    },
+    {
+      "target": "DU-17"
+    },
+    {
+      "target": "DU-18"
+    },
+    {
+      "target": "DU-19"
+    },
+    {
+      "target": "HT-01"
+    },
+    {
+      "target": "HT-02"
+    },
+    {
+      "target": "HT-03"
+    },
+    {
+      "target": "HT-04"
+    },
+    {
+      "target": "HT-05"
+    },
+    {
+      "target": "HT-06"
+    },
+    {
+      "target": "HT-07"
+    },
+    {
+      "target": "HT-08"
+    },
+    {
+      "target": "HT-09"
+    },
+    {
+      "target": "HT-10"
+    },
+    {
+      "target": "HT-11"
+    },
+    {
+      "target": "HT-12"
+    },
+    {
+      "target": "HT-13"
+    },
+    {
+      "target": "DT-01",
+      "speed": 1.5,
+      "easing": "smooth"
+    },
+    {
+      "target": "DT-02"
+    },
+    {
+      "target": "DT-03"
+    },
+    {
+      "target": "DT-04"
+    },
+    {
+      "target": "DT-05"
+    },
+    {
+      "target": "DT-06"
+    },
+    {
+      "target": "DT-09"
+    },
+    {
+      "target": "DT-07"
+    },
+    {
+      "target": "DT-08"
+    },
+    {
+      "target": "DT-10"
+    },
+    {
+      "target": "DT-11"
+    },
+    {
+      "target": "DT-12"
+    },
+    {
+      "target": "DT-13"
+    },
+    {
+      "target": "DT-14"
+    },
+    {
+      "target": "DT-15"
+    },
+    {
+      "target": "DT-16"
+    },
+    {
+      "target": "DT-17"
+    },
+    {
+      "target": "DT-18"
+    },
+    {
+      "target": "DT-19"
+    },
+    {
+      "target": "DT-20"
+    },
+    {
+      "target": "DT-21"
+    },
+    {
+      "target": "DT-22"
+    },
+    {
+      "target": "DT-23"
+    },
+    {
+      "target": "DT-24"
+    },
+    {
+      "target": "DT-25"
+    },
+    {
+      "target": "DT-26"
+    },
+    {
+      "target": "DT-27"
+    },
+    {
+      "target": "DT-28"
+    },
+    {
+      "target": "DT-29"
+    }
+  ]
+}

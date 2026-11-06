@@ -30,6 +30,7 @@ import {
 import { createConfiguredRenderer, resizeRenderer } from "./core/renderer.js";
 import { loadDisplayTexture, getTextureLoadAudit } from "./core/texture-loader.js";
 import { createAdaptiveFramePolicy } from "./runtime/frame-policy.js";
+import { installCameraTour } from "./runtime/camera-tour.js?v=20261106-corridor-1";
 import { collectSceneAudit } from "./core/scene-audit.js";
 import { PROFILE_DATA } from "../data/profiles.js";
 import { initProfileModal, openProfileModal, closeProfileModal, isProfileModalOpen } from "./profile-modal.js?v=20261025-3";
@@ -45,6 +46,8 @@ function zonePoint(zone, angleFraction, radius) {
 }
 
 let scene, camera, renderer;
+let cameraTour = null;
+const cameraTourTargets = [];
 let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
 let velocity = new THREE.Vector3();
 let prevTime = performance.now();
@@ -367,6 +370,10 @@ function init() {
 
     document.addEventListener('keydown', (e) => {
         if (!started) return;
+        if (cameraTour?.active) {
+            if (e.code === 'Escape') cameraTour.stop();
+            return;
+        }
         if (e.code === 'Escape') {
             if (isProfileModalOpen()) { closeProfileModal(); return; }
             if (isDocumentOpen) { closeDocumentReader(); return; }
@@ -413,12 +420,14 @@ function resetToSpawn() {
 }
 
 function onMouseDown(e) {
+    if (cameraTour?.active) return;
     if (!started || isInteractionModalOpen() || topicDoorState.controlsLocked || e.button !== 0) return;
     isDragging = true; dragMoved = false; lastMouseX = e.clientX; lastMouseY = e.clientY;
     elCanvas.classList.add('dragging');
 }
 
 function onMouseMove(e) {
+    if (cameraTour?.active) return;
     if (!started || isInteractionModalOpen() || topicDoorState.controlsLocked) return;
     if (isDragging) {
         const dx = e.clientX - lastMouseX, dy = e.clientY - lastMouseY;
@@ -431,6 +440,7 @@ function onMouseMove(e) {
 }
 
 function onMouseUp(e) {
+    if (cameraTour?.active) return;
     if (!started || isInteractionModalOpen() || topicDoorState.controlsLocked || e.button !== 0) return;
     elCanvas.classList.remove('dragging');
     if (isDragging && !dragMoved) handleClickAt(e.clientX, e.clientY);
@@ -2519,6 +2529,9 @@ function buildTopic5PortraitGallery() {
             const originalPortrait = profile.sources?.portrait
                 ? `./${String(profile.sources.portrait).replace(/^\.\//u, '')}`
                 : profile.image;
+            cameraTourTargets.push({ code: profile.code, name: profile.name, angle, radius,
+                y: isCore ? 3.45 : 3.72, surface: isCore ? 'core' : 'outer',
+                minRadius: R_CORE + .8, maxRadius: R_OUTER - 1.5 });
             createWallPhotoTile({
                 x: Math.cos(angle) * radius,
                 z: Math.sin(angle) * radius,
@@ -5256,7 +5269,7 @@ function animate() {
     const doorAnimating = Boolean(topicDoorState.transition) || Boolean(
         door && Math.abs((door.openProgress || 0) - (door.targetOpenProgress || 0)) > .002
     );
-    const activeMotion = FORCE_PREVIEW_RENDERING || isDragging || moveForward || moveBackward || moveLeft || moveRight
+    const activeMotion = cameraTour?.playing || FORCE_PREVIEW_RENDERING || isDragging || moveForward || moveBackward || moveLeft || moveRight
         || velocity.lengthSq() > .0004 || doorAnimating;
     if (!framePolicy.shouldRun(time, activeMotion)) return;
     const delta = Math.min(0.1, (time - prevTime) / 1000); prevTime = time;
@@ -5265,9 +5278,10 @@ function animate() {
     updateVietnamMapLayout(delta);
     updateHeatmapOverviewSlideshow(time);
     updateTopicDoorOpening(topicDoorState, delta);
-    const doorTransitionActive = updateTopicDoorTransition(topicDoorState, camera, delta, elFade);
+    cameraTour?.update(time);
+    const doorTransitionActive = !cameraTour?.active && updateTopicDoorTransition(topicDoorState, camera, delta, elFade);
 
-    if (started && !doorTransitionActive && !isInteractionModalOpen()) {
+    if (started && !cameraTour?.active && !doorTransitionActive && !isInteractionModalOpen()) {
         const oldX = camera.position.x, oldZ = camera.position.z;
         velocity.x -= velocity.x * 10.0 * delta; velocity.z -= velocity.z * 10.0 * delta;
         const forward = new THREE.Vector3(); camera.getWorldDirection(forward); forward.y = 0; forward.normalize();
@@ -5451,6 +5465,69 @@ window.onload = async function () {
     }
     renderer.setAnimationLoop(animate);
     framePolicy.invalidate(4);
+    if (previewSearchParams.get('cinematic') !== '0' && (previewSearchParams.has('cinematic') || document.body.dataset.cameraTour === 'continuous')) {
+        try {
+            let originalFov = camera.fov;
+            cameraTour = await installCameraTour({
+                camera, targets: cameraTourTargets,
+                capturePose: () => ({ x: camera.position.x, z: camera.position.z, y: camera.position.y,
+                    yaw, pitch, fov: camera.fov }),
+                enter() {
+                    if (document.getElementById('btn-start').disabled) throw new Error('Room assets are still loading');
+                    if (!started || !document.getElementById('blocker').hidden) {
+                        throw new Error('Click VAO PHONG and wait for the welcome screen to close before playing');
+                    }
+                    originalFov = camera.fov;
+                    moveForward = moveBackward = moveLeft = moveRight = isDragging = false;
+                    velocity.set(0, 0, 0);
+                    resetTopicDoor(topicDoorState, elFade);
+                    elCanvas.classList.remove('dragging');
+                    closeProfileModal();
+                    document.getElementById('info-overlay').style.display = 'none';
+                    closeDocumentReader();
+                    document.body.classList.add('cinematic-active');
+                    framePolicy.invalidate(4);
+                },
+                restore() {
+                    camera.fov = originalFov; camera.updateProjectionMatrix();
+                    camera.position.y = EYE_Y;
+                    document.body.classList.remove('cinematic-active');
+                    framePolicy.invalidate(4);
+                },
+                applyPose(pose) {
+                    camera.position.set(pose.x, pose.y, pose.z);
+                    yaw = pose.yaw; pitch = pose.pitch; applyCameraRotation();
+                    if (camera.fov !== pose.fov) { camera.fov = pose.fov; camera.updateProjectionMatrix(); }
+                    framePolicy.invalidate(2);
+                },
+                performAction(action) {
+                    if (action.type === 'open-profile') {
+                        const profile = PROFILE_DATA.find(item => item.code === action.target);
+                        if (!profile) throw new Error(`Unknown profile: ${action.target}`);
+                        openProfileModal(profile);
+                    } else if (action.type === 'close-profile') closeProfileModal();
+                    else {
+                        const element = document.querySelector(action.selector);
+                        if (!element) throw new Error(`Cannot click: ${action.selector}`);
+                        element.click();
+                    }
+                }
+            });
+            if (previewSearchParams.has('autoplay') || document.body.dataset.cameraTour === 'continuous') {
+                const waitUntilReady = () => {
+                    if (document.getElementById('btn-start').disabled) { setTimeout(waitUntilReady, 100); return; }
+                    if (!started && previewSearchParams.has('autoplay')) document.getElementById('btn-start').click();
+                    if (!started) { setTimeout(waitUntilReady, 100); return; }
+                    if (!document.getElementById('blocker').hidden) { setTimeout(waitUntilReady, 100); return; }
+                    cameraTour.play({ speed: Number(previewSearchParams.get('speed') || 1) });
+                };
+                waitUntilReady();
+            }
+        } catch (error) {
+            window.cameraTourError = error.message;
+            console.error('[Camera tour]', error);
+        }
+    }
     if (new URLSearchParams(window.location.search).has('audit')) {
         setTimeout(() => {
             const audit = window.getTopic3SceneAudit();

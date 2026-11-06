@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./styles/cd5-ver-2-5.css?v=20261104-map-full-names-5">
 </head>
-<body data-lighting-system="cd3-ceiling">
+<body data-lighting-system="cd3-ceiling" data-camera-tour="continuous">
 
 <section id="blocker" class="room-loading-screen" aria-live="polite" aria-busy="true">
     <div class="loading-atmosphere" aria-hidden="true"></div>
@@ -112,6 +112,13 @@
 }
 </script>
 
-<script type="module" src="./scripts/v2-5/main.js?v=20261104-flush-photos-4"></script>
+<style>
+body.cinematic-active .topic5-map-panel,
+body.cinematic-active #hover-dot,
+body.cinematic-active #focus-label,
+body.cinematic-active #province-selector { display: none !important; }
+body.cinematic-active canvas { cursor: none !important; }
+</style>
+<script type="module" src="./scripts/v2-5/main.js?v=20261106-corridor-1"></script>
 </body>
 </html>
